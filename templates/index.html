@@ -20,12 +20,22 @@
 	<body>
 		<div class="header">
 		    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-		        <a class="pure-menu-heading" href="">Your Site</a>
-
+		        <img class="pure-img-responsive" width="100" src="{{url_for('static', filename='img/logo.png')}}">
 		        <ul class="pure-menu-list">
 		            <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">Home</a></li>
-		            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Tour</a></li>
-		            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Sign Up</a></li>
+		            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+			            <a href="#" id="menuLink1" class="pure-menu-link">ZIIEI</a>
+			            <ul class="pure-menu-children">
+			                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Workflow with Timelines</a></li>
+			                <li class="pure-menu-item"><a href="#" class="pure-menu-link">How to Apply</a></li>
+			                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Benefits</a></li>
+			                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Examples</a></li>
+			                <li class="pure-menu-item"><a href="#" class="pure-menu-link">Terms and Conditions</a></li>
+			            </ul>
+        			</li>
+        			<li class="pure-menu-item"><a href="#" class="pure-menu-link">About Us</a></li>
+		            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact Us</a></li>
+		            <li class="pure-menu-item"><a href="#" class="pure-menu-link">FAQ</a></li>
 		        </ul>
 		    </div>
 		</div>
