@@ -1,28 +1,27 @@
-from flask import Flask, render_template
-app = Flask(__name__)
+import os
+from flask import (
+                    Flask,
+                    render_template,
+                    session,
+                    request
+                )
 
+app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/about/')
-@app.route('/about/<name>')
-def about(name):
-    if name == "ZIIEI":
-        return render_template('ziiei.html')
-    elif name == "Aurbindo":
-        return render_template('aurbindo.html')
-    elif name == "Litchi":
-        return render_template('litchi.html')
-    elif name == "UP Govt":
-        return
+@app.route('/about')
+def about():
+        return "lolpol"
 
 
-@app.route('/ZIIEI/')
-@app.route('/ZIIEI/<page>')
-def ziiei(page):
+@app.route('/ziiei')
+@app.route('/ziiei/<page>')
+def ziiei(page="workflow"):
     if page == "workflow":
         return
     elif page == "apply":
@@ -40,19 +39,33 @@ def register():
     return
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
-    return
+    if request.method == 'GET':
+        return "get page"
+    elif request.method == 'POST':
+        username = request.form.get('Username')
+        #check is username exists
+        session["username"] = username
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route('/faq')
 def faq():
     return
 
 
-@app.route('/contact-us')
+@app.route('/contact')
 def contact():
     return
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return error
+
 
 if __name__ == '__main__':
     app.run(debug=True)
