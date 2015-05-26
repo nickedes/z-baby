@@ -1,12 +1,15 @@
 import os
 from flask import (
-                    Flask,
-                    render_template,
-                    session,
-                    request
-                )
+    Flask,
+    render_template,
+    session,
+    url_for,
+    redirect,
+    request
+)
 from admin import adminobj
 from teacher import teacherobj
+from errors import showerrors
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -14,7 +17,6 @@ app.secret_key = os.urandom(24)
 app.register_blueprint(teacherobj, subdomain='teacher')
 app.register_blueprint(adminobj, subdomain='admin')
 
-from errors import showerrors
 showerrors(app)
 
 
@@ -25,10 +27,9 @@ def index():
 
 @app.route('/about')
 def about():
-        return "lolpol"
+    return "lolpol"
 
 
-@app.route('/ziiei')
 @app.route('/ziiei/<page>')
 def ziiei(page="workflow"):
     if page == "workflow":
@@ -48,19 +49,21 @@ def register():
     return
 
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return "get page"
     elif request.method == 'POST':
         username = request.form.get('Username')
-        #check is username exists
+        # check is username exists
         session["username"] = username
+
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
 
 @app.route('/faq')
 def faq():
