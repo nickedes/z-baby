@@ -34,21 +34,25 @@ def ziiei(page):
     elif page == "terms":
         return
 
+
 @app.route('/register')
 def register():
-	return
+    return
+
 
 @app.route('/login')
 def login():
-	return
+    return
+
 
 @app.route('/faq')
 def faq():
-	return
+    return
+
 
 @app.route('/contact-us')
 def contact():
-	return
+    return
 
 if __name__ == '__main__':
     app.run(debug=True)
