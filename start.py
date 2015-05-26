@@ -5,9 +5,18 @@ from flask import (
                     session,
                     request
                 )
+from admin import adminobj
+from teacher import teacherobj
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+app.register_blueprint(teacherobj, subdomain='teacher')
+app.register_blueprint(adminobj, subdomain='admin')
+
+from errors import showerrors
+showerrors(app)
+
 
 @app.route('/')
 def index():
@@ -61,10 +70,6 @@ def faq():
 @app.route('/contact')
 def contact():
     return
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return error
 
 
 if __name__ == '__main__':
