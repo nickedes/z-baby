@@ -21,10 +21,34 @@ def about(name):
 
 
 @app.route('/ZIIEI/')
-@app.route('/ZIIEI/<page>'):
+@app.route('/ZIIEI/<page>')
 def ziiei(page):
-    if page = "workflow":
+    if page == "workflow":
         return
+    elif page == "apply":
+        return
+    elif page == "benefits":
+        return
+    elif page == "examples":
+        return
+    elif page == "terms":
+        return
+
+@app.route('/register')
+def register():
+	return
+
+@app.route('/login')
+def login():
+	return
+
+@app.route('/faq')
+def faq():
+	return
+
+@app.route('/contact-us')
+def contact():
+	return
 
 if __name__ == '__main__':
     app.run(debug=True)
