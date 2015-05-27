@@ -1,13 +1,26 @@
+import os
 import pymssql
+from configparser import ConfigParser
 
-conn = pymssql.connect(host='103.247.98.43:5544', user='mssql_licthi',
-                       password='Mssql@mayank@123', database='ziiei')
+CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+
+config = ConfigParser()
+config.read(os.path.join(CURRENT_DIR, 'config.ini'))
+
+server = config["Database"]["server"]
+user = config["Database"]["user"]
+password = config["Database"]["password"]
+
+conn = pymssql.connect(server, user, password, "ziiei")
 cursor = conn.cursor()
+'''
 cursor.execute(
-    "INSERT INTO dbo.Login VALUES (1,'English','nik','admin','lol',DEFAULT)")
-conn.commit()
+    "INSERT INTO dbo.Language VALUES (%s, %d, %s, DEFAULT)",
+    ('English', 1, 'lolpol'))
 
-cursor.execute('Select * from dbo.Login')
-value = cursor.fetchall()
-for row in value:
-    print(row)
+conn.commit()
+'''
+cursor.execute('SELECT * FROM dbo.Language')
+row = cursor.fetchone()
+print(row)
+conn.close()
