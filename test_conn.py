@@ -1,10 +1,13 @@
-from os import getenv
 import pymssql
 
-server = getenv("103.247.98.43:5544")
-user = getenv("mssql_licthi")
-password = getenv("Mssql@mayank@123")
-
-conn = pymssql.connect(server, user, password, "ziiei")
+conn = pymssql.connect(host='103.247.98.43:5544', user='mssql_licthi',
+                       password='Mssql@mayank@123', database='ziiei')
 cursor = conn.cursor()
-print conn
+cursor.execute(
+    "INSERT INTO dbo.Login VALUES (1,'English','nik','admin','lol',DEFAULT)")
+conn.commit()
+
+cursor.execute('Select * from dbo.Login')
+value = cursor.fetchall()
+for row in value:
+    print(row)
