@@ -1,4 +1,5 @@
 import os
+import datetime
 import pymssql
 from configparser import ConfigParser
 
@@ -13,14 +14,14 @@ password = config["Database"]["password"]
 
 conn = pymssql.connect(server, user, password, "ziiei")
 cursor = conn.cursor()
-'''
+
 cursor.execute(
-    "INSERT INTO dbo.Language VALUES (%s, %d, %s, DEFAULT)",
-    ('English', 1, 'lolpol'))
+    "INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)",
+    (1, 1, 'India', 'admin', str(datetime.datetime.now())))
 
 conn.commit()
-'''
-cursor.execute('SELECT * FROM dbo.Language')
+
+cursor.execute('SELECT * FROM dbo.Country')
 row = cursor.fetchone()
 print(row)
 conn.close()

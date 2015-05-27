@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>ZIIEI</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename='css/carousel.css')}}" rel="stylesheet">
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+
+      <div class="container">
+      <div class="col-lg-4">
+      <img src="{{url_for('static', filename='img/logo.png')}}" >
+      </div>
+      <div class="col-lg-8">
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">ZIIEI <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/workflow">Workflow with timelines</a></li>
+                    <li><a href="/apply">How to apply</a></li>
+                    <li><a href="/benefits">Benefits</a></li>
+                    <li><a href="/exmaples">Examples</a></li>
+                    <li><a href="/terms">Terms and conditions</a></li>
+                  </ul>
+                </li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>

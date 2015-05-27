@@ -7,28 +7,21 @@ from flask import (
     redirect,
     request
 )
-from admin import adminobj
-from teacher import teacherobj
+
 from errors import showerrors
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-app.register_blueprint(teacherobj, subdomain='teacher')
-app.register_blueprint(adminobj, subdomain='admin')
-
 showerrors(app)
-
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
 @app.route('/about')
 def about():
-    return "lolpol"
-
+    return render_template('index.html')
 
 @app.route('/ziiei/<page>')
 def ziiei(page="workflow"):
@@ -48,22 +41,19 @@ def ziiei(page="workflow"):
 def register():
     return
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return "get page"
     elif request.method == 'POST':
         username = request.form.get('Username')
-        # check is username exists
+        # check if username exists
         session["username"] = username
-
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
-
 
 @app.route('/faq')
 def faq():
@@ -73,7 +63,6 @@ def faq():
 @app.route('/contact')
 def contact():
     return
-
 
 if __name__ == '__main__':
     app.run(debug=True)
