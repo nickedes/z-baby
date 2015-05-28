@@ -3,12 +3,20 @@
 <form>
   {% for data in register_labels %}
     <div class="form-group">
-      <label for="" class="col-sm-2 control-label">{{data[3]}}</label>
-      <div class="col-sm-6">
-        <input type="email" class="form-control" id="{{ data[3] }}" placeholder="Enter {{ data[3] }}">
-      </div>
+      <label for="" class="col-sm-2 control-label">{{data[3]}}</label>  
+      {% if data[3] != 'Gender' %}
+          <div class="col-sm-6">
+            <input type="email" class="form-control" id="{{ data[3] }}" placeholder="Enter {{ data[3] }}">
+          </div>
+        <br><br>
+      {% else %}
+        {% for value in register_sublabels %}
+          <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {{ value[3] }}
+          </label>
+        {% endfor %}
+      {% endif %}
     </div>
-    <br><br>
   {% endfor %}
   
   <button type="submit" class="btn btn-default">Submit</button>

@@ -54,8 +54,11 @@ def ziiei(page="workflow"):
 @app.route('/register')
 def register():
     session['Language'] = 1
-    register_labels = values.getRegisteration_Labels(session['Language'])
-    return render_template('register.html',register_labels=register_labels,labels=vals1, menu=vals2, submenu=vals3, menulist=vals4)
+    register_labels, register_sublabels = values.getRegisteration_Labels(
+        session['Language'])
+    return render_template('register.html', register_labels=register_labels,
+                           register_sublabels=register_sublabels, labels=vals1, menu=vals2,
+                           submenu=vals3, menulist=vals4)
 
 
 @app.route('/login', methods=['GET', 'POST'])
