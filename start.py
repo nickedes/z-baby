@@ -29,7 +29,8 @@ def index():
     global vals3
     global vals4
     vals1, vals2, vals3, vals4 = values.retrieveValues(session['Language'])
-    return render_template('index.html', labels=vals1, menu=vals2, submenu=vals3, menulist=vals4)
+    return render_template('index.html', labels=vals1, menu=vals2,
+                           submenu=vals3, menulist=vals4)
 
 
 @app.route('/about')
@@ -57,14 +58,15 @@ def register():
     register_labels, register_sublabels = values.getRegisteration_Labels(
         session['Language'])
     return render_template('register.html', register_labels=register_labels,
-                           register_sublabels=register_sublabels, labels=vals1, menu=vals2,
-                           submenu=vals3, menulist=vals4)
+                           register_sublabels=register_sublabels, labels=vals1,
+                           menu=vals2, submenu=vals3, menulist=vals4)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return "get page"
+        return render_template('signin.html', labels=vals1,
+                               menu=vals2, submenu=vals3, menulist=vals4)
     elif request.method == 'POST':
         username = request.form.get('Username')
         # check if username exists
