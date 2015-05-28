@@ -9,6 +9,7 @@ from flask import (
 )
 
 from errors import showerrors
+import values
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -17,7 +18,9 @@ showerrors(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    session['Language'] = 1
+    vals1, vals2, vals3, vals4 = values.retrieveValues(session['Language'])
+    return render_template('index.html',labels=vals1, menu=vals2, submenu=vals3, menulist=vals4)
 
 @app.route('/about')
 def about():

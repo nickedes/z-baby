@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>ZIIEI</title>
+    <title>{{ labels['Title'] }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
@@ -38,20 +38,21 @@
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="/about">About Us</a></li>
+              {% for val in range(len(menulist)) %}
+                {% if val == 0 %}
+                <li><a href="{{ menu[num][2] }}">{{ menu[num][1] }}</a></li>
+                {% elif val == 1 %}
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">ZIIEI <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu[num][1] }}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="/workflow">Workflow with timelines</a></li>
-                    <li><a href="/apply">How to apply</a></li>
-                    <li><a href="/benefits">Benefits</a></li>
-                    <li><a href="/exmaples">Examples</a></li>
-                    <li><a href="/terms">Terms and conditions</a></li>
+                    {% for submenuitem in submenu %}
+                      {% if submenuitem[0]==num %}
+                    <li><a href="{{submenuitem[2]}}">{{submenuitem[1]}}</a></li>
+                      {% endif %}
+                    {% endfor %}
                   </ul>
-                </li>
-                <li><a href="/faq">FAQ</a></li>
-                <li><a href="/contact">Contact Us</a></li>
+                {% endif %}
+              {% endfor %}
               </ul>
             </div>
           </div>
@@ -59,3 +60,4 @@
         </div>
       </div>
     </div>
+
