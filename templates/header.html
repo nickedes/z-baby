@@ -39,14 +39,14 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
               {% for val in range(menulist|length) %}
-                {% if val == 0 %}
+                {% if menulist[val] == 0 %}
                 <li><a href="{{ menu[val][2] }}">{{ menu[val][1] }}</a></li>
-                {% elif val == 1 %}
+                {% elif menulist[val] == 1 %}
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu[val][1] }}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     {% for submenuitem in submenu %}
-                      {% if submenuitem[0]==val %}
+                      {% if submenuitem[0]==val+1 %}
                     <li><a href="{{submenuitem[2]}}">{{submenuitem[1]}}</a></li>
                       {% endif %}
                     {% endfor %}

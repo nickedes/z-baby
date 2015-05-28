@@ -21,7 +21,7 @@ cursor = conn.cursor()
                     <li><a href="/exmaples">Examples</a></li>
                     <li><a href="/terms">Terms and conditions</a></li>
                     '''
-
+'''
 cursor.executemany(
     "INSERT INTO dbo.SubMenu VALUES (%d, %d, %d, %s, %s, %d, %s, %s)",
     [(1, 5, 1, 'Workflow With Timelines', '/workflow', 1, 'admin', str(datetime.datetime.now())), 
@@ -32,8 +32,8 @@ cursor.executemany(
     ])
 
 conn.commit()
-
-cursor.execute('SELECT * FROM dbo.SubMenu')
+'''
+cursor.execute('SELECT * FROM dbo.SubMenu ORDER BY MenuID')
 row = cursor.fetchall()
 print(row)
 conn.close()
