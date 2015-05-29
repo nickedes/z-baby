@@ -32,6 +32,17 @@ cursor.executemany(
     ])
 ,
 
+
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %s, %s, %s, %s)",
+    [
+        (24, 1, 'SigninUsername', 'Username', 'admin', str(datetime.now())),
+        (25, 1, 'SigninPassword', 'Password', ' admin', str(datetime.now())),
+        (26, 1, 'SigninLabel', 'Please Sign In', 'admin', str(datetime.now())),
+        (27, 1, 'SigninButton', 'Sign In', 'admin', str(datetime.now()))
+    ])
+
+
 conn.commit()
 
 cursor.executemany(
