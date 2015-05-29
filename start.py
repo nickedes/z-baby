@@ -18,6 +18,7 @@ showerrors(app)
 labelval = {}
 menuval = {}
 submenuval = {}
+user = 0
 
 
 @app.route('/')
@@ -25,6 +26,8 @@ def index():
     global labelval
     global menuval
     global submenuval
+    if 'username' in session:
+        return redirect(url_for('home'))
     if 'LanguageID' not in session:
         session['LanguageID'] = 1
     if 'RoleID' not in session:
@@ -47,11 +50,13 @@ def index():
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
     return render_template('slash.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+                           submenu=submenuval, userval=user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'username' in session:
+        return redirect(url_for('index'))
     if request.method == 'GET':
         return render_template('signin.html', label=labelval, menu=menuval,
                                submenu=submenuval)
@@ -60,11 +65,27 @@ def login():
         logged_in = values.checkLogin(
             request.form['username'], request.form['password'])
         if logged_in is None:
-            return "Incorrect Username or password"
+            return redirect(url_for('index'))
         else:
             session['RoleID'] = logged_in
             session['username'] = username
-            return "You have successfully Logged in :)"
+            global user
+            user = 1
+            return redirect(url_for('home'))
+            
+@app.route('/home')
+def home():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    else:
+        return render_template('home.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('username', None)
+    global user
+    user = 0
+    return redirect(url_for('index'))
 
 
 @app.route('/register')
@@ -73,6 +94,19 @@ def register():
     return render_template('register.html', label=labelval, menu=menuval,
                            submenu=submenuval, country=country, state=state,
                            district=district, block=block)
+
+@app.route('/update')
+def update():
+    return render_template('update.html', label=labelval, menu=menuval, submenu=submenuval)
+
+@app.route('/submit')
+def submit():
+    return render_template('submit.html',label=labelval, menu=menuval, submenu=submenuval)
+
+@app.route('/review')
+def review():
+    return render_template('review.html', label=labelval, menu=menuval, submenu=submenuval)
+
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
