@@ -43,8 +43,8 @@
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu[menuval][0] }}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     {% for submenuitem in submenu %}
-                      {% if submenuitem == menuval %}
-                    <li><a href="{{submenuitem[1]}}">{{submenuitem[0]}}</a></li>
+                      {% if submenu[submenuitem][0] == menuval %}
+                    <li><a href="{{submenu[submenuitem][2]}}">{{submenu[submenuitem][1]}}</a></li>
                       {% endif %}
                     {% endfor %}
               {% endif %}
