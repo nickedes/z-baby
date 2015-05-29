@@ -10,10 +10,7 @@ from flask import (
 
 from errors import showerrors
 import values
-vals1 = {}
-vals2 = []
-vals3 = []
-vals4 = []
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -23,70 +20,22 @@ showerrors(app)
 
 @app.route('/')
 def index():
-    session['Language'] = 1
-    global vals1
-    global vals2
-    global vals3
-    global vals4
-    vals1, vals2, vals3, vals4 = values.retrieveValues(session['Language'])
-    return render_template('index.html', labels=vals1, menu=vals2,
-                           submenu=vals3, menulist=vals4)
-
-
-@app.route('/about')
-def about():
-    return render_template('index.html')
-
-
-@app.route('/ziiei/<page>')
-def ziiei(page="workflow"):
-    if page == "workflow":
-        return
-    elif page == "apply":
-        return
-    elif page == "benefits":
-        return
-    elif page == "examples":
-        return
-    elif page == "terms":
-        return
-
-
-@app.route('/register')
-def register():
-    session['Language'] = 1
-    register_labels, register_sublabels = values.getRegisteration_Labels(
-        session['Language'])
-    return render_template('register.html', register_labels=register_labels,
-                           register_sublabels=register_sublabels, labels=vals1,
-                           menu=vals2, submenu=vals3, menulist=vals4)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template('signin.html', labels=vals1,
-                               menu=vals2, submenu=vals3, menulist=vals4)
-    elif request.method == 'POST':
-        username = request.form.get('Username')
-        # check if username exists
-        session["username"] = username
-
-
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    return redirect(url_for('index'))
-
-
-@app.route('/faq')
-def faq():
-    return
-
-
-@app.route('/contact')
-def contact():
-    return
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 1
+    # play with variables
+    labelval = {label[2]: label[3]
+                for label in labels if label[1] == session['LanguageID']}
+    menuval = {menu[1]: [menu[2], menu[3]]
+               for menu in menus if menu[0] == session['LanguageID']
+               and menu[4] == session['RoleID']}
+    submenuval = {submenu[1]: [submenu[4], submenu[5]] for submenu in submenus
+                  if submenu[0] == session['LanguageID']
+                  and submenu[5] == session['RoleID']}
+    return render_template('slash.html', label=labelval, menu=menuval,
+                           submenu=submenuval)
 
 if __name__ == '__main__':
+    labels, menus, submenus, categories, subcategories = values.getValues(1)
     app.run(debug=True, host='0.0.0.0', port=3000)

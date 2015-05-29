@@ -8,56 +8,39 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>{{ labels['Title'] }}</title>
+    <title>{{label['Title']}}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{url_for('static', filename='css/carousel.css')}}" rel="stylesheet">
-  </head>
-<!-- NAVBAR
-================================================== -->
-  <body>
-    <div class="navbar-wrapper">
+    <link href="{{url_for('static', filename='css/starter-template.css')}}" rel="stylesheet">
 
+  </head>
+
+
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
-      <div class="col-lg-4">
-      <img src="{{url_for('static', filename='img/logo.png')}}" >
-      </div>
-      <div class="col-lg-8">
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-              {% for val in range(menulist|length) %}
-                {% if menulist[val] == 0 %}
-                <li><a href="{{ menu[val][2] }}">{{ menu[val][1] }}</a></li>
-                {% elif menulist[val] == 1 %}
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu[val][1] }}<span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    {% for submenuitem in submenu %}
-                      {% if submenuitem[0]==val+1 %}
-                    <li><a href="{{submenuitem[2]}}">{{submenuitem[1]}}</a></li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              {% endfor %}
-              </ul>
-            </div>
-          </div>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{label['Title']}}</a>
         </div>
-        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+          {% for menuval in menu %}
+          {% for submenuval in submenu %}
+          {% endfor %}
+            <li><a href="{{menu[menuval][1]}}">{{menu[menuval][0]}}</a></li>
+          {% endfor %}
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
-
