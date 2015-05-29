@@ -3,7 +3,7 @@ import pymssql
 from configparser import ConfigParser
 
 
-def getValues(lang=1):
+def getValues():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
     config = ConfigParser()
@@ -17,19 +17,19 @@ def getValues(lang=1):
 
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Label where LanguageID=%d ORDER BY LabelID' % lang)
+        'SELECT * FROM dbo.Label ORDER BY LabelID')
     label = cursor.fetchall()
     cursor.execute(
-        'SELECT * FROM dbo.Menu where LanguageID=%d ORDER BY MenuID' % lang)
+        'SELECT * FROM dbo.Menu ORDER BY MenuID')
     menu = cursor.fetchall()
     cursor.execute(
-        'SELECT * FROM dbo.SubMenu where LanguageID=%d ORDER BY SubMenuID' % lang)
+        'SELECT * FROM dbo.SubMenu ORDER BY SubMenuID')
     submenu = cursor.fetchall()
     cursor.execute(
-        'SELECT * FROM dbo.Category where LanguageID=%d ORDER BY CategoryID' % lang)
+        'SELECT * FROM dbo.Category ORDER BY CategoryID')
     category = cursor.fetchall()
     cursor.execute(
-        'SELECT * FROM dbo.Label where LanguageID=%d ORDER BY LabelID' % lang)
+        'SELECT * FROM dbo.Subcategory ORDER BY SubCategoryID')
     subcategory = cursor.fetchall()
     conn.close()
     return label, menu, submenu, category, subcategory

@@ -7,7 +7,6 @@ from flask import (
     redirect,
     request
 )
-
 from errors import showerrors
 import values
 
@@ -27,15 +26,29 @@ def index():
     # play with variables
     labelval = {label[2]: label[3]
                 for label in labels if label[1] == session['LanguageID']}
-    menuval = {menu[1]: [menu[2], menu[3]]
-               for menu in menus if menu[0] == session['LanguageID']
-               and menu[4] == session['RoleID']}
+    menuval = {}
+    for menu in menus:
+        if menu[0] == session['LanguageID'] and menu[4] == session['RoleID']:
+            flag = 1
+            for submenu in submenus:
+                if submenu[0] == session['LanguageID'] and submenu[5] == session['RoleID']:
+                    if submenu[1] == menu[1]:
+                        menuval[menu[1]] = [menu[2], menu[3], 1]
+                        print(menuval)
+                        flag = 0
+                        break
+            if flag == 1:
+                menuval[menu[1]] = [menu[2], menu[3], 0]
+                print(menuval)
+
+    # print(menuval)
     submenuval = {submenu[1]: [submenu[4], submenu[5]] for submenu in submenus
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
+
     return render_template('slash.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
 if __name__ == '__main__':
-    labels, menus, submenus, categories, subcategories = values.getValues(1)
+    labels, menus, submenus, categories, subcategories = values.getValues()
     app.run(debug=True, host='0.0.0.0', port=3000)

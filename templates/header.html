@@ -35,11 +35,20 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-          {% for menuval in menu %}
-          {% for submenuval in submenu %}
-          {% endfor %}
-            <li><a href="{{menu[menuval][1]}}">{{menu[menuval][0]}}</a></li>
-          {% endfor %}
+            {% for menuval in menu %}
+              {% if menu[menuval][2] == 0 %}
+                <li><a href="{{ menu[menuval][1] }}">{{ menu[menuval][0] }}</a></li>
+              {% elif menu[menuval][2] == 1 %}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ menu[menuval][0] }}<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    {% for submenuitem in submenu %}
+                      {% if submenuitem == menuval %}
+                    <li><a href="{{submenuitem[1]}}">{{submenuitem[0]}}</a></li>
+                      {% endif %}
+                    {% endfor %}
+              {% endif %}
+            {% endfor %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
