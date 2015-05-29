@@ -49,3 +49,12 @@ def getRegisteration_Labels(lang=1):
         "SELECT * FROM dbo.Label where LanguageID = %d and LabelType = 'Gender' " % lang)
     sub_labels = cursor.fetchall()
     return labels, sub_labels
+
+
+def contact_Labels(lang=1):
+    conn = connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM dbo.Label where LanguageID = %d and LabelType = 'Enquiry'")
+    labels = cursor.fetchall()
+    return labels
