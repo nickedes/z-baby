@@ -57,8 +57,17 @@ cursor.executemany(
     (21, 1, 'Registration_field', 'Name', 'admin', str(datetime.datetime.now()))
     ])
 
+
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %s, %s, %s, %s)",
+    [
+        (22, 1, 'Enquiry', 'Enquiry', 'admin', str(datetime.datetime.now())),
+        (23, 1, 'Enquiry', 'Question', 'admin', str(datetime.datetime.now()))
+    ])
+
 conn.commit()
 '''
+
 cursor.execute('SELECT * FROM dbo.Label ORDER BY LabelID')
 row = cursor.fetchall()
 print(row)
