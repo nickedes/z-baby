@@ -30,6 +30,7 @@ def index():
     if 'RoleID' not in session:
         session['RoleID'] = 1
     # play with variables
+
     labelval = {label[2]: label[3]
                 for label in labels if label[1] == session['LanguageID']}
     for menu in menus:
@@ -39,14 +40,11 @@ def index():
                 if submenu[0] == session['LanguageID'] and submenu[5] == session['RoleID']:
                     if submenu[1] == menu[1]:
                         menuval[menu[1]] = [menu[2], menu[3], 1]
-                        print(menuval)
                         flag = 0
                         break
             if flag == 1:
                 menuval[menu[1]] = [menu[2], menu[3], 0]
-                print(menuval)
 
-    # print(menuval)
     submenuval = {submenu[1]: [submenu[4], submenu[5]] for submenu in submenus
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
@@ -54,12 +52,18 @@ def index():
     return render_template('slash.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
+
 @app.route('/login')
 def login():
-    print(menuval)
     return render_template('signin.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
+
+@app.route('/register')
+def register():
+    print(labelval, menuval, submenuval)
+    return render_template('register.html', label=labelval, menu=menuval,
+                           submenu=submenuval)
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
