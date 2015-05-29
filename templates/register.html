@@ -17,6 +17,54 @@
       </div>
     {% endif %}
   {% endfor %}
+
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">{{ label['RegistrationEmailID'] }}</label> 
+    <div class="col-sm-6">
+      <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label['RegistrationEmailID'] }}">
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">{{ label['RegistrationCountryID'] }}</label> 
+    <div class="col-sm-6">
+      <select id = "dd1" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control" >
+        <option>..</option>
+        {% for data in country %}
+          <option value="{{ data[1] }}">{{ data[2] }}</option>
+        {% endfor %}
+        <!-- <option>dd</option> -->
+      </select>
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">{{ label['RegistrationStateID'] }}</label> 
+    <div class="col-sm-6">
+      <select id = "ddl2" >
+      </select>
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">{{ label['RegistrationDistrictID'] }}</label> 
+    <div class="col-sm-6">
+      <!-- <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label['RegistrationDistrictID'] }}"> -->
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">{{ label['RegistrationBlockID'] }}</label> 
+    <div class="col-sm-6">
+      <!-- <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label['RegistrationBlockID'] }}"> -->
+    </div>
+  <br><br>
+  </div>
+
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label['RegistrationGender'] }}</label> 
   {% for data in label %}
@@ -33,4 +81,47 @@
   <button type="submit"  class="btn btn-info">Submit</button>
 </form>
 
+<script type="text/javascript">
+     function configureDropDownLists(ddl1,ddl2) {
+      var country_tuple = '{{ country[0][1] }}'
+      // var  = '{{ clist[1]|length }}';
+      window.alert('{{ clist[1][0] }}')
+      var count = ddl1.value
+      ddl2.options.length = 0;
+      {% for data in clist[1] %}
+        createOption(ddl2,'{{data}}' , '{{data}}');
+      {% endfor %}
+    // switch (ddl1.value) {
+    //     case '1':
+    //         for (i = 0; i < colours.length; i++) {
+    //             createOption(ddl2, colours[i], colours[i]);
+    //         }
+    //         break;
+    //     case 'India':
+    //         ddl2.options.length = 0; 
+    //     for (i = 0; i < shapes.length; i++) {
+    //         createOption(ddl2, shapes[i], shapes[i]);
+    //         }
+    //         break;
+    //     case 'Names':
+    //         ddl2.options.length = 0;
+    //         for (i = 0; i < names.length; i++) {
+    //             createOption(ddl2, names[i], names[i]);
+    //         }
+    //         break;
+    //         default:
+    //             ddl2.options.length = 1;
+    //             createOption(ddl2, 'lol', 'lol');
+    //         break;
+    // }
+
+}
+
+    function createOption(ddl, text, value) {
+        var opt = document.createElement('option');
+        opt.value = value;
+        opt.text = text;
+        ddl.options.add(opt);
+    }
+</script>
 {% include 'footer.html' %}

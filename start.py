@@ -70,9 +70,17 @@ def login():
 @app.route('/register')
 def register():
     country, state, district, block = values.levels()
+    countrylist = {}
+    for single_country in country:
+      statelist = []
+      for single_state in state:
+        if single_state[1] == single_country[1]:
+          statelist.append(single_state[3])
+      countrylist[single_country[1]] = statelist
+    print(countrylist)
     return render_template('register.html', label=labelval, menu=menuval,
                            submenu=submenuval, country=country, state=state,
-                           district=district, block=block)
+                           district=district, block=block, clist = countrylist)
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
