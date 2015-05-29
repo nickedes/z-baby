@@ -53,15 +53,22 @@ def index():
                            submenu=submenuval)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('signin.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+    if request.method == 'GET':
+        return render_template('signin.html', label=labelval, menu=menuval,
+                               submenu=submenuval)
+    else:
+        logged_in = values.checkLogin(request.form['username'],request.form['password'])
+        if logged_in is None:
+            return "Incorrect Username or password"
+        else:
+            session['RoleID'] = logged_in
+            return "You have successfully Logged in :)"
 
 
 @app.route('/register')
 def register():
-    print(labelval, menuval, submenuval)
     return render_template('register.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 

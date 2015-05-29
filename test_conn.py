@@ -32,6 +32,12 @@ cursor.executemany(
     ])
 ,
 
+cursor.execute(
+    "INSERT INTO dbo.Login VALUES (%s, %s, %d, %s, %s, %s)",
+    ('kwikadi', 'nkmittal', 1, 'user', 'admin', str(datetime.datetime.now())))
+
+conn.commit()
+
 
 cursor.executemany(
     "INSERT INTO dbo.Label VALUES (%d, %d, %s, %s, %s, %s)",
@@ -43,7 +49,6 @@ cursor.executemany(
     ])
 
 
-conn.commit()
 
 
 cursor.executemany(
@@ -82,7 +87,7 @@ cursor.execute(
     )
 conn.commit()
 '''
-cursor.execute('SELECT * FROM dbo.Label ORDER BY LabelID')
+cursor.execute('SELECT * FROM dbo.Login')
 row = cursor.fetchall()
 print(row)
 conn.close()
