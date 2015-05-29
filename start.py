@@ -15,10 +15,16 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 showerrors(app)
+labelval = {}
+menuval = {}
+submenuval = {}
 
 
 @app.route('/')
 def index():
+    global labelval
+    global menuval
+    global submenuval
     if 'LanguageID' not in session:
         session['LanguageID'] = 1
     if 'RoleID' not in session:
@@ -26,7 +32,6 @@ def index():
     # play with variables
     labelval = {label[2]: label[3]
                 for label in labels if label[1] == session['LanguageID']}
-    menuval = {}
     for menu in menus:
         if menu[0] == session['LanguageID'] and menu[4] == session['RoleID']:
             flag = 1
@@ -48,6 +53,13 @@ def index():
 
     return render_template('slash.html', label=labelval, menu=menuval,
                            submenu=submenuval)
+
+@app.route('/login')
+def login():
+    print(menuval)
+    return render_template('signin.html', label=labelval, menu=menuval,
+                           submenu=submenuval)
+
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
