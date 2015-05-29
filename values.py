@@ -32,5 +32,4 @@ def getValues():
         'SELECT * FROM dbo.Subcategory ORDER BY SubCategoryID')
     subcategory = cursor.fetchall()
     conn.close()
-    print(label)
     return label, menu, submenu, category, subcategory

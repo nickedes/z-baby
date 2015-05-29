@@ -1,25 +1,33 @@
 {% include 'header.html' %}
 
 <form>
-  {% for data in register_labels %}
-    <div class="form-group">
-      <label for="" class="col-sm-2 control-label">{{data[3]}}</label>  
-      {% if data[3] != 'Gender' %}
-          <div class="col-sm-6">
-            <input type="email" class="form-control" id="{{ data[3] }}" placeholder="Enter {{ data[3] }}">
-          </div>
-        <br><br>
-      {% else %}
-        {% for value in register_sublabels %}
-          <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {{ value[3] }}
-          </label>
-        {% endfor %}
-      {% endif %}
-    </div>
+  {% for data in label %}
+    {% if 'Registration' in data %}
+        {% if label[data] != 'Gender' %}
+          <div class="form-group">
+            <label for="" class="col-sm-2 control-label">{{ label[data] }}</label>  
+                <div class="col-sm-6">
+                  <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label[data] }}">
+                </div>
+          <br><br>
+        {% endif %}
+      </div>
+    {% endif %}
   {% endfor %}
-  
-  <button type="submit" class="btn btn-default">Submit</button>
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">{{ label['RegistrationGender'] }}</label> 
+  {% for data in label %}
+      {% if 'Gender' in data %}
+        {% if label[data] != 'Gender'%}
+          <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {{ label[data] }}
+          </label>
+        {% endif %}
+      {% endif %}
+  {% endfor %}
+  </div>
+  <br><br>
+  <button type="submit"  class="btn btn-info">Submit</button>
 </form>
 
 {% include 'footer.html' %}
