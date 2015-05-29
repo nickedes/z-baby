@@ -1,0 +1,27 @@
+<!-- Update innovation -->
+{% include 'header.html' %}
+
+<form>
+  {% for data in submit_labels %}
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label">{{data[3]}}</label>  
+          <div class="col-sm-6">
+            <input type="" class="form-control" id="{{ data[3] }}" placeholder="Update {{ data[3] }}">
+          </div>
+        <br><br>
+    </div>
+  {% endfor %}
+  <!-- Update media content below -->
+  {% for value in content_labels %}
+  	<div class="form-group">
+      <label for="" class="col-sm-2 control-label">{{value[3]}}</label>  
+          <div class="col-sm-6">
+            <input type="" class="form-control" id="{{ value[3] }}" placeholder="Update {{ value[3] }}">
+          </div>
+        <br><br>
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+{% include 'footer.html' %}
