@@ -30,7 +30,6 @@ def index():
     if 'RoleID' not in session:
         session['RoleID'] = 1
     # play with variables
-
     labelval = {label[2]: label[3]
                 for label in labels if label[1] == session['LanguageID']}
     for menu in menus:
@@ -44,11 +43,9 @@ def index():
                         break
             if flag == 1:
                 menuval[menu[1]] = [menu[2], menu[3], 0]
-
-    submenuval = {submenu[1]: [submenu[4], submenu[5]] for submenu in submenus
+    submenuval = {submenu[2]: [submenu[1], submenu[3], submenu[4]] for submenu in submenus
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
-
     return render_template('slash.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
@@ -59,11 +56,13 @@ def login():
         return render_template('signin.html', label=labelval, menu=menuval,
                                submenu=submenuval)
     else:
+        username = request.form['username']
         logged_in = values.checkLogin(request.form['username'],request.form['password'])
         if logged_in is None:
             return "Incorrect Username or password"
         else:
             session['RoleID'] = logged_in
+            session['username'] = username
             return "You have successfully Logged in :)"
 
 
