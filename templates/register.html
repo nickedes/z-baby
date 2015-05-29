@@ -1,15 +1,18 @@
 {% include 'header.html' %}
-
+<h3>Enter Registration details:</h3>
+<br>
 <form>
   {% for data in label %}
     {% if 'Registration' in data %}
         {% if label[data] != 'Gender' %}
-          <div class="form-group">
-            <label for="" class="col-sm-2 control-label">{{ label[data] }}</label>  
-                <div class="col-sm-6">
-                  <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label[data] }}">
-                </div>
-          <br><br>
+          {% if 'ID' not in data %}
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">{{ label[data] }}</label>  
+                  <div class="col-sm-6">
+                    <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label[data] }}">
+                  </div>
+            <br><br>
+          {% endif %}
         {% endif %}
       </div>
     {% endif %}

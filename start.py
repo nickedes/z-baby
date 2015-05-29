@@ -57,7 +57,8 @@ def login():
                                submenu=submenuval)
     else:
         username = request.form['username']
-        logged_in = values.checkLogin(request.form['username'],request.form['password'])
+        logged_in = values.checkLogin(
+            request.form['username'], request.form['password'])
         if logged_in is None:
             return "Incorrect Username or password"
         else:
@@ -68,8 +69,10 @@ def login():
 
 @app.route('/register')
 def register():
+    country, state, district, block = values.levels()
     return render_template('register.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+                           submenu=submenuval, country=country, state=state,
+                           district=district, block=block)
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
