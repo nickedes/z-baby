@@ -73,6 +73,30 @@ def login():
             user = 1
             return redirect(url_for('home'))
             
+@app.route('/about')
+def about():
+    return render_template('about.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
+@app.route('/workflow')
+def workflow():
+    return render_template('workflow.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
+@app.route('/howtoapply')
+def howtoapply():
+    return render_template('howtoapply.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
+@app.route('/benefits')
+def benefits():
+    return render_template('benefits.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
+@app.route('/examples')
+def examples():
+    return render_template('examples.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
 @app.route('/home')
 def home():
     if 'username' not in session:
@@ -97,14 +121,20 @@ def register():
 
 @app.route('/update')
 def update():
+    if 'username' not in session:
+        return redirect(url_for('index'))
     return render_template('update.html', label=labelval, menu=menuval, submenu=submenuval)
 
 @app.route('/submit')
 def submit():
+    if 'username' not in session:
+        return redirect(url_for('index'))
     return render_template('submit.html',label=labelval, menu=menuval, submenu=submenuval)
 
 @app.route('/review')
 def review():
+    if 'username' not in session:
+        return redirect(url_for('index'))
     return render_template('review.html', label=labelval, menu=menuval, submenu=submenuval)
 
 
