@@ -87,7 +87,62 @@ cursor.execute(
     )
 conn.commit()
 '''
-cursor.execute('SELECT * FROM dbo.Login')
+
+'''
+cursor.executemany(
+    "INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)",
+    [(1, 1, 'India', 'admin', str(datetime.datetime.now()))]
+)
+
+cursor.executemany(
+    "INSERT INTO dbo.State VALUES (%d, %d, %d, %s, %s, %s)",
+    [
+        (1, 1, 1, 'Uttar Pradesh', 'admin', str(datetime.datetime.now())),
+        (1, 1, 2, 'Delhi', 'admin', str(datetime.datetime.now()))
+    ]
+)
+conn.commit()
+
+cursor.executemany(
+    "INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)",
+    [
+        (1, 1, 1, 1, 'Gz', 'admin', str(datetime.datetime.now())),
+        (1, 1, 1, 2, 'Lk', 'admin', str(datetime.datetime.now()))
+    ]
+)
+conn.commit()
+
+cursor.executemany(
+    "INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)",
+    [
+        (1, 1, 1, 1, 1, 'A', 'admin', str(datetime.datetime.now())),
+        (1, 1, 1, 1, 2, 'B', 'admin', str(datetime.datetime.now())),
+        (1, 1, 1, 1, 3, 'C', 'admin', str(datetime.datetime.now())),
+        (1, 1, 1, 2, 4, 'A', 'admin', str(datetime.datetime.now())),
+        (1, 1, 1, 2, 5, 'A', 'admin', str(datetime.datetime.now())),
+        (1, 1, 1, 2, 6, 'B', 'admin', str(datetime.datetime.now()))
+    ]
+)
+conn.commit()
+
+'''
+cursor.execute('SELECT * FROM dbo.Country')
 row = cursor.fetchall()
 print(row)
+
+
+cursor.execute('SELECT * FROM dbo.State')
+row = cursor.fetchall()
+print(row)
+
+
+cursor.execute('SELECT * FROM dbo.District')
+row = cursor.fetchall()
+print(row)
+
+
+cursor.execute('SELECT * FROM dbo.Block')
+row = cursor.fetchall()
+print(row)
+
 conn.close()
