@@ -9,3 +9,13 @@
        -moz-border-radius: 8px;
             border-radius: 8px;
     }
+
+
+.container {
+    position:relative;  
+}
+.navbar-collapse {
+    position:absolute;
+    right:0px;
+    top:0px;    
+}
