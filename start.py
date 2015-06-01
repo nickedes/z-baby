@@ -187,32 +187,41 @@ def update():
                            userval=checkloggedin(session['userid']))
 
 
-@app.route('/submit')
+@app.route('/submit', methods=['GET','POST'])
 def submit():
     if 'username' not in session:
         return redirect(url_for('index'))
-    return render_template('submit.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
+    if request.method == 'GET':
+        labellist = []
+        for label in labels:
+            if label[2].find('Idea') == 0:
+                print (label)
+                if label[2].find('Longtextbox') >= 0:
+                    labellist.append([label[3], label[2], 'Longtextbox'])
+                elif label[2].find('Dropdown') >= 0:
+                    labellist.append([label[3], label[2], 'Dropdown'])
+                elif label[2].find('FileSelector') >= 0:
+                    labellist.append([label[3], label[2], 'FileSelector'])
+                else:
+                    labellist.append([label[3], label[2], 'Textbox'])
+        return render_template('submit.html', label=labelval, menu=menuval,
+                               submenu=submenuval,
+                               userval=checkloggedin(session['userid']), labellist=labellist)
+    if request.method == 'POST' and 'username' in session:
+        # take in infinite data
+        # put into DB
+        #redirect user with success message
+        pass
+    return redirect(url_for('index'))
+
 
 
 @app.route('/review')
 def review():
     if 'username' not in session:
         return redirect(url_for('index'))
-    labeldict = {}
-    for label in labels:
-        if label[2].find('Idea') == 0:
-            if label[2].find('Longtextbox') >= 0:
-                labeldict[label[3]] = 'Longtextbox'
-            elif label[2].find('Dropdown') >= 0:
-                labeldict[label[3]] = 'Dropdown'
-            elif label[2].find('FileSelector') >= 0:
-                labeldict[label[3]] = 'FileSelector'
-            else:
-                labeldict[label[3]] = 'Textbox'
     return render_template('review.html', label=labelval, menu=menuval,
-                           submenu=submenuval, labeldict=labeldict)
+                           submenu=submenuval)
 
 
 def checkloggedin(userid):

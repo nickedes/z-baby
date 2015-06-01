@@ -7,35 +7,47 @@
 	</div>
 </div>
 
-<form>
-{% for data in labeldict %}
-	<p> {{ data }} </p>
-        {% if labeldict[data] == 'Textbox' %}
-            <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ data }}</label>  
-                  <div class="col-sm-6">
-                    <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label[data] }}">
-                  </div>
-              <br><br>
-            </div>
-        {% elif  labeldict[data] == 'Longtextbox' %}
-        <div class="form-group">
-        	<label for="desc">{{ data }}</label>
-        	<textarea class="form-control" rows="3" name="{{ labeldict[data] }}" required></textarea>
-      	</div>
-        {% elif  labeldict[data] == 'Dropdown' %}
-	        <select id="e1" name="{{ labeldict[data] }}">
-	        </select>
-        {% elif  labeldict[data] == 'RadioButton' %}
-        {% elif  labeldict[data] == 'FileSelector' %}
-        {% endif %}
-  {% endfor %}
+<div class="col-lg-10">
+<form class="form-horizontal" action='/submit' method="POST">
+  {% for data in labellist %}
+  	{% if data[2] == 'Textbox' %}
+		  <div class="form-group">
+		    <label name="{{data[1]}}" class="col-sm-4 control-label">{{data[0]}}</label>
+		    <div class="col-sm-8">
+		      <input type="text" class="form-control" id="inputEmail3" placeholder="{{data[1]}}">
+		    </div>
+		  </div>
+		{% elif data[2] == 'Longtextbox' %}
+		 <div class="form-group">
+		    <label name="{{data[1]}}" class="col-sm-4 control-label">{{data[0]}}</label>
+		    <div class="col-sm-8">
+		      <textarea class="form-control" rows="3"></textarea>
+		    </div>
+		  </div>
+		{% elif data[2] == 'Dropdown' %}
+		<div class="form-group">
+		    <label name="{{data[1]}}" class="col-sm-4 control-label">{{data[0]}}</label>
+		    <div class="col-sm-8">
+		      <select class="form-control">
+					  <option>1</option>
+					  <option>2</option>
+					  <option>3</option>
+					  <option>4</option>
+					  <option>5</option>
+					</select>
+		    </div>
+		  </div>
+	{% else %}
+	{% endif %}
+	{% endfor %}
+
+
+  <div class="form-group">
+    <div class="col-sm-offset-6 col-sm-6">
+      <button type="submit" class="btn-success btn-default btn-xlarge">SUBMIT</button>
+    </div>
+  </div>
+  </div>
 </form>
 
-<div class="container button">
-      <div class="row" align="center">
-        <div class="col-lg-12">
-          <p><a class="btn btn-primary btn-xlarge" href="/update" role="button">Submit Idea &raquo;</a></p>
-        </div>    
-</div>
 {% include 'footer.html' %}
