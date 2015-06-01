@@ -55,11 +55,16 @@ def checkLogin(username, password):
     conn.close()
 
 
-def checkInnovation(username):
+def checkInnovation(userid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        '')
+        'SELECT IdeaID from Idea WHERE LoginID = %d' % userid)
+    ideaid = cursor.fetchall()
+    print (ideaid)
+    if not ideaid:
+        return False
+    return True 
     conn.close()
 
 

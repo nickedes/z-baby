@@ -9,15 +9,18 @@
 
 <div class="container button">
       <div class="row" align="center">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <p><a class="btn btn-primary btn-xlarge" href="/update" role="button">Update Information &raquo;</a></p>
         </div>
-        <div class="col-lg-4">
+        {% if inno %}
+        <div class="col-lg-6">
           <p><a class="btn btn-primary btn-xlarge" href="/submit" role="button">Submit Innovation &raquo;</a></p>
         </div>
-        <div class="col-lg-4">
-          <p><a class="btn btn-primary btn-xlarge" href="/review" role="button">Review Your Innovation &raquo;</a></p>
-        </div>        
+        {% else %}
+        <div class="col-lg-6">
+          <p><a class="btn btn-primary btn-xlarge" href="/review" role="button">Review Innovation &raquo;</a></p>
+        </div> 
+        {% endif %}       
 </div>
 
 

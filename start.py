@@ -123,9 +123,9 @@ def home():
     if 'username' not in session:
         return redirect(url_for('index'))
     else:
-        inno = values.checkInnovation(session['username'])
+        inno = values.checkInnovation(session['userid'])
         return render_template('home.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=user)
+                               submenu=submenuval, userval=user, inno=inno)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
