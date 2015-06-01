@@ -107,8 +107,33 @@
 
       function district(ddl1,ddl2) {
         var value = ddl1.value;
-        var districts = '{{ district }}'
-        window.alert(districts);
+        var districts = '{{ slist }}'
+        y = districts.split(":")
+        ddl2.options.length = 1;
+        if(y[0][1] == value)
+        {
+          l = y[1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+        }
+        for(j=1;j<y.length-1;j++)
+        {
+          if (y[i][y[i].length - 1] == value )
+          {
+            l = y[i+1].split(",")
+            for (i=0;i<l.length-1;i+=2)
+            {
+              dist = l[i].split("&")[1].split(";")[1];
+              dist_val = l[i+1][1]
+              createOption(ddl2,dist,dist_val);
+            }
+            break;
+          }
+        }
       }
 
     function createOption(ddl, text, value) {
