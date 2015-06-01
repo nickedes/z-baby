@@ -170,8 +170,19 @@ def submit():
 def review():
     if 'username' not in session:
         return redirect(url_for('index'))
+    labeldict = {}
+    for label in labels:
+        if label[2].find('Idea') == 0:
+            if label[2].find('Longtextbox') >= 0:
+                labeldict[label[3]] = 'Longtextbox'
+            elif label[2].find('Dropdown') >= 0:
+                labeldict[label[3]] = 'Dropdown'
+            elif label[2].find('FileSelector') >= 0:
+                labeldict[label[3]] = 'FileSelector'
+            else:
+                labeldict[label[3]] = 'Textbox'
     return render_template('review.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+                           submenu=submenuval, labeldict=labeldict)
 
 def checkloggedin(userid):
     if userid != 0:

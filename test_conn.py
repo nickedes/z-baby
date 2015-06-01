@@ -2,6 +2,7 @@ import os
 import datetime
 import pymssql
 from configparser import ConfigParser
+from datetime import datetime
 
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -125,7 +126,7 @@ cursor.executemany(
 )
 conn.commit()
 
-'''
+
 cursor.execute('SELECT * FROM dbo.Country')
 row = cursor.fetchall()
 print(row)
@@ -142,6 +143,32 @@ print(row)
 
 
 cursor.execute('SELECT * FROM dbo.Block')
+row = cursor.fetchall()
+print(row)
+
+Idea (IdeaID, LoginID, IdeaTitle, StageID, BenefitID, CategoryID, 
+    SubCategoryID, Description, ResourcesRequired, Support, ImplementTime, Reach, CreatedBy, CreateDate)
+
+
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %s, %s, %s, %s)",
+    [
+        (28, 1, 'IdeaTitle', '1. Title of your Idea:', 'admin', str(datetime.now())),
+        (29, 1, 'IdeaStage', '2. What is the stage of your Zero-Investment Idea at the time of submitting this form? Select one option', ' admin', str(datetime.now())),
+        (30, 1, 'IdeaBenefit', '3. What will be the top most benefit of implementing your idea? Select one option.', 'admin', str(datetime.now())),
+        (31, 1, 'IdeaCategoryDropdown', '4. Your idea will be implemented in/for which of these areas? Please select one domain, and one or more corresponding sub-domains.', 'admin', str(datetime.now())),
+        (32, 1, 'IdeaDescriptionLongtextbox', '5. Please describe your Zero-Investment Innovation Idea (in not more than 500 words).', 'admin', str(datetime.now())),
+        (33, 1, 'IdeaMediaFileSelector', '6. If required, upload photographs showing how your idea can be implemented.', ' admin', str(datetime.now())),
+        (34, 1, 'IdeaResourcesLongtextbox', '7. What resources are required to implement your idea?', 'admin', str(datetime.now())),
+        (35, 1, 'IdeaSupportLongtextbox', '8. What support is required from the school administration to implement your idea?', 'admin', str(datetime.now())),
+        (36, 1, 'IdeaImplementTime', '9. Approximately how many weeks will it take your school to implement your idea?', 'admin', str(datetime.now())),
+        (37, 1, 'IdeaReach', '10. What will be the reach of the benefits of your idea?', ' admin', str(datetime.now())),
+        (38, 1, 'IdeaExampleLongtextbox', '11. Can you provide some examples of the benefits of implementing your idea?', 'admin', str(datetime.now()))
+    ])
+
+conn.commit()
+'''
+cursor.execute('SELECT * FROM dbo.Label')
 row = cursor.fetchall()
 print(row)
 
