@@ -72,6 +72,11 @@ def login():
             global user
             user = 1
             return redirect(url_for('home'))
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+
             
 @app.route('/about')
 def about():
