@@ -43,7 +43,8 @@
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label['RegistrationStateID'] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl2" onchange="configureDropDownLists(this,document.getElementById('ddl3'))" class="form-control">
+      <select id = "ddl2" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
+      <option>..</option>
       </select>
     </div>
   <br><br>
@@ -94,16 +95,21 @@
       // {% endfor %}
       var states = ddl1.value ;
       // window.alert(states)
-      ddl2.options.length = 0;
+      ddl2.options.length = 1;
       states = states.split(",")
       for(i = 0; i < states.length; i+=2)
       {
         state = states[i].split("'")[1]
-        stat_val = states[i+1].split("'")
+        stat_val = states[i+1].split("'")[0][1]
         createOption(ddl2,state,stat_val);
-        window.alert(stat_val);
       }
 }
+
+      function district(ddl1,ddl2) {
+        var value = ddl1.value;
+        var districts = '{{ district }}'
+        window.alert(districts);
+      }
 
     function createOption(ddl, text, value) {
         var opt = document.createElement('option');

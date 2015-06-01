@@ -52,7 +52,8 @@ def index():
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
     return render_template('slash.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -79,42 +80,50 @@ def login():
 @app.route('/about')
 def about():
     return render_template('about.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/workflow')
 def workflow():
     return render_template('workflow.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/howtoapply')
 def howtoapply():
     return render_template('howtoapply.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/benefits')
 def benefits():
     return render_template('benefits.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/examples')
 def examples():
     return render_template('examples.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/terms')
 def terms():
     return render_template('terms.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
+
 
 @app.route('/faq')
 def faq():
     return render_template('faq.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/home')
@@ -124,7 +133,9 @@ def home():
     else:
         inno = values.checkInnovation(session['userid'])
         return render_template('home.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(session['userid']), inno=inno)
+                               submenu=submenuval,
+                               userval=checkloggedin(session['userid']),
+                               inno=inno)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -145,9 +156,26 @@ def register():
                 statelist.append([single_state[3], single_state[2]])
         countrylist[single_country[1]] = statelist
     print(countrylist)
+    statelist = {}
+    for single_state in state:
+        districtlist = []
+        for single_district in district:
+            if single_district[2] == single_state[2]:
+                districtlist.append([single_district[4], single_district[3]])
+        statelist[single_state[2]] = districtlist
+    print(statelist)
+    districtdict = {}
+    for single_district in district:
+        blocklist = []
+        for single_block in block:
+            if single_block[3] == single_district[3]:
+                blocklist.append([single_block[5], single_block[4]])
+        districtdict[single_district[3]] = blocklist
+    print(districtdict)
     return render_template('register.html', label=labelval, menu=menuval,
                            submenu=submenuval, country=country, state=state,
-                           district=district, block=block, clist=countrylist)
+                           district=district, block=block, clist=countrylist,
+                           slist=statelist, dlist=districtdict)
 
 
 @app.route('/update')
@@ -155,7 +183,8 @@ def update():
     if 'username' not in session:
         return redirect(url_for('index'))
     return render_template('update.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/submit')
@@ -163,7 +192,8 @@ def submit():
     if 'username' not in session:
         return redirect(url_for('index'))
     return render_template('submit.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']))
+                           submenu=submenuval,
+                           userval=checkloggedin(session['userid']))
 
 
 @app.route('/review')
@@ -184,10 +214,11 @@ def review():
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval, labeldict=labeldict)
 
+
 def checkloggedin(userid):
     if userid != 0:
         return True
-    return False    
+    return False
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
