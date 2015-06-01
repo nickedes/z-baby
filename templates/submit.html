@@ -7,6 +7,31 @@
 	</div>
 </div>
 
+<form>
+{% for data in labeldict %}
+	<p> {{ data }} </p>
+        {% if labeldict[data] == 'Textbox' %}
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">{{ data }}</label>  
+                  <div class="col-sm-6">
+                    <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label[data] }}">
+                  </div>
+              <br><br>
+            </div>
+        {% elif  labeldict[data] == 'Longtextbox' %}
+        <div class="form-group">
+        	<label for="desc">{{ data }}</label>
+        	<textarea class="form-control" rows="3" name="{{ labeldict[data] }}" required></textarea>
+      	</div>
+        {% elif  labeldict[data] == 'Dropdown' %}
+	        <select id="e1" name="{{ labeldict[data] }}">
+	        </select>
+        {% elif  labeldict[data] == 'RadioButton' %}
+        {% elif  labeldict[data] == 'FileSelector' %}
+        {% endif %}
+  {% endfor %}
+</form>
+
 <div class="container button">
       <div class="row" align="center">
         <div class="col-lg-12">
