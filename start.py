@@ -46,7 +46,8 @@ def index():
                         break
             if flag == 1:
                 menuval[menu[1]] = [menu[2], menu[3], 0]
-    submenuval = {submenu[2]: [submenu[1], submenu[3], submenu[4]] for submenu in submenus
+    submenuval = {submenu[2]: [submenu[1], submenu[3], submenu[4]]
+                  for submenu in submenus
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
     return render_template('slash.html', label=labelval, menu=menuval,
@@ -73,41 +74,51 @@ def login():
             user = 1
             return redirect(url_for('home'))
 
-@app.route('/faq')
-def faq():
-    return render_template('faq.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
 
-            
 @app.route('/about')
 def about():
-    return render_template('about.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+    return render_template('about.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/workflow')
 def workflow():
-    return render_template('workflow.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+    return render_template('workflow.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/howtoapply')
 def howtoapply():
-    return render_template('howtoapply.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+    return render_template('howtoapply.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/benefits')
 def benefits():
-    return render_template('benefits.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+    return render_template('benefits.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/examples')
 def examples():
-    return render_template('examples.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+    return render_template('examples.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/terms')
 def terms():
-    return render_template('terms.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+    return render_template('terms.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/home')
 def home():
     if 'username' not in session:
         return redirect(url_for('index'))
     else:
-        return render_template('home.html', label=labelval, menu=menuval, submenu=submenuval, userval=user)
+        return render_template('home.html', label=labelval, menu=menuval,
+                               submenu=submenuval, userval=user)
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -120,27 +131,41 @@ def logout():
 @app.route('/register')
 def register():
     country, state, district, block = values.levels()
+    countrylist = {}
+    for single_country in country:
+        statelist = []
+        for single_state in state:
+            if single_state[1] == single_country[1]:
+                statelist.append([single_state[3], single_state[2]])
+        countrylist[single_country[1]] = statelist
+    print(countrylist)
     return render_template('register.html', label=labelval, menu=menuval,
                            submenu=submenuval, country=country, state=state,
-                           district=district, block=block)
+                           district=district, block=block, clist=countrylist)
+
 
 @app.route('/update')
 def update():
     if 'username' not in session:
         return redirect(url_for('index'))
-    return render_template('update.html', label=labelval, menu=menuval, submenu=submenuval)
+    return render_template('update.html', label=labelval, menu=menuval,
+                           submenu=submenuval)
+
 
 @app.route('/submit')
 def submit():
     if 'username' not in session:
         return redirect(url_for('index'))
-    return render_template('submit.html',label=labelval, menu=menuval, submenu=submenuval)
+    return render_template('submit.html', label=labelval, menu=menuval,
+                           submenu=submenuval)
+
 
 @app.route('/review')
 def review():
     if 'username' not in session:
         return redirect(url_for('index'))
-    return render_template('review.html', label=labelval, menu=menuval, submenu=submenuval)
+    return render_template('review.html', label=labelval, menu=menuval,
+                           submenu=submenuval)
 
 
 if __name__ == '__main__':
