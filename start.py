@@ -19,10 +19,12 @@ labelval = {}
 menuval = {}
 submenuval = {}
 
+
 def checkloggedin(userid):
     if userid != 0:
         return True
     return False
+
 
 @app.route('/')
 def index():
@@ -73,9 +75,10 @@ def login():
             request.form['username'], request.form['password'])
         print(logged_in_val)
         if logged_in_val is None:
-            return render_template('messages.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']),
-                            message="Incorrect credentials, please try again!")
+            return render_template('messages.html', label=labelval,
+                                   menu=menuval, submenu=submenuval,
+                                   userval=checkloggedin(session['userid']),
+                                   message="Incorrect credentials, please try again!")
 
         else:
             session['RoleID'] = logged_in_val[0][0]
@@ -137,8 +140,9 @@ def faq():
 def home():
     if 'username' not in session:
         return render_template('messages.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']),
-                            message="You are not logged in!")
+                               submenu=submenuval, userval=checkloggedin(
+                                   session['userid']),
+                               message="You are not logged in!")
 
     else:
         inno = values.checkInnovation(session['userid'])
@@ -157,35 +161,38 @@ def logout():
 
 @app.route('/register')
 def register():
-    country, state, district, block = values.levels()
-    countrylist = {}
-    for single_country in country:
-        statelist = []
+    if 'username' in session:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        country, state, district, block = values.levels()
+        countrylist = {}
+        for single_country in country:
+            statelist = []
+            for single_state in state:
+                if single_state[1] == single_country[1]:
+                    statelist.append([single_state[3], single_state[2]])
+            countrylist[single_country[1]] = statelist
+        statelist = {}
         for single_state in state:
-            if single_state[1] == single_country[1]:
-                statelist.append([single_state[3], single_state[2]])
-        countrylist[single_country[1]] = statelist
-    print(countrylist)
-    statelist = {}
-    for single_state in state:
-        districtlist = []
+            districtlist = []
+            for single_district in district:
+                if single_district[2] == single_state[2]:
+                    districtlist.append(
+                        [single_district[4], single_district[3]])
+            statelist[single_state[2]] = districtlist
+        districtdict = {}
         for single_district in district:
-            if single_district[2] == single_state[2]:
-                districtlist.append([single_district[4], single_district[3]])
-        statelist[single_state[2]] = districtlist
-    print(statelist)
-    districtdict = {}
-    for single_district in district:
-        blocklist = []
-        for single_block in block:
-            if single_block[3] == single_district[3]:
-                blocklist.append([single_block[5], single_block[4]])
-        districtdict[single_district[3]] = blocklist
-    print(districtdict)
-    return render_template('register.html', label=labelval, menu=menuval,
-                           submenu=submenuval, country=country, state=state,
-                           district=district, block=block, clist=countrylist,
-                           slist=statelist, dlist=districtdict)
+            blocklist = []
+            for single_block in block:
+                if single_block[3] == single_district[3]:
+                    blocklist.append([single_block[5], single_block[4]])
+            districtdict[single_district[3]] = blocklist
+        return render_template('register.html', label=labelval, menu=menuval,
+                               submenu=submenuval, country=country, state=state,
+                               district=district, block=block, clist=countrylist,
+                               slist=statelist, dlist=districtdict)
+    else:
+        pass
 
 
 @app.route('/update')
@@ -197,18 +204,19 @@ def update():
                            userval=checkloggedin(session['userid']))
 
 
-@app.route('/submit', methods=['GET','POST'])
+@app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
         return render_template('messages.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']),
-                            message="You are not logged in!")
+                               submenu=submenuval, userval=checkloggedin(
+                                   session['userid']),
+                               message="You are not logged in!")
 
     if request.method == 'GET':
         labellist = []
         for label in labels:
             if label[2].find('Idea') == 0:
-                print (label)
+                print(label)
                 if label[2].find('Longtextbox') >= 0:
                     labellist.append([label[3], label[2], 'Longtextbox'])
                 elif label[2].find('Dropdown') >= 0:
@@ -219,25 +227,27 @@ def submit():
                     labellist.append([label[3], label[2], 'Textbox'])
         return render_template('submit.html', label=labelval, menu=menuval,
                                submenu=submenuval,
-                               userval=checkloggedin(session['userid']), labellist=labellist)
+                               userval=checkloggedin(session['userid']),
+                               labellist=labellist)
     if request.method == 'POST' and 'username' in session:
         # take in infinite data
         # put into DB
-        #redirect user with success message
+        # redirect user with success message
         return render_template('messages.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']),
-                            message="lolpol ho hi gaya")
+                               submenu=submenuval, userval=checkloggedin(
+                                   session['userid']),
+                               message="lolpol ho hi gaya")
 
     return redirect(url_for('index'))
-
 
 
 @app.route('/review')
 def review():
     if 'username' not in session:
         return render_template('messages.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=checkloggedin(session['userid']),
-                            message="You are not logged in!")
+                               submenu=submenuval, userval=checkloggedin(
+                                   session['userid']),
+                               message="You are not logged in!")
 
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)

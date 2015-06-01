@@ -16,6 +16,7 @@ def getConnection():
 
     return conn
 
+
 def getValues():
     conn = getConnection()
     cursor = conn.cursor()
@@ -41,7 +42,7 @@ def getValues():
 def checkLogin(username, password):
     username = "'" + username + "'"
     passwordreal = "'" + password + "'"
-    
+
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
@@ -61,10 +62,10 @@ def checkInnovation(userid):
     cursor.execute(
         'SELECT IdeaID from Idea WHERE LoginID = %d' % userid)
     ideaid = cursor.fetchall()
-    print (ideaid)
+    print(ideaid)
     if not ideaid:
         return False
-    return True 
+    return True
     conn.close()
 
 
@@ -85,3 +86,11 @@ def levels():
     block = cursor.fetchall()
     conn.close()
     return country, state, district, block
+
+
+def addUser():
+    pass
+
+
+def addIdea(UserId):
+    pass
