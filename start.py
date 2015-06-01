@@ -19,6 +19,10 @@ labelval = {}
 menuval = {}
 submenuval = {}
 
+def checkloggedin(userid):
+    if userid != 0:
+        return True
+    return False
 
 @app.route('/')
 def index():
@@ -69,7 +73,10 @@ def login():
             request.form['username'], request.form['password'])
         print(logged_in_val)
         if logged_in_val is None:
-            return redirect(url_for('index'))
+            return render_template('messages.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=checkloggedin(session['userid']),
+                            message="Incorrect credentials, please try again!")
+
         else:
             session['RoleID'] = logged_in_val[0][0]
             session['username'] = username
@@ -129,7 +136,10 @@ def faq():
 @app.route('/home')
 def home():
     if 'username' not in session:
-        return redirect(url_for('index'))
+        return render_template('messages.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=checkloggedin(session['userid']),
+                            message="You are not logged in!")
+
     else:
         inno = values.checkInnovation(session['userid'])
         return render_template('home.html', label=labelval, menu=menuval,
@@ -190,7 +200,10 @@ def update():
 @app.route('/submit', methods=['GET','POST'])
 def submit():
     if 'username' not in session:
-        return redirect(url_for('index'))
+        return render_template('messages.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=checkloggedin(session['userid']),
+                            message="You are not logged in!")
+
     if request.method == 'GET':
         labellist = []
         for label in labels:
@@ -211,7 +224,10 @@ def submit():
         # take in infinite data
         # put into DB
         #redirect user with success message
-        pass
+        return render_template('messages.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=checkloggedin(session['userid']),
+                            message="lolpol ho hi gaya")
+
     return redirect(url_for('index'))
 
 
@@ -219,15 +235,13 @@ def submit():
 @app.route('/review')
 def review():
     if 'username' not in session:
-        return redirect(url_for('index'))
+        return render_template('messages.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=checkloggedin(session['userid']),
+                            message="You are not logged in!")
+
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
-
-def checkloggedin(userid):
-    if userid != 0:
-        return True
-    return False
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
