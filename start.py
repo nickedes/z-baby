@@ -63,13 +63,15 @@ def login():
                                submenu=submenuval)
     else:
         username = request.form['username']
-        logged_in = values.checkLogin(
+        logged_in_val = values.checkLogin(
             request.form['username'], request.form['password'])
-        if logged_in is None:
+        print(logged_in_val)
+        if logged_in_val is None:
             return redirect(url_for('index'))
         else:
-            session['RoleID'] = logged_in
+            session['RoleID'] = logged_in_val[0][0]
             session['username'] = username
+            session['userid'] = logged_in_val[0][1]
             global user
             user = 1
             return redirect(url_for('home'))
@@ -110,12 +112,18 @@ def terms():
     return render_template('terms.html', label=labelval, menu=menuval,
                            submenu=submenuval, userval=user)
 
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', label=labelval, menu=menuval,
+                           submenu=submenuval, userval=user)
+
 
 @app.route('/home')
 def home():
     if 'username' not in session:
         return redirect(url_for('index'))
     else:
+        inno = values.checkInnovation(session['username'])
         return render_template('home.html', label=labelval, menu=menuval,
                                submenu=submenuval, userval=user)
 
@@ -123,6 +131,7 @@ def home():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('username', None)
+    session.pop('userid', None)
     global user
     user = 0
     return redirect(url_for('index'))
