@@ -1,7 +1,8 @@
 {% include 'header.html' %}
 <h3>Enter Registration details:</h3>
 <br>
-<form>
+<div class="col-lg-8" style="margin-left:100px">
+<form action="/register" method="POST">
   {% for data in label %}
     {% if 'Registration' in data %}
         {% if label[data] != 'Gender' %}
@@ -53,8 +54,9 @@
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label['RegistrationDistrictID'] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl3">        
-      </select>        
+      <select id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
+      <option>..</option>
+      </select>       
     </div>
   <br><br>
   </div>
@@ -62,7 +64,9 @@
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label['RegistrationBlockID'] }}</label> 
     <div class="col-sm-6">
-      <!-- <input type="email" class="form-control" id="{{ label[data] }}" placeholder="Enter {{ label['RegistrationBlockID'] }}"> -->
+      <select id = "ddl4" class="form-control">
+      <option>..</option>
+      </select>
     </div>
   <br><br>
   </div>
@@ -82,65 +86,105 @@
   <br><br>
   <button type="submit"  class="btn btn-info">Submit</button>
 </form>
-
+</div>
 <script type="text/javascript">
-     function configureDropDownLists(ddl1,ddl2) {
-      // var country_tuple = '{{ country[0][1] }}'
-      // // var  = '{{ clist[1]|length }}';
-      // window.alert('{{ clist[1][0] }}')
-      // var count = ddl1.value
-      // ddl2.options.length = 0;
-      // {% for data in clist[1] %}
-      //   createOption(ddl2,'{{data}}' , '{{data}}');
-      // {% endfor %}
-      var states = ddl1.value ;
-      // window.alert(states)
-      ddl2.options.length = 1;
-      states = states.split(",")
-      for(i = 0; i < states.length; i+=2)
-      {
-        state = states[i].split("'")[1]
-        stat_val = states[i+1].split("'")[0][1]
-        createOption(ddl2,state,stat_val);
-      }
-}
+  function configureDropDownLists(ddl1,ddl2) {
+  // var country_tuple = '{{ country[0][1] }}'
+  // // var  = '{{ clist[1]|length }}';
+  // window.alert('{{ clist[1][0] }}')
+  // var count = ddl1.value
+  // ddl2.options.length = 0;
+  // {% for data in clist[1] %}
+  //   createOption(ddl2,'{{data}}' , '{{data}}');
+  // {% endfor %}
+  var states = ddl1.value ;
+  // window.alert(states)
+  ddl2.options.length = 1;
+  states = states.split(",")
+  for(i = 0; i < states.length; i+=2)
+  {
+    state = states[i].split("'")[1]
+    stat_val = states[i+1].split("'")[0][1]
+    createOption(ddl2,state,stat_val);
+  }
+  }
 
-      function district(ddl1,ddl2) {
-        var value = ddl1.value;
-        var districts = '{{ slist }}'
-        y = districts.split(":")
-        ddl2.options.length = 1;
-        if(y[0][1] == value)
+  function district(ddl1,ddl2) {
+    var value = ddl1.value;
+    var districts = '{{ slist }}'
+    // todo: variables shit! :P
+    y = districts.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
         {
-          l = y[1].split(",")
+          l = y[j+1].split(",")
           for (i=0;i<l.length-1;i+=2)
           {
             dist = l[i].split("&")[1].split(";")[1];
             dist_val = l[i+1][1]
             createOption(ddl2,dist,dist_val);
           }
-        }
-        for(j=1;j<y.length-1;j++)
-        {
-          if (y[i][y[i].length - 1] == value )
-          {
-            l = y[i+1].split(",")
-            for (i=0;i<l.length-1;i+=2)
-            {
-              dist = l[i].split("&")[1].split(";")[1];
-              dist_val = l[i+1][1]
-              createOption(ddl2,dist,dist_val);
-            }
-            break;
-          }
+          break;
         }
       }
-
-    function createOption(ddl, text, value) {
-        var opt = document.createElement('option');
-        opt.value = value;
-        opt.text = text;
-        ddl.options.add(opt);
     }
+  }
+
+  function stat(ddl1,ddl2) {
+    var value = ddl1.value;
+    var districts = '{{ dlist }}'
+    window.alert(districts);
+    // todo: variables shit! :P
+    y = districts.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
+        {
+          l = y[j+1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  function createOption(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.options.add(opt);
+  }
 </script>
 {% include 'footer.html' %}
