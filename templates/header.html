@@ -51,7 +51,7 @@
               {% endif %}
             {% endfor %}
           </ul>
-          {% if userval == 1 %}
+          {% if userval %}
           <li>
           <form class="navbar-form navbar-right" method="post" action="{{url_for('logout')}}">
         <button id="logout" type="submit" class="btn btn-danger">Logout</button>

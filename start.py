@@ -18,7 +18,6 @@ showerrors(app)
 labelval = {}
 menuval = {}
 submenuval = {}
-user = 0
 
 
 @app.route('/')
@@ -32,6 +31,8 @@ def index():
         session['LanguageID'] = 1
     if 'RoleID' not in session:
         session['RoleID'] = 1
+    if 'userid' not in session:
+        session['userid'] = 0
     # play with variables
     labelval = {label[2]: label[3]
                 for label in labels if label[1] == session['LanguageID']}
@@ -51,7 +52,7 @@ def index():
                   if submenu[0] == session['LanguageID']
                   and submenu[5] == session['RoleID']}
     return render_template('slash.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -72,50 +73,48 @@ def login():
             session['RoleID'] = logged_in_val[0][0]
             session['username'] = username
             session['userid'] = logged_in_val[0][1]
-            global user
-            user = 1
             return redirect(url_for('home'))
 
 
 @app.route('/about')
 def about():
     return render_template('about.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/workflow')
 def workflow():
     return render_template('workflow.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/howtoapply')
 def howtoapply():
     return render_template('howtoapply.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/benefits')
 def benefits():
     return render_template('benefits.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/examples')
 def examples():
     return render_template('examples.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/terms')
 def terms():
     return render_template('terms.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 @app.route('/faq')
 def faq():
     return render_template('faq.html', label=labelval, menu=menuval,
-                           submenu=submenuval, userval=user)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/home')
@@ -125,15 +124,13 @@ def home():
     else:
         inno = values.checkInnovation(session['userid'])
         return render_template('home.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=user, inno=inno)
+                               submenu=submenuval, userval=checkloggedin(session['userid']), inno=inno)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('username', None)
     session.pop('userid', None)
-    global user
-    user = 0
     return redirect(url_for('index'))
 
 
@@ -158,7 +155,7 @@ def update():
     if 'username' not in session:
         return redirect(url_for('index'))
     return render_template('update.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/submit')
@@ -166,7 +163,7 @@ def submit():
     if 'username' not in session:
         return redirect(url_for('index'))
     return render_template('submit.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+                           submenu=submenuval, userval=checkloggedin(session['userid']))
 
 
 @app.route('/review')
@@ -176,6 +173,10 @@ def review():
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
+def checkloggedin(userid):
+    if userid != 0:
+        return True
+    return False    
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
