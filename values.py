@@ -3,7 +3,7 @@ import pymssql
 from configparser import ConfigParser
 
 
-def getValues():
+def getConnection():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
     config = ConfigParser()
@@ -12,9 +12,12 @@ def getValues():
     server = config["Database"]["server"]
     user = config["Database"]["user"]
     password = config["Database"]["password"]
-
     conn = pymssql.connect(server, user, password, "ziiei")
 
+    return conn
+
+def getValues():
+    conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
         'SELECT * FROM dbo.Label ORDER BY LabelID')
@@ -38,39 +41,30 @@ def getValues():
 def checkLogin(username, password):
     username = "'" + username + "'"
     passwordreal = "'" + password + "'"
-    CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
-
-    config = ConfigParser()
-    config.read(os.path.join(CURRENT_DIR, 'config.ini'))
-
-    server = config["Database"]["server"]
-    user = config["Database"]["user"]
-    password = config["Database"]["password"]
-
-    conn = pymssql.connect(server, user, password, "ziiei")
-
+    
+    conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT RoleID FROM dbo.Login WHERE Username = %s AND Password = %s'
+        'SELECT RoleID, LoginID FROM dbo.Login WHERE Username = %s AND Password = %s'
         % (username, passwordreal))
     label = cursor.fetchall()
     if not label:
         return None
     else:
-        return label[0][0]
+        return label
+    conn.close()
+
+
+def checkInnovation(username):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        '')
+    conn.close()
 
 
 def levels():
-    CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
-
-    config = ConfigParser()
-    config.read(os.path.join(CURRENT_DIR, 'config.ini'))
-
-    server = config["Database"]["server"]
-    user = config["Database"]["user"]
-    password = config["Database"]["password"]
-    conn = pymssql.connect(server, user, password, "ziiei")
-
+    conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
         'SELECT * FROM dbo.Country ORDER BY CountryID')
@@ -84,4 +78,5 @@ def levels():
     cursor.execute(
         'SELECT * FROM dbo.Block ORDER BY BlockID')
     block = cursor.fetchall()
+    conn.close()
     return country, state, district, block
