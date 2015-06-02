@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             {% for menu in topmenu %}
-              {% if menuarray[menu[2]] == 0 %}
+              {% if menuarray[menu[2]-1] == 0 %}
                 <li><a href="{{ menu[1] }}">{{ menu[0] }}</a></li>
               {% else %}
                 <li class="dropdown">

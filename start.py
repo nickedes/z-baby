@@ -242,6 +242,6 @@ if __name__ == '__main__':
             topmenu.append([menu[3], menu[4], menu[1]])
         for submenu in submenus:
             if submenu[5] == -1 and submenu[1] == menu[1]:
-                menuarray[submenu[1]] = 1
+                menuarray[submenu[1]-1] = 1
                 topsubmenu.append([submenu[1], submenu[3], submenu[4]])
     app.run(debug=True, host='0.0.0.0', port=3000)
