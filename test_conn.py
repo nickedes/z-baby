@@ -302,6 +302,37 @@ cursor.executemany(
 conn.commit()
 
 '''
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Employee ID'", 11))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Date Of Joining'", 17))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Residential Address'", 19))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Phone Number'", 20))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Email ID'", 21))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'School Name'", 22))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'School Address'", 25))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Country'", 26))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'State'", 27))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'District'", 28))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Block'", 29))
+conn.commit()
+
+cursor.executemany(
+    "INSERT INTO dbo.Label values (%d, %d, %d, %s, %s, %s, %s, %s)",
+    [
+        (30, 1, 0, '/register', 'text', 'Please enter your Registration details',
+         'kwikadi', str(datetime.now()))
+    ])
+conn.commit()
+
 cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)

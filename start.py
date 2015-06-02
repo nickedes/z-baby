@@ -177,6 +177,11 @@ def register():
         session['userid'] = 0
     if request.method == 'GET':
         country, state, district, block = values.levels()
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/register':
+                label_dict[label[0]] = [label[4], label[5]]
+
         countrylist = {}
         for single_country in country:
             statelist = []
@@ -199,11 +204,11 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', , topmenu=topmenu,
+        return render_template('register.html',topmenu=topmenu,
                                topsubmenu=topsubmenu,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict)
+                               slist=statelist, dlist=districtdict , label=label_dict)
     else:
         pass
 
