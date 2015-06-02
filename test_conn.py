@@ -166,10 +166,42 @@ cursor.executemany(
         (38, 1, 'IdeaExampleLongtextbox', '11. Can you provide some examples of the benefits of implementing your idea?', 'admin', str(datetime.now()))
     ])
 
+cursor.executemany(
+    "INSERT INTO dbo.Login VALUES (%s, %s, %d, %s, %s, %s)",
+    [
+        ('teacher', 'teacher', 1, 'teacher',
+         'dummy', str(datetime.now())),
+        ('dataentry', 'dataentry', 2, 'dataentry',
+         'dummy', str(datetime.now())),
+        ('viewer', 'viewer', 3, 'viewer', 'dummy', str(datetime.now())),
+        ('admin', 'admin', 4, 'admin', 'dummy', str(datetime.now())),
+        ('superadmin', 'superadmin', 5, 'superadmin',
+         'dummy', str(datetime.now()))
+    ])
+
 conn.commit()
+
 '''
+cursor.execute('SELECT * FROM dbo.Language')
+row = cursor.fetchall()
+print(row)
+
 cursor.execute('SELECT * FROM dbo.Label')
 row = cursor.fetchall()
 print(row)
 
+cursor.execute('SELECT * FROM dbo.Login')
+row = cursor.fetchall()
+print(row)
+
+cursor.execute('SELECT * FROM dbo.Menu')
+row = cursor.fetchall()
+print(row)
+
+cursor.execute('SELECT * FROM dbo.SubMenu')
+row = cursor.fetchall()
+print(row)
+# 
+# cursor.execute('DELETE FROM dbo.Login where CreatedBy = %s' % "'" + "dummy" + "'")
+conn.commit()
 conn.close()
