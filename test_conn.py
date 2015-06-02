@@ -301,7 +301,6 @@ cursor.executemany(
 
 conn.commit()
 
-'''
 cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Employee ID'", 11))
 conn.commit()
 cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Date Of Joining'", 17))
@@ -333,6 +332,7 @@ cursor.executemany(
     ])
 conn.commit()
 
+'''
 cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)

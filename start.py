@@ -181,7 +181,7 @@ def register():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/register':
                 label_dict[label[0]] = [label[4], label[5]]
-
+        print(label_dict)
         countrylist = {}
         for single_country in country:
             statelist = []
