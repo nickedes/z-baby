@@ -223,7 +223,6 @@ cursor.executemany('INSERT INTO dbo.Menu values (%d, %d, %s, %s, %s, %d, %s, %s)
 
 SubMenu (LanguageID, MenuID, SubMenuID, FormName, FormLink, RoleID, CreatedBy, CreateDate)
 
-'''
 cursor.executemany('INSERT INTO dbo.SubMenu values (%d, %d, %d, %s, %s, %d, %s, %s)',
     [(1,2,1,'ZIIEI', '/about/ziiei',-1, 'nickedes', str(datetime.now())),
     (1,2,2,'Sri Aurobindo Society','/about/sas', -1, 'kwikadi', str(datetime.now())),
@@ -236,9 +235,35 @@ cursor.executemany('INSERT INTO dbo.SubMenu values (%d, %d, %d, %s, %s, %d, %s, 
     (1,3,5,'Terms and Conditions','/ziiei/terms', -1, 'nickedes', str(datetime.now()))
     ])
 
+Label (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, CreatedBy, CreateDate)
+
+cursor.executemany(
+    "INSERT INTO dbo.Label values (%d, %d, %d, %s, %s, %s, %s, %s)",
+    [
+        (1, 1, 0, '/login', 'text', 'Please Sign In',
+         'kwikadi', str(datetime.now())),
+        (2, 1, 0, '/login', 'text', 'Username',
+         'kwikadi', str(datetime.now())),
+        (3, 1, 0, '/login', 'text', 'Password',
+         'kwikadi', str(datetime.now())),
+        (4, 1, 0, '/login', 'text', 'Sign In', 'kwikadi', str(datetime.now())),
+        (5, 1, 0, '/login', 'text', 'Forgot Password',
+         'kwikadi', str(datetime.now())),
+        (6, 1, 0, '/login', 'text', 'Please enter a Username',
+         'kwikadi', str(datetime.now())),
+        (7, 1, 0, '/login', 'title', 'Sign In',
+         'kwikadi', str(datetime.now())),
+        (8, 1, 0, '/', 'title', 'Welcome to Ziiei',
+         'kwikadi', str(datetime.now()))
+    ]
+)
 conn.commit()
 
-cursor.execute('SELECT * FROM dbo.SubMenu')
+'''
+cursor.execute('UPDATE dbo.Label set LabelValue = %s where LabelID = %d' %("'Please enter a valid Username'", 6))
+conn.commit()
+
+cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)
 

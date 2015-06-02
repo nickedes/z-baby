@@ -44,18 +44,30 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
+        return redirect(url_for('home'))
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
+    if 'username' in session:
         return redirect(url_for('index'))
+    label_dict = {}
     if request.method == 'GET':
-        return render_template('signin.html', label=labelval, menu=menuval,
-                               submenu=submenuval)
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/login':
+                label_dict[label[0]] = label[5]
+        return render_template('signin.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu,
+                               menuarray=menuarray, label=label_dict)
     else:
         username = request.form['username']
         logged_in_val = values.checkLogin(
             request.form['username'], request.form['password'])
         print(logged_in_val)
         if logged_in_val is None:
-            return render_template('messages.html', label=labelval,
-                                   menu=menuval, submenu=submenuval,
+            return render_template('messages.html',
                                    userval=checkloggedin(session['userid']),
                                    message="Incorrect credentials, please try again!")
 
