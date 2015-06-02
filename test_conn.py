@@ -182,10 +182,12 @@ cursor.executemany(
 conn.commit()
 
 '''
-cursor.execute('SELECT * FROM dbo.Language')
+cursor.execute('DELETE FROM dbo.Label WHERE LanguageID= 1')
+conn.commit()
+cursor.execute('SELECT * FROM dbo.Label WHERE LanguageID= 1')
 row = cursor.fetchall()
 print(row)
-
+'''
 cursor.execute('SELECT * FROM dbo.Label')
 row = cursor.fetchall()
 print(row)
@@ -203,5 +205,6 @@ row = cursor.fetchall()
 print(row)
 # 
 # cursor.execute('DELETE FROM dbo.Login where CreatedBy = %s' % "'" + "dummy" + "'")
+'''
 conn.commit()
 conn.close()

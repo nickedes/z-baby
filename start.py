@@ -15,10 +15,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 showerrors(app)
-labelval = {}
-menuval = {}
-submenuval = {}
-
 
 def checkloggedin(userid):
     if userid != 0:
@@ -28,9 +24,6 @@ def checkloggedin(userid):
 
 @app.route('/')
 def index():
-    global labelval
-    global menuval
-    global submenuval
     if 'username' in session:
         return redirect(url_for('home'))
     if 'LanguageID' not in session:
@@ -40,26 +33,8 @@ def index():
     if 'userid' not in session:
         session['userid'] = 0
     # play with variables
-    labelval = {label[2]: label[3]
-                for label in labels if label[1] == session['LanguageID']}
-    for menu in menus:
-        if menu[0] == session['LanguageID'] and menu[4] == session['RoleID']:
-            flag = 1
-            for submenu in submenus:
-                if submenu[0] == session['LanguageID'] and submenu[5] == session['RoleID']:
-                    if submenu[1] == menu[1]:
-                        menuval[menu[1]] = [menu[2], menu[3], 1]
-                        flag = 0
-                        break
-            if flag == 1:
-                menuval[menu[1]] = [menu[2], menu[3], 0]
-    submenuval = {submenu[2]: [submenu[1], submenu[3], submenu[4]]
-                  for submenu in submenus
-                  if submenu[0] == session['LanguageID']
-                  and submenu[5] == session['RoleID']}
-    return render_template('slash.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
+    
+    return render_template('slash.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
