@@ -29,12 +29,15 @@ def index():
     if 'LanguageID' not in session:
         session['LanguageID'] = 1
     if 'RoleID' not in session:
-        session['RoleID'] = 1
+        session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
     # play with variables
-    
-    return render_template('slash.html')
+    menubody = []
+    for menu in menus:
+        if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] and menu[2] == '/':
+            menubody.append([menu[3],menu[4]])
+    return render_template('slash.html', topmenu=topmenu, menubody=menubody, topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -230,4 +233,14 @@ def review():
 
 if __name__ == '__main__':
     labels, menus, submenus, categories, subcategories = values.getValues()
+    topmenu = []
+    topsubmenu = []
+    menuarray = [0 for menu in menus]
+    for menu in menus:
+        if menu[5] == -1:
+            topmenu.append([menu[3],menu[4],menu[1]])
+        for submenu in submenus:
+            if submenu[5] == -1 and submenu[1]==menu[1]:
+                menuarray[submenu[1]] = 1
+                topsubmenu.append([submenu[1], submenu[3], submenu[4]])
     app.run(debug=True, host='0.0.0.0', port=3000)

@@ -9,11 +9,10 @@
     </div><!-- /.container -->
     <div class="container button">
       <div class="row" align="center">
+        {% for menuitem in menubody %}
         <div class="col-lg-6">
-          <p><a class="btn btn-primary btn-xlarge" href="/login" role="button">{{ label['LoginButton']}} &raquo;</a></p>
+          <p><a class="btn btn-primary btn-xlarge" href="{{ menuitem[1] }}" role="button"> {{ menuitem[0] }} &raquo;</a></p>
         </div>
-        <div class="col-lg-6">
-          <p><a class="btn btn-success btn-xlarge" href="/register" role="button">{{ label['RegisterButton']}} &raquo;</a></p>
-        </div>        
+        {% endfor %}
       </div>
 {% include 'footer.html' %}

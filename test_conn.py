@@ -181,13 +181,13 @@ cursor.executemany(
 
 conn.commit()
 
-'''
+
 cursor.execute('DELETE FROM dbo.Label WHERE LanguageID= 1')
 conn.commit()
 cursor.execute('SELECT * FROM dbo.Label WHERE LanguageID= 1')
 row = cursor.fetchall()
 print(row)
-'''
+
 cursor.execute('SELECT * FROM dbo.Label')
 row = cursor.fetchall()
 print(row)
@@ -205,6 +205,41 @@ row = cursor.fetchall()
 print(row)
 # 
 # cursor.execute('DELETE FROM dbo.Login where CreatedBy = %s' % "'" + "dummy" + "'")
+
+Menu (LanguageID, MenuID, PageName, FormName, FormLink, RoleID, CreatedBy, CreateDate)
+
+cursor.executemany('INSERT INTO dbo.Label values (%d, %d, %d, %s, %s, %s, %s, %s)',
+    [1,1,0,'/',''])
+
+cursor.executemany('INSERT INTO dbo.Menu values (%d, %d, %s, %s, %s, %d, %s, %s)',
+    [(1,1,'/','Home','/', -1, 'nickedes', str(datetime.now())),
+    (1,2,'/','About Us','#', -1, 'kwikadi', str(datetime.now())),
+    (1,3,'/','ZIIEI','#', -1, 'nickedes', str(datetime.now())),
+    (1,4,'/','FAQ','/faq', -1, 'kwikadi', str(datetime.now())),
+    (1,5,'/','Contact Us','/contact', -1, 'nickedes', str(datetime.now())),
+    (1,6,'/','Login','/login', 0, 'kwikadi', str(datetime.now())),
+    (1,7,'/','Register','/register', 0, 'nickedes', str(datetime.now()))
+    ])
+
+SubMenu (LanguageID, MenuID, SubMenuID, FormName, FormLink, RoleID, CreatedBy, CreateDate)
+
 '''
+cursor.executemany('INSERT INTO dbo.SubMenu values (%d, %d, %d, %s, %s, %d, %s, %s)',
+    [(1,2,1,'ZIIEI', '/about/ziiei',-1, 'nickedes', str(datetime.now())),
+    (1,2,2,'Sri Aurobindo Society','/about/sas', -1, 'kwikadi', str(datetime.now())),
+    (1,2,3,'Litchi', '/about/litchi', -1,'nickedes', str(datetime.now())),
+    (1,2,4,'U.P. Government','/about/upgovt', -1, 'kwikadi', str(datetime.now())),
+    (1,3,1,'Workflow With Timelines','/ziiei/workflow', -1, 'nickedes', str(datetime.now())),
+    (1,3,2,'How To Apply','/ziiei/apply', -1, 'kwikadi', str(datetime.now())),
+    (1,3,3,'Benefits','/ziiei/benefits', -1, 'nickedes', str(datetime.now())),
+    (1,3,4,'Examples','/ziiei/examples', -1, 'kwikadi', str(datetime.now())),
+    (1,3,5,'Terms and Conditions','/ziiei/terms', -1, 'nickedes', str(datetime.now()))
+    ])
+
 conn.commit()
+
+cursor.execute('SELECT * FROM dbo.SubMenu')
+row = cursor.fetchall()
+print(row)
+
 conn.close()
