@@ -34,11 +34,16 @@ def index():
     if 'userid' not in session:
         session['userid'] = 0
     # play with variables
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/':
+            label_dict[label[0]] = label[5]
+
     menubody = []
     for menu in menus:
         if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
-    return render_template('slash.html', topmenu=topmenu, menubody=menubody, topsubmenu=topsubmenu, menuarray=menuarray)
+    return render_template('slash.html', topmenu=topmenu, menubody=menubody, topsubmenu=topsubmenu, label=label_dict, menuarray=menuarray)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -62,20 +67,46 @@ def login():
                                topsubmenu=topsubmenu,
                                menuarray=menuarray, label=label_dict)
     else:
-        username = request.form['username']
-        logged_in_val = values.checkLogin(
-            request.form['username'], request.form['password'])
-        print(logged_in_val)
-        if logged_in_val is None:
-            return render_template('messages.html',
-                                   userval=checkloggedin(session['userid']),
-                                   message="Incorrect credentials, please try again!")
+        if 'signin' in request.form:
+            username = request.form['username']
+            logged_in_val = values.checkLogin(
+                request.form['username'], request.form['password'])
+            print(logged_in_val)
+            if logged_in_val is None:
+                return render_template('messages.html',
+                                       userval=checkloggedin(
+                                           session['userid']), menuarray=menuarray,
+                                       topmenu=topmenu, topsubmenu=topsubmenu,
+                                       message="Incorrect credentials, please try again!")
 
-        else:
-            session['RoleID'] = logged_in_val[0][0]
-            session['username'] = username
-            session['userid'] = logged_in_val[0][1]
-            return redirect(url_for('home'))
+            else:
+                session['RoleID'] = logged_in_val[0][0]
+                session['username'] = username
+                session['userid'] = logged_in_val[0][1]
+                return redirect(url_for('home'))
+        elif 'submit' in request.form:
+            pass
+
+
+@app.route('/home')
+def home():
+    if 'username' not in session:
+        return render_template('messages.html',
+            userval=checkloggedin(session['userid']),
+            message="You are not logged in!")
+
+    else:
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
+                label_dict[label[0]] = label[5]
+        print(label_dict)
+        inno = values.checkInnovation(session['userid'])
+        return render_template('home.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu,
+                               menuarray=menuarray,
+                               userval=checkloggedin(session['userid']),
+                               inno=inno, label=label_dict)
 
 
 @app.route('/about')
@@ -125,22 +156,6 @@ def faq():
     return render_template('faq.html', label=labelval, menu=menuval,
                            submenu=submenuval,
                            userval=checkloggedin(session['userid']))
-
-
-@app.route('/home')
-def home():
-    if 'username' not in session:
-        return render_template('messages.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
-                                   session['userid']),
-                               message="You are not logged in!")
-
-    else:
-        inno = values.checkInnovation(session['userid'])
-        return render_template('home.html', label=labelval, menu=menuval,
-                               submenu=submenuval,
-                               userval=checkloggedin(session['userid']),
-                               inno=inno)
 
 
 @app.route('/logout', methods=['GET', 'POST'])

@@ -1,7 +1,7 @@
 {% include 'header.html' %}
 
 <link href="{{url_for('static', filename='css/signin.css')}}" rel="stylesheet">
-
+  <title>{{label[7]}}</title>
   <body>
 <br><br>
     <div class="container">
@@ -10,10 +10,10 @@
     <div class="panel-body">
       <form class="form-signin" role="form"  method="post" action='/login'>
         <h2 class="form-signin-heading">{{ label[1] }}</h2>
-        <input type="text" name="username" pattern="[a-zA-Z0-9][a-zA-Z0-9]*" oninvalid="setCustomValidity('{{ label[6] }}')" class="form-control" placeholder="{{ label[2] }}" required autofocus>
-        <input type="password" name="password" class="form-control" placeholder="{{ label[3] }}" >
-        <button class="btn btn-lg btn-primary btn-block" type="submit">{{ label[4] }}</button>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">{{ label[5] }}</button>
+        <input type="text" name="username" class="form-control" placeholder="{{ label[2] }}" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="{{ label[3] }}" required >
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="signin">{{ label[4] }}</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="forgot">{{ label[5] }}</button>
       </form>
       </div>
       </div>
