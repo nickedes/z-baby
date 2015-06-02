@@ -259,10 +259,49 @@ cursor.executemany(
 )
 conn.commit()
 
-'''
-cursor.execute('UPDATE dbo.Label set LabelValue = %s where LabelID = %d' %("'Please enter a valid Username'", 6))
+
+cursor.executemany(
+    "INSERT INTO dbo.Label values (%d, %d, %d, %s, %s, %s, %s, %s)",
+    [
+        (9, 1, 0, '/home', 'title', 'ZIIEI',
+         'kwikadi', str(datetime.now()))
+    ])
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % (
+    "'ZIIEI-teacher'", 9))
+
 conn.commit()
 
+cursor.execute('UPDATE dbo.Label set RoleID = %d  where LabelID = %d' % (1, 9))
+
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %d, %s,%s, %s, %s, %s)",
+    [
+        (10, 1, 0, '/register', 'Textbox', 'Name', 'nickedes', str(datetime.now())),
+        (11, 1, 0, '/register', 'Textbox', 'EmployeeID','nickedes', str(datetime.now())),
+        (12, 1, 0, '/register', 'DateSelector', 'Date of Birth', 'nickedes', str(datetime.now())),
+        (13, 1, 0, '/register', 'Textarea', 'Qualification', 'nickedes', str(datetime.now())),
+        (14, 1, 0, '/register', 'Text','Gender', 'nickedes', str(datetime.now())),
+        (15, 1, 0, '/register', 'RadioButton', 'Female', 'nickedes', str(datetime.now())),
+        (16, 1, 0, '/register', 'RadioButton', 'Male', 'nickedes', str(datetime.now())),
+        (17, 1, 0, '/register', 'DateSelector', 'DateOfJoining', 'nickedes', str(datetime.now())),
+        (18, 1, 0, '/register', 'Textarea', 'Awards', 'nickedes', str(datetime.now())),
+        (19, 1, 0, '/register', 'Textarea', 'ResidentialAddress', 'nickedes', str(datetime.now())),
+        (20, 1, 0, '/register', 'Textbox', 'PhoneNumber', 'nickedes', str(datetime.now())),
+        (21, 1, 0, '/register', 'Textbox', 'EmailID', 'nickedes', str(datetime.now())),
+        (22, 1, 0, '/register', 'Textbox', 'SchoolName', 'nickedes', str(datetime.now())),
+        (23, 1, 0, '/register', 'Textbox', 'Designation', 'nickedes', str(datetime.now())),
+        (24, 1, 0, '/register', 'Textarea', 'Subjects', 'nickedes', str(datetime.now())),
+        (25, 1, 0, '/register', 'Textarea', 'SchoolAddress', 'nickedes', str(datetime.now())),
+        (26, 1, 0, '/register', 'Dropdown', 'CountryID', 'nickedes', str(datetime.now())),
+        (27, 1, 0, '/register', 'Dropdown', 'StateID', 'nickedes', str(datetime.now())),
+        (28, 1, 0, '/register', 'Dropdown', 'DistrictID', 'nickedes', str(datetime.now())),
+        (29, 1, 0, '/register', 'Dropdown', 'BlockID', 'nickedes', str(datetime.now()))
+    ])
+
+conn.commit()
+
+'''
 cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)

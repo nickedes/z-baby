@@ -169,6 +169,12 @@ def logout():
 def register():
     if 'username' in session:
         return redirect(url_for('index'))
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
     if request.method == 'GET':
         country, state, district, block = values.levels()
         countrylist = {}
@@ -193,8 +199,9 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', label=labelval, menu=menuval,
-                               submenu=submenuval, country=country, state=state,
+        return render_template('register.html', , topmenu=topmenu,
+                               topsubmenu=topsubmenu,
+                               menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict)
     else:
