@@ -103,7 +103,7 @@ def home():
         menulist = []
         for menu in menus:
             if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
-                menulist.append([menu[3],menu[4]])
+                menulist.append([menu[3], menu[4]])
         inno = values.checkInnovation(session['userid'])
         return render_template('home.html', topmenu=topmenu,
                                topsubmenu=topsubmenu,
@@ -178,17 +178,20 @@ def logout():
     session.pop('RoleID', None)
     return redirect(url_for('index'))
 
+
 @app.route('/contact')
 def contact():
     return render_template('enquiry.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                           topsubmenu=topsubmenu, menuarray=menuarray,
+                           userval=checkloggedin(session['userid']))
+
 
 @app.route('/faq')
 def faq():
     return render_template('faq.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                           topsubmenu=topsubmenu, menuarray=menuarray,
+                           userval=checkloggedin(session['userid']))
+
 
 @app.route('/register')
 def register():
@@ -249,38 +252,17 @@ def update():
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
-        return render_template('messages.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
-                                   session['userid']),
-                               message="You are not logged in!")
-
+        return redirect(url_for('index'))
     if request.method == 'GET':
-        labellist = []
+        label_dict = {}
         for label in labels:
-            if label[2].find('Idea') == 0:
-                print(label)
-                if label[2].find('Longtextbox') >= 0:
-                    labellist.append([label[3], label[2], 'Longtextbox'])
-                elif label[2].find('Dropdown') >= 0:
-                    labellist.append([label[3], label[2], 'Dropdown'])
-                elif label[2].find('FileSelector') >= 0:
-                    labellist.append([label[3], label[2], 'FileSelector'])
-                else:
-                    labellist.append([label[3], label[2], 'Textbox'])
-        return render_template('submit.html', label=labelval, menu=menuval,
-                               submenu=submenuval,
-                               userval=checkloggedin(session['userid']),
-                               labellist=labellist)
-    if request.method == 'POST' and 'username' in session:
-        # take in infinite data
-        # put into DB
-        # redirect user with success message
-        return render_template('messages.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
-                                   session['userid']),
-                               message="lolpol ho hi gaya")
-
-    return redirect(url_for('index'))
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
+                label_dict[label[0]] = label[5]
+        return render_template('submit.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, userval=checkloggedin(
+                                   session['userid']), menuarray=menuarray, label=label_dict)
+    else:
+        pass
 
 
 @app.route('/review')
