@@ -2,134 +2,125 @@
 <link href="{{url_for('static', filename='js/bootstrap-datepicker.js')}}" rel="stylesheet">
 <link href="{{url_for('static', filename='css/datepicker.css')}}" rel="stylesheet">
 
-<script>
-    $('#lolpol .input-group.date').datepicker({
-        format: "dd/mm/yyyy",
-        clearBtn: true,
-        multidate: false
-    });
-</script>
+<div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[30][1] }}</h3>
 <br>
-<div class="col-lg-8" style="margin-left:100px">
 <form action="/register" method="POST">
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[10][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[10][1] }}" placeholder="Enter {{ label[10][1] }}">
+        <input type="text" class="form-control" name="10" placeholder="Enter {{ label[10][1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[11][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[11][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[11][1] }}" placeholder="Enter {{ label[11][1] }}">
+        <input type="text" class="form-control" name="11" placeholder="Enter {{ label[11][1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[12][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[12][1] }}</label>  
       <div class="col-sm-6">
-        <p><input type="text" id="datepicker1"></p>
+        <p><input type="text" id="datepicker1" name="12"></p>
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[13][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[13][1] }}</label>  
       <div class="col-sm-6">
-        <textarea class="form-control" id="{{ label[13][1] }}" placeholder="Enter {{ label[13][1] }}"></textarea>
+        <textarea class="form-control" name="13" placeholder="Enter {{ label[13][1] }}"></textarea>
       </div>
       <br><br>
   </div>
   <br>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[14][1] }}</label> 
-      <label class="radio-inline">
-        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {{ label[15][1] }}
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {{ label[16][1] }}
-      </label>
+    <label for="14" class="col-lg-2 control-label">{{ label[14][1] }}</label>
+    <div class="col-lg-6">
+      <input type="radio" name="14" value="Female"> {{ label[15][1] }}
+      <input type="radio" name="14" value="Male"> {{ label[16][1] }}
+    </div>
   </div>
   <br><br>
    <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[17][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[17][1] }}</label>  
       <div class="col-sm-6">
-        <p><input type="text" id="datepicker2"></p>
+        <p><input type="text" id="datepicker2" name="17"></p>
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[18][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[18][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" class="form-control" id="{{ label[18][1] }}" placeholder="Enter {{ label[18][1] }}">
+        <textarea type="text" class="form-control" name="18" placeholder="Enter {{ label[18][1] }}">
         </textarea>
       </div>
       <br><br>
   </div>
   <br><br>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[19][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[19][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" class="form-control" id="{{ label[19][1] }}" placeholder="Enter {{ label[19][1] }}">
+        <textarea type="text" name="19"class="form-control" placeholder="Enter {{ label[19][1] }}">
         </textarea>
       </div>
       <br><br>
   </div>
   <br><br>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[20][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[20][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[20][1] }}" placeholder="Enter {{ label[20][1] }}">
+        <input type="text" name="20" class="form-control" placeholder="Enter {{ label[20][1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[21][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[21][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[21][1] }}" placeholder="Enter {{ label[21][1] }}">
+        <input type="text" name="21" class="form-control" placeholder="Enter {{ label[21][1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[22][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[22][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[22][1] }}" placeholder="Enter {{ label[22][1] }}">
+        <input type="text" name="22" class="form-control" placeholder="Enter {{ label[22][1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[23][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[23][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[23][1] }}" placeholder="Enter {{ label[23][1] }}">
+        <input type="text" name="23" class="form-control" placeholder="Enter {{ label[23][1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[24][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[24][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" class="form-control" id="{{ label[24][1] }}" placeholder="Enter {{ label[24][1] }}">
+        <textarea type="text" name= "24" sclass="form-control" placeholder="Enter {{ label[24][1] }}">
         </textarea>
       </div>
       <br><br>
   </div>
   <br><br>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[25][1] }}</label>  
+    <label class="col-sm-2 control-label">{{ label[25][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" class="form-control" id="{{ label[25][1] }}" placeholder="Enter {{ label[25][1] }}">
+        <textarea type="text" name="25" class="form-control" placeholder="Enter {{ label[25][1] }}">
         </textarea>
       </div>
       <br><br>
   </div>
   <br><br>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[26][1] }}</label> 
+    <label class="col-sm-2 control-label">{{ label[26][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "dd1" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control" >
+      <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control" >
         <option>..</option>
         {% for data in country %}
-          <option value="{{ clist[data[1]] }}">{{ data[2] }}</option>
+          <option value="{{ clist[data[1]] }}" >{{ data[2] }}</option>
         {% endfor %}
       </select>
     </div>
@@ -137,9 +128,9 @@
   </div>
 
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[27][1] }}</label> 
+    <label class="col-sm-2 control-label">{{ label[27][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl2" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
+      <select id = "ddl2" name="27" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
       <option>..</option>
       </select>
     </div>
@@ -147,9 +138,9 @@
   </div>
 
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[28][1] }}</label> 
+    <label class="col-sm-2 control-label">{{ label[28][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
+      <select name="28" id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
       <option>..</option>
       </select>       
     </div>
@@ -157,9 +148,9 @@
   </div>
 
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">{{ label[29][1] }}</label> 
+    <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl4" class="form-control">
+      <select id = "ddl4" class="form-control" name="29">
       <option>..</option>
       </select>
     </div>
@@ -170,6 +161,8 @@
   <button type="submit"  class="btn btn-info">Submit</button>
 </form>
 </div>
+
+
 <script type="text/javascript">
   function configureDropDownLists(ddl1,ddl2) {
   var states = ddl1.value ;
@@ -260,4 +253,5 @@
     ddl.options.add(opt);
   }
 </script>
+
 {% include 'footer.html' %}

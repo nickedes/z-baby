@@ -50,12 +50,12 @@
               {% endif %}
             {% endfor %}
             {% if userval == 1 %}
-+          <li>
-+          <form class="navbar-form navbar-right" method="post" action="{{url_for('logout')}}">
-+        <button id="logout" type="submit" class="btn btn-danger">Logout</button>
-+      </form>
-+      </li>
-+      {% endif %}
+          <li>
+          <form class="navbar-form navbar-right" method="post" action="{{url_for('logout')}}">
+        <button id="logout" type="submit" class="btn btn-danger">Logout</button>
+      </form>
+      </li>
+      {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
