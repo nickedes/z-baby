@@ -92,8 +92,8 @@ def login():
 def home():
     if 'username' not in session:
         return render_template('messages.html',
-            userval=checkloggedin(session['userid']),
-            message="You are not logged in!")
+                               userval=checkloggedin(session['userid']),
+                               message="You are not logged in!")
 
     else:
         label_dict = {}
@@ -111,28 +111,60 @@ def home():
 
 @app.route('/about/<pagename>')
 def about(pagename):
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
+
     if pagename == 'ziiei':
-        return render_template('ziiei.html', userval=checkloggedin(session['userid']))
+        return render_template('ziiei.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'sas':
-        return render_template('sas.html', userval=checkloggedin(session['userid']))
+        return render_template('sas.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'litchi':
-        return render_template('litchi.html', userval=checkloggedin(session['userid']))
+        return render_template('litchi.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'upgovt':
-        return render_template('upgovt.html', userval=checkloggedin(session['userid']))
+        return render_template('upgovt.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
 
 
 @app.route('/ziiei/<pagename>')
 def workflow(pagename):
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
+        
     if pagename == 'workflow':
-        return render_template('workflow.html', userval=checkloggedin(session['userid']))
+        return render_template('workflow.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'apply':
-        return render_template('apply.html', userval=checkloggedin(session['userid']))
+        return render_template('apply.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'benefits':
-        return render_template('benefits.html', userval=checkloggedin(session['userid']))
+        return render_template('benefits.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'examples':
-        return render_template('examples.html', userval=checkloggedin(session['userid']))
+        return render_template('examples.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
     elif pagename == 'terms':
-        return render_template('terms.html', userval=checkloggedin(session['userid']))
+        return render_template('terms.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -141,6 +173,17 @@ def logout():
     session.pop('userid', None)
     return redirect(url_for('index'))
 
+@app.route('/contact')
+def contact():
+    return render_template('enquiry.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               userval=checkloggedin(session['userid']))
 
 @app.route('/register')
 def register():
@@ -181,11 +224,11 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html',topmenu=topmenu,
+        return render_template('register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict , label=label_dict)
+                               slist=statelist, dlist=districtdict, label=label_dict)
     else:
         pass
 
