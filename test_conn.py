@@ -332,8 +332,23 @@ cursor.executemany(
     ])
 conn.commit()
 
+Menu (LanguageID, MenuID, PageName, FormName, FormLink, RoleID, CreatedBy, CreateDate)
 '''
-cursor.execute('SELECT * from dbo.Login')
+
+cursor.executemany('INSERT INTO dbo.Menu values (%d, %d, %s, %s, %s, %d, %s, %s)',
+    [(1,8,'/home','Update Personal Information','/update', 1, 'nickedes', str(datetime.now())),
+    (1,9,'/home','Submit Innovation','/submit', 1, 'kwikadi', str(datetime.now())),
+    (1,10,'/home','Review Innovation','/review', 1, 'nickedes', str(datetime.now())),
+    (1,11,'/home','Create Techer Profile','/create', 2, 'kwikadi', str(datetime.now())),
+    (1,12,'/home','Submit Teacher Innovation','/submit', 2, 'nickedes', str(datetime.now())),
+    (1,13,'/home','Update Teacher Profile','/update', 2, 'kwikadi', str(datetime.now())),
+    (1,14,'/home','Review Teacher Innovation','/review', 2, 'nickedes', str(datetime.now())),
+    (1,15,'/home','View Innovations','/view', 3, 'kwikadi', str(datetime.now())),
+    (1,16,'/home','Edit Tables','/edit', 4, 'nickedes', str(datetime.now())),
+    (1,17,'/home','Edit Tables','/edit', 5, 'kwikadi', str(datetime.now())),
+    ])
+conn.commit()
+cursor.execute('SELECT * from dbo.Menu')
 row = cursor.fetchall()
 print(row)
 
