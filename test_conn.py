@@ -371,9 +371,15 @@ cursor.executemany(
         (49, 1, 1, '/submit', 'Textarea','Can you provide some examples of the benefits of implementing your idea?', 'nickedes', str(datetime.now())),
         (50, 1, 1, '/submit', 'Textarea', "Please describe a particular incidence (or a hypothetical situation if your idea has not been implemented yet) to show in which was a student, or a teacher, or a school will be benefitted by your innovative idea. For instance, if you have modified the admission process, how will it help the school administration to maintain better records. Or, another example is, if you have devices a new teaching tool, how will a slow learner child use it for learning?",'nickedes',str(datetime.now()))
     ])
-conn.commit()
-
 '''
+
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)",
+    [
+        (51, 1, 1, '/submit', 'head', 'Please enter the following details:','nickedes', str(datetime.now())),
+        (52, 1, 1, '/submit', 'Text', "Submit",'nickedes', str(datetime.now()))
+    ]);
+conn.commit()
 cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)
