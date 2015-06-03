@@ -381,23 +381,6 @@ cursor.executemany(
 conn.commit()
 
 cursor.executemany(
-    "INSERT INTO dbo.Stage VALUES (%d, %s, %s, %s)",
-    [
-        (1,'It is currently being implemented in a school, but its benefits have not been mapped yet.' ,'nickedes',str(datetime.now())),
-        (2,'Already implemented and your school is experiencing its benefits' ,'nickedes',str(datetime.now())),
-        (3,'• It is a concept which has not been implemented anywhere yet' ,'nickedes',str(datetime.now()))
-    ])
-
-Improvement in learning outcomes and reduction in learning gaps
-Create more supportive environment for girl child education
-Facilitate inclusive education for children with special needs
-Create an enquiry-led self-learning environment in the classroom/school
-Increase the involvement of students’ parents in Education
-Improve the rate of student enrolment in schools 
-Reduce the rate of student drop-out from schools
-Enhancement of deeper human values in the students, staff, school or community
-Improve the motivation level of teachers towards their profession
-cursor.executemany(
     "INSERT INTO dbo.Benefit VALUES (%d, %s, %s, %s)",
     [
         (1,"Improvement in learning outcomes and reduction in learning gaps" ,'nickedes',str(datetime.now())),
@@ -411,9 +394,16 @@ cursor.executemany(
         (9,"Improve the motivation level of teachers towards their profession" ,'nickedes',str(datetime.now())),
         (10,"None of these" ,'nickedes',str(datetime.now())),
     ])
-conn.commit()
 '''
-cursor.execute('SELECT * from dbo.Benefit')
+cursor.executemany(
+    "INSERT INTO dbo.Stage VALUES (%d, %s, %s, %s)",
+    [
+        (1,'It is currently being implemented in a school, but its benefits have not been mapped yet.' ,'nickedes',str(datetime.now())),
+        (2,'Already implemented and your school is experiencing its benefits' ,'nickedes',str(datetime.now())),
+        (3,'It is a concept which has not been implemented anywhere yet' ,'nickedes',str(datetime.now()))
+    ])
+conn.commit()
+cursor.execute('SELECT * from dbo.Stage')
 row = cursor.fetchall()
 print(row)
 

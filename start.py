@@ -303,10 +303,18 @@ def submit():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
-        print(label_dict)
+        benefits = values.benefit()
+        stages = values.stage()
+        bene_dict = {}
+        for ben in benefits:
+            bene_dict[ben[0]] = ben[1]
+        stage_dict = {}
+        for stag in stages:
+            stage_dict[stag[0]] = stag[1]
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
-                                   session['userid']), menuarray=menuarray, label=label_dict)
+                                   session['userid']), menuarray=menuarray, label=label_dict,
+                               benefit=bene_dict,stage=stage_dict)
     else:
         pass
 
