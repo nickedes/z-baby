@@ -10,18 +10,11 @@
 
 <div class="container button">
       <div class="row" align="center">
-        <div class="col-lg-6">
-          <p><a class="btn btn-primary btn-xlarge" href="/update" role="button">Update Information &raquo;</a></p>
-        </div>
-        {% if inno %}
-        <div class="col-lg-6">
-          <p><a class="btn btn-primary btn-xlarge" href="/review" role="button">Review Innovation &raquo;</a></p>
+        {% for menu in menulist %}
+        <div class="col-lg-{{ 12//(menulist|length) }}">
+          <p><a class="btn btn-primary btn-xlarge" href="{{ menu[1] }}" role="button">{{ menu[0] }} &raquo;</a></p>
         </div> 
-        {% else %}
-        <div class="col-lg-6">
-          <p><a class="btn btn-primary btn-xlarge" href="/submit" role="button">Submit Innovation &raquo;</a></p>
-        </div>
-        {% endif %}       
+        {% endfor %}       
 </div>
 
 

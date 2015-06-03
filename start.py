@@ -100,13 +100,17 @@ def home():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
                 label_dict[label[0]] = label[5]
-        print(label_dict)
+        menulist = []
+        for menu in menus:
+            if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
+                menulist.append([menu[3],menu[4]])
         inno = values.checkInnovation(session['userid'])
         return render_template('home.html', topmenu=topmenu,
                                topsubmenu=topsubmenu,
                                menuarray=menuarray,
                                userval=checkloggedin(session['userid']),
-                               inno=inno, label=label_dict)
+                               inno=inno, label=label_dict,
+                               menulist=menulist)
 
 
 @app.route('/about/<pagename>')
@@ -144,7 +148,7 @@ def workflow(pagename):
         session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
-        
+
     if pagename == 'workflow':
         return render_template('workflow.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
@@ -171,6 +175,7 @@ def workflow(pagename):
 def logout():
     session.pop('username', None)
     session.pop('userid', None)
+    session.pop('RoleID', None)
     return redirect(url_for('index'))
 
 @app.route('/contact')
