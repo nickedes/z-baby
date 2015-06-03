@@ -371,7 +371,6 @@ cursor.executemany(
         (49, 1, 1, '/submit', 'Textarea','Can you provide some examples of the benefits of implementing your idea?', 'nickedes', str(datetime.now())),
         (50, 1, 1, '/submit', 'Textarea', "Please describe a particular incidence (or a hypothetical situation if your idea has not been implemented yet) to show in which was a student, or a teacher, or a school will be benefitted by your innovative idea. For instance, if you have modified the admission process, how will it help the school administration to maintain better records. Or, another example is, if you have devices a new teaching tool, how will a slow learner child use it for learning?",'nickedes',str(datetime.now()))
     ])
-'''
 
 cursor.executemany(
     "INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)",
@@ -380,7 +379,41 @@ cursor.executemany(
         (52, 1, 1, '/submit', 'Text', "Submit",'nickedes', str(datetime.now()))
     ]);
 conn.commit()
-cursor.execute('SELECT * from dbo.Label')
+
+cursor.executemany(
+    "INSERT INTO dbo.Stage VALUES (%d, %s, %s, %s)",
+    [
+        (1,'It is currently being implemented in a school, but its benefits have not been mapped yet.' ,'nickedes',str(datetime.now())),
+        (2,'Already implemented and your school is experiencing its benefits' ,'nickedes',str(datetime.now())),
+        (3,'• It is a concept which has not been implemented anywhere yet' ,'nickedes',str(datetime.now()))
+    ])
+
+Improvement in learning outcomes and reduction in learning gaps
+Create more supportive environment for girl child education
+Facilitate inclusive education for children with special needs
+Create an enquiry-led self-learning environment in the classroom/school
+Increase the involvement of students’ parents in Education
+Improve the rate of student enrolment in schools 
+Reduce the rate of student drop-out from schools
+Enhancement of deeper human values in the students, staff, school or community
+Improve the motivation level of teachers towards their profession
+cursor.executemany(
+    "INSERT INTO dbo.Benefit VALUES (%d, %s, %s, %s)",
+    [
+        (1,"Improvement in learning outcomes and reduction in learning gaps" ,'nickedes',str(datetime.now())),
+        (2,"Create more supportive environment for girl child education" ,'nickedes',str(datetime.now())),
+        (3,"Facilitate inclusive education for children with special needs" ,'nickedes',str(datetime.now())),
+        (4,"Create an enquiry-led self-learning environment in the classroom/school" ,'nickedes',str(datetime.now())),
+        (5,"Increase the involvement of students’ parents in Education" ,'nickedes',str(datetime.now())),
+        (6,"Improve the rate of student enrolment in schools " ,'nickedes',str(datetime.now())),
+        (7,"Reduce the rate of student drop-out from schools" ,'nickedes',str(datetime.now())),
+        (8,"Enhancement of deeper human values in the students, staff, school or community" ,'nickedes',str(datetime.now())),
+        (9,"Improve the motivation level of teachers towards their profession" ,'nickedes',str(datetime.now())),
+        (10,"None of these" ,'nickedes',str(datetime.now())),
+    ])
+conn.commit()
+'''
+cursor.execute('SELECT * from dbo.Benefit')
 row = cursor.fetchall()
 print(row)
 
