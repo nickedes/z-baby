@@ -206,7 +206,6 @@ def register():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/register':
                 label_dict[label[0]] = [label[4], label[5]]
-        print(label_dict)
         countrylist = {}
         for single_country in country:
             statelist = []
@@ -297,6 +296,7 @@ def review():
 
 
 if __name__ == '__main__':
+    print("Fetching data...")
     labels, menus, submenus, categories, subcategories = values.getValues()
     topmenu = []
     topsubmenu = []
@@ -308,4 +308,5 @@ if __name__ == '__main__':
             if submenu[5] == -1 and submenu[1] == menu[1]:
                 menuarray[submenu[1]-1] = 1
                 topsubmenu.append([submenu[1], submenu[3], submenu[4]])
+    print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)

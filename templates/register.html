@@ -1,6 +1,14 @@
 {% include 'header.html' %}
+<link href="{{url_for('static', filename='js/bootstrap-datepicker.js')}}" rel="stylesheet">
 <link href="{{url_for('static', filename='css/datepicker.css')}}" rel="stylesheet">
 
+<script>
+    $('#lolpol .input-group.date').datepicker({
+        format: "dd/mm/yyyy",
+        clearBtn: true,
+        multidate: false
+    });
+</script>
 <h3>{{ label[30][1] }}</h3>
 <br>
 <div class="col-lg-8" style="margin-left:100px">
@@ -21,18 +29,10 @@
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label[12][1] }}</label>  
-      <div class="col-sm-6" class="input-append date" id="datepicker" data-date-format="dd-mm-yyyy">
-        <input type="text" size="16" class="form-control" readonly="readonly" id="{{ label[12][1] }}" placeholder="Enter {{ label[12][1] }}">
+      <div class="col-sm-6">
+        <p><input type="text" id="datepicker1"></p>
       </div>
       <br><br>
-      <script src="{{url_for('static', filename='js/bootstrap-datepicker.js')}}"></script>
-      <script src="{{url_for('static', filename='js/jquery-1.9.1.min.js')}}"></script>
-      <script type="text/javascript">
-          // When the document is ready
-          $(document).ready(function () {              
-              $('#datepicker').datepicker('show');  
-          });
-      </script>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label[13][1] }}</label>  
@@ -52,10 +52,10 @@
       </label>
   </div>
   <br><br>
-  <div class="form-group">
+   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label[17][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[17][1] }}" placeholder="Enter {{ label[17][1] }}">
+        <p><input type="text" id="datepicker2"></p>
       </div>
       <br><br>
   </div>
