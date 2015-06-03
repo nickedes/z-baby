@@ -303,6 +303,7 @@ def submit():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
+        print(label_dict)
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, label=label_dict)
