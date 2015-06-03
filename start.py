@@ -193,7 +193,7 @@ def faq():
                            userval=checkloggedin(session['userid']))
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET','POST'])
 def register():
     if 'username' in session:
         return redirect(url_for('index'))
@@ -237,7 +237,52 @@ def register():
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
-        pass
+        country, state, district, block = values.levels()
+        countrylist = {}
+        for single_country in country:
+            statelist = []
+            for single_state in state:
+                if single_state[1] == single_country[1]:
+                    statelist.append([single_state[3], single_state[2]])
+            countrylist[single_country[1]] = statelist
+        name = request.form['10']
+        emp_id = request.form['11']
+        DOB = request.form['12']
+        quali = request.form['13']
+        gender = request.form.get('14', '')
+        DOJ = request.form['17']
+        awards = request.form['18']
+        address = request.form['19']
+        phone = request.form['20']
+        email = request.form['21']
+        sch_name = request.form['22']
+        designation = request.form['23']
+        subjects = request.form['24']
+        sch_addr = request.form['25']
+        country = request.form['26']
+        state = request.form['27']
+        district = request.form['28']
+        block = request.form['29']
+        print(name)
+        print(emp_id)
+        print(DOB)
+        print(quali)
+        print(gender)
+        print(DOJ)
+        print(awards)
+        print(address)
+        print(phone)
+        print(email)
+        print(sch_name)
+        print(designation)
+        print(subjects) 
+        print(sch_addr)
+        print(country)
+        print(state)
+        print(district)
+        print(block)
+
+        return "dvfkvekv"
 
 
 @app.route('/update')
