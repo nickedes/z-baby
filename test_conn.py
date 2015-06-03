@@ -333,7 +333,7 @@ cursor.executemany(
 conn.commit()
 
 '''
-cursor.execute('SELECT * from dbo.Label')
+cursor.execute('SELECT * from dbo.Submenu')
 row = cursor.fetchall()
 print(row)
 
