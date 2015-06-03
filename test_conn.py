@@ -333,7 +333,6 @@ cursor.executemany(
 conn.commit()
 
 Menu (LanguageID, MenuID, PageName, FormName, FormLink, RoleID, CreatedBy, CreateDate)
-'''
 
 cursor.executemany('INSERT INTO dbo.Menu values (%d, %d, %s, %s, %s, %d, %s, %s)',
     [(1,8,'/home','Update Personal Information','/update', 1, 'nickedes', str(datetime.now())),
@@ -347,8 +346,35 @@ cursor.executemany('INSERT INTO dbo.Menu values (%d, %d, %s, %s, %s, %d, %s, %s)
     (1,16,'/home','Edit Tables','/edit', 4, 'nickedes', str(datetime.now())),
     (1,17,'/home','Edit Tables','/edit', 5, 'kwikadi', str(datetime.now())),
     ])
+Label (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, CreatedBy, CreateDate)
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)",
+    [
+        (31, 1, 1, '/submit', 'Textbox', 'Title of your Idea:','nickedes', str(datetime.now())),
+        (32, 1, 1, '/submit', 'Text', "The title of your idea should convey the most important aspect, such as the issue solved through this idea, the key benefit of this idea, who will experience the benefit of this idea, etc.",'nickedes', str(datetime.now())),
+        (33, 1, 1, '/submit', 'Dropdown', 'What is the stage of your Zero-Investment Idea at the time of submitting this form? Select one option','nickedes', str(datetime.now())),
+        (34, 1, 1, '/submit', 'Dropdown', 'What will be the top most benefit of implementing your idea? Select one option.','nickedes', str(datetime.now())),
+        (35, 1, 1, '/submit', 'Text', 'The outcomes listed here have been identified as the priority issues for transforming Education in your State. We are mainly looking for ideas that can lead to at least one of these outcomes.','nickedes', str(datetime.now())),
+        (36, 1, 1, '/submit', 'Dropdown', 'Your idea will be implemented in/for which of these areas? Please select one domain, and one or more corresponding sub-domains.','nickedes', str(datetime.now())),
+        (37, 1, 1, '/submit', 'Text', 'This refers is to the processes and procedures that your idea can improve. A detailed explanation is available here.','nickedes', str(datetime.now())),
+        (38, 1, 1, '/submit', 'Textarea', 'Please describe your Zero-Investment Innovation Idea (in not more than 500 words).','nickedes', str(datetime.now())),
+        (39, 1, 1, '/submit', 'Text', 'Please include details of how your idea can be implemented and how it works. You may choose to write it step-wise (Step 1, Step 2, etc.) or in bullet points. It is advisable to write the description on a separate document and when you are sure that you have provided all the important details, you can copy-paste it in this column.','nickedes', str(datetime.now())),
+        (40, 1, 1, '/submit', 'Textbox', 'If required, upload photographs showing how your idea can be implemented.','nickedes', str(datetime.now())),
+        (41, 1, 1, '/submit', 'Text', 'Although this is optional, it is advisable to upload photographs of your idea as it provides a better picture of the outcome. Examples of photographs are: students, teacher, etc. using your innovative teaching tool, image of a new admission form you have designed, parents and community participating in a school initiative, diagram of a new process you have created, how your school looked before and how it has improved after the implementation of your idea, or image of a classroom teaching technique you have designed. The photographs should be at least 200KB in size.','nickedes', str(datetime.now())),
+        (42, 1, 1, '/submit', 'Textarea', 'What resources are required to implement your idea?','nickedes', str(datetime.now())),
+        (43, 1, 1, '/submit', 'Textarea', 'Resources may include the number of students, painting material, stationery items, photocopies of documents, electricity connection, a new room in school building, etc.','nickedes', str(datetime.now())),
+        (44, 1, 1, '/submit', 'Textarea', 'What support is required from the school administration to implement your idea?','nickedes', str(datetime.now())),
+        (45, 1, 1, '/submit', 'Text', 'For instance, computer skills training for 1 teacher, a circular to be issued by the management, permission to take students on a field trip, etc.','nickedes', str(datetime.now())),
+        (46, 1, 1, '/submit', 'Textbox', 'Approximately how many weeks will it take your school to implement your idea?','nickedes', str(datetime.now())),
+        (47, 1, 1, '/submit', 'Textarea', 'What will be the reach of the benefits of your idea?','nickedes', str(datetime.now())),
+        (48, 1, 1, '/submit', 'Textarea','Please specify who will be impacted and in what numbers. For instance, 75 students of your class, or parents of 75 children of your class and 30 teachers in your school.', 'nickedes', str(datetime.now())),
+        (49, 1, 1, '/submit', 'Textarea','Can you provide some examples of the benefits of implementing your idea?', 'nickedes', str(datetime.now())),
+        (50, 1, 1, '/submit', 'Textarea', "Please describe a particular incidence (or a hypothetical situation if your idea has not been implemented yet) to show in which was a student, or a teacher, or a school will be benefitted by your innovative idea. For instance, if you have modified the admission process, how will it help the school administration to maintain better records. Or, another example is, if you have devices a new teaching tool, how will a slow learner child use it for learning?",'nickedes',str(datetime.now()))
+    ])
 conn.commit()
-cursor.execute('SELECT * from dbo.Menu')
+
+'''
+cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)
 
