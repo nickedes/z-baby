@@ -1,5 +1,5 @@
 {% include 'header.html' %}
-<link rel="stylesheet" href="css/datepicker.css">
+<link href="{{url_for('static', filename='css/datepicker.css')}}" rel="stylesheet">
 
 <h3>{{ label[30][1] }}</h3>
 <br>
@@ -21,15 +21,18 @@
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label[12][1] }}</label>  
-      <!-- <div class="col-sm-6">
-        <input type="text" class="form-control" id="{{ label[12][1] }}" placeholder="Enter {{ label[12][1] }}">
+      <div class="col-sm-6" class="input-append date" id="datepicker" data-date-format="dd-mm-yyyy">
+        <input type="text" size="16" class="form-control" readonly="readonly" id="{{ label[12][1] }}" placeholder="Enter {{ label[12][1] }}">
       </div>
-      <br><br> -->
-      <div class="container">
-            <div class="hero-unit">
-                <input  type="text" placeholder="click to show datepicker"  id="example1">
-            </div>
-        </div>
+      <br><br>
+      <script src="{{url_for('static', filename='js/bootstrap-datepicker.js')}}"></script>
+      <script src="{{url_for('static', filename='js/jquery-1.9.1.min.js')}}"></script>
+      <script type="text/javascript">
+          // When the document is ready
+          $(document).ready(function () {              
+              $('#datepicker').datepicker('show');  
+          });
+      </script>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">{{ label[13][1] }}</label>  
@@ -256,20 +259,5 @@
     opt.text = text;
     ddl.options.add(opt);
   }
-
-
 </script>
-<script src="js/jquery-1.9.1.min.js"></script>
-        <script src="js/bootstrap-datepicker.js"></script>
-        <script type="text/javascript">
-            // When the document is ready
-            $(document).ready(function () {
-                
-                $('#example1').datepicker({
-                    format: "dd/mm/yyyy"
-                });  
-            
-            });
-</script>
-
 {% include 'footer.html' %}
