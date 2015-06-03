@@ -109,53 +109,30 @@ def home():
                                inno=inno, label=label_dict)
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
+@app.route('/about/<pagename>')
+def about(pagename):
+    if pagename == 'ziiei':
+        return render_template('ziiei.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'sas':
+        return render_template('sas.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'litchi':
+        return render_template('litchi.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'upgovt':
+        return render_template('upgovt.html', userval=checkloggedin(session['userid']))
 
 
-@app.route('/workflow')
-def workflow():
-    return render_template('workflow.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
-
-
-@app.route('/howtoapply')
-def howtoapply():
-    return render_template('howtoapply.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
-
-
-@app.route('/benefits')
-def benefits():
-    return render_template('benefits.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
-
-
-@app.route('/examples')
-def examples():
-    return render_template('examples.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
-
-
-@app.route('/terms')
-def terms():
-    return render_template('terms.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
-
-
-@app.route('/faq')
-def faq():
-    return render_template('faq.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
+@app.route('/ziiei/<pagename>')
+def workflow(pagename):
+    if pagename == 'workflow':
+        return render_template('workflow.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'apply':
+        return render_template('apply.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'benefits':
+        return render_template('benefits.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'examples':
+        return render_template('examples.html', userval=checkloggedin(session['userid']))
+    elif pagename == 'terms':
+        return render_template('terms.html', userval=checkloggedin(session['userid']))
 
 
 @app.route('/logout', methods=['GET', 'POST'])
