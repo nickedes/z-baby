@@ -475,4 +475,17 @@ conn.commit()
 cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
+
+'''
+cursor.execute('SELECT * from dbo.Login')
+
+'''
+a= []
+val = "'" + "dbo.Login" +"'"
+cursor.execute('select * from sys.all_columns where object_id = OBJECT_ID(%s)' %(val))
+row = cursor.fetchall()
+
+for i in row:
+    a.append(i[1])
+print(a)
 conn.close()

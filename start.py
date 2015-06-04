@@ -9,7 +9,7 @@ from flask import (
 )
 from errors import showerrors
 import values
-
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -291,6 +291,10 @@ def update():
                            submenu=submenuval,
                            userval=checkloggedin(session['userid']))
 
+def allowed_file(filename, ALLOWED_EXTENSIONS):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
@@ -340,20 +344,27 @@ def submit():
         category_id = request.form['36']
         subcategory_id = request.form['37']
         description = request.form['38']
-        upload = request.form['40']
+        file = request.files['file']
         resource = request.form['42']
         support = request.form['44']
         implement_time = request.form['46']
         reach = request.form['47']
         example = request.form['49']
-
+        UPLOAD_FOLDER = '/home/nickedes/Documents'
+        ALLOWED_EXTENSIONS = set(['txt', 'mp4', 'png', 'jpg', 'jpeg', 'gif'])
+        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # return redirect(url_for('uploaded_file',filename=filename))
+            print("file uploaded")
         print(title)
         print(stage_id)
         print(benefit_id)
         print(category_id)
         print(subcategory_id)
         print(description)
-        print(upload)
+        print(file)
         print(resource)
         print(support)
         print(implement_time)
@@ -366,18 +377,29 @@ def submit():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
     if 'username' not in session:
-        return render_template('messages.html', menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
-                                   session['userid']),
+        return render_template('messages.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, userval=checkloggedin(
+                                   session['userid']), menuarray=menuarray,
                                message="You are not logged in!")
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category','SubCategory', 'Menu', 'SubMenu', 'Country', 'Block', 'District', 'State', 'Benefit', 'Stage']
         elif session['RoleID'] == 5:
             dropdown = [ table[2] for table in tables]
+        column_names = {}
+        for dropdown_single in dropdown:
+            column_names[dropdown_single] = values.getColumns(dropdown_single)
+            column_names[1] = values.gettablevalues(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, dropdown=dropdown)
+    else:
+        if 'add' in request.form:
+            pass
+        elif 'edit' in request.form:
+            pass
+        elif 'delete' in request.form:
+            pass
 
 
 @app.route('/review')

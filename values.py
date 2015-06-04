@@ -56,12 +56,22 @@ def checkInnovation(userid):
 def gettablevalues(tablename):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM dbo.%s ORDER BY %sID' %(tablename, tablename))
+    if tablename != 'Register':
+        cursor.execute(
+            'SELECT * FROM dbo.%s ORDER BY %sID' %(tablename, tablename))
+    elif tablename =="Register":
+        cursor.execute(
+            'SELECT * FROM dbo.Register ORDER BY LoginID')
     returnval = cursor.fetchall()
     conn.close()
     return returnval
 
+def getColumns(tablename):
+    val = "'dbo." + tablename + "'"
+    cursor.execute('select * from sys.all_columns where object_id = OBJECT_ID(%s)' %(val))
+    column_list = cursor.fetchall()
+    columns = [single_column[1] for single_column in column_list]
+    return columns
 
 def addUser():
     pass
