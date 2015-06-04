@@ -2,7 +2,6 @@ import os
 import pymssql
 from configparser import ConfigParser
 
-
 def getConnection():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,6 +14,14 @@ def getConnection():
     conn = pymssql.connect(server, user, password, "ziiei")
 
     return conn
+
+def gettablelist():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM information_schema.tables')
+    val = cursor.fetchall()
+    return val
 
 def checkLogin(username, password):
     username = "'" + username + "'"

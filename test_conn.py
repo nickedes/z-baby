@@ -379,7 +379,6 @@ cursor.executemany(
         (52, 1, 1, '/submit', 'Text', "Submit",'nickedes', str(datetime.now()))
     ]);
 
-'''
 cursor.executemany(
     "INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)",
     [
@@ -469,7 +468,8 @@ print(row)
 cursor.execute('SELECT * from dbo.SubCategory')
 row = cursor.fetchall()
 print(row)
-cursor.execute('SELECT * from dbo.Benefit')
+'''
+cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
 conn.close()
