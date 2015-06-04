@@ -52,6 +52,7 @@ def gettablevalues(tablename):
     cursor.execute(
         'SELECT * FROM dbo.%s ORDER BY %sID' %(tablename, tablename))
     returnval = cursor.fetchall()
+    conn.close()
     return returnval
 
 
@@ -61,23 +62,3 @@ def addUser():
 
 def addIdea(UserId):
     pass
-
-
-def benefit():
-    conn = getConnection()
-    cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM dbo.Benefit ORDER BY BenefitID')
-    benefit = cursor.fetchall()
-    conn.close()
-    return benefit
-
-
-def stage():
-    conn = getConnection()
-    cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM dbo.Stage ORDER BY StageID')
-    stage = cursor.fetchall()
-    conn.close()
-    return stage

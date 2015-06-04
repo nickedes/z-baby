@@ -301,18 +301,26 @@ def submit():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
-        benefits = values.benefit()
-        stages = values.stage()
+        benefits = values.gettablevalues('Benefit')
+        stages = values.gettablevalues('Stage')
+        category = values.gettablevalues('Category')
+        subcat = values.gettablevalues('SubCategory')
         bene_dict = {}
         for ben in benefits:
-            bene_dict[ben[1]] = ben[2]
+            if ben[0] == session['LanguageID']:
+                bene_dict[ben[1]] = ben[2]
         stage_dict = {}
         for stag in stages:
-            stage_dict[stag[1]] = stag[2]
+            if stag[0] == session['LanguageID']:
+                stage_dict[stag[1]] = stag[2]
+        category_dict = {}
+        for cat in category:
+            if cat[0] == session['LanguageID']:
+                category_dict[cat[1]] = cat[2]
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, label=label_dict,
-                               benefit=bene_dict,stage=stage_dict)
+                               benefit=bene_dict,stage=stage_dict,category=category_dict)
     else:
         pass
 

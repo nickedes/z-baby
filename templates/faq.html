@@ -1,9 +1,12 @@
 {% include 'header.html' %}
-<script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
-<link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 
+<script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}" type="text/css">
 <!-- Note the missing multiple attribute! -->
-<select id="example-multiple-selected" multiple="multiple">
+<select id="d" multiple="multiple">
 	<option value="cheese">Cheese</option>
 	<option value="tomatoes">Tomatoes</option>
 	<option value="mozarella">Mozzarella</option>
@@ -13,9 +16,7 @@
 </select>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#example-getting-selected').multiselect({
-        	buttonWidth: '400px'
-        });
+        $('#d').multiselect();
     });
 </script>
 {% include 'footer.html' %}
