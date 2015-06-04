@@ -378,33 +378,98 @@ cursor.executemany(
         (51, 1, 1, '/submit', 'head', 'Please enter the following details:','nickedes', str(datetime.now())),
         (52, 1, 1, '/submit', 'Text', "Submit",'nickedes', str(datetime.now()))
     ]);
-conn.commit()
 
-cursor.executemany(
-    "INSERT INTO dbo.Benefit VALUES (%d, %s, %s, %s)",
-    [
-        (1,"Improvement in learning outcomes and reduction in learning gaps" ,'nickedes',str(datetime.now())),
-        (2,"Create more supportive environment for girl child education" ,'nickedes',str(datetime.now())),
-        (3,"Facilitate inclusive education for children with special needs" ,'nickedes',str(datetime.now())),
-        (4,"Create an enquiry-led self-learning environment in the classroom/school" ,'nickedes',str(datetime.now())),
-        (5,"Increase the involvement of students’ parents in Education" ,'nickedes',str(datetime.now())),
-        (6,"Improve the rate of student enrolment in schools " ,'nickedes',str(datetime.now())),
-        (7,"Reduce the rate of student drop-out from schools" ,'nickedes',str(datetime.now())),
-        (8,"Enhancement of deeper human values in the students, staff, school or community" ,'nickedes',str(datetime.now())),
-        (9,"Improve the motivation level of teachers towards their profession" ,'nickedes',str(datetime.now())),
-        (10,"None of these" ,'nickedes',str(datetime.now())),
-    ])
 '''
 cursor.executemany(
-    "INSERT INTO dbo.Stage VALUES (%d, %s, %s, %s)",
+    "INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)",
     [
-        (1,'It is currently being implemented in a school, but its benefits have not been mapped yet.' ,'nickedes',str(datetime.now())),
-        (2,'Already implemented and your school is experiencing its benefits' ,'nickedes',str(datetime.now())),
-        (3,'It is a concept which has not been implemented anywhere yet' ,'nickedes',str(datetime.now()))
+        (1, 1,"Improvement in learning outcomes and reduction in learning gaps" ,'nickedes',str(datetime.now())),
+        (1, 2,"Create more supportive environment for girl child education" ,'nickedes',str(datetime.now())),
+        (1, 3,"Facilitate inclusive education for children with special needs" ,'nickedes',str(datetime.now())),
+        (1, 4,"Create an enquiry-led self-learning environment in the classroom/school" ,'nickedes',str(datetime.now())),
+        (1, 5,"Increase the involvement of students’ parents in Education" ,'nickedes',str(datetime.now())),
+        (1, 6,"Improve the rate of student enrolment in schools " ,'nickedes',str(datetime.now())),
+        (1, 7,"Reduce the rate of student drop-out from schools" ,'nickedes',str(datetime.now())),
+        (1, 8,"Enhancement of deeper human values in the students, staff, school or community" ,'nickedes',str(datetime.now())),
+        (1, 9,"Improve the motivation level of teachers towards their profession" ,'nickedes',str(datetime.now())),
+        (1, 10,"None of these" ,'nickedes',str(datetime.now())),
+    ])
+conn.commit()
+cursor.executemany(
+    "INSERT INTO dbo.Stage VALUES (%d, %d, %s, %s, %s)",
+    [
+        (1,1,'It is currently being implemented in a school, but its benefits have not been mapped yet.' ,'nickedes',str(datetime.now())),
+        (1,2,'Already implemented and your school is experiencing its benefits' ,'nickedes',str(datetime.now())),
+        (1,3,'It is a concept which has not been implemented anywhere yet' ,'nickedes',str(datetime.now()))
+    ])
+conn.commit()
+cursor.executemany(
+    "INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)",
+    [
+        (1, 1, "Scholastic Processes",'nickedes',str(datetime.now())),
+        (1, 2, "Co-scholastic Processes and Outcomes",'nickedes',str(datetime.now())),
+        (1, 3, "Infrastructure",'nickedes',str(datetime.now())),
+        (1, 4, "Education Stakeholders",'nickedes',str(datetime.now())),
+        (1, 5, "Management & Administration",'nickedes',str(datetime.now())),
+        (1, 6, "Leadership",'nickedes',str(datetime.now()))
+    ])
+    
+conn.commit()
+cursor.executemany(
+    "INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)",
+    [
+        (1, 1, 1,"Curriculum Planning",'nickedes',str(datetime.now())),
+        (1, 1, 2,"Teaching and Learning Process",'nickedes',str(datetime.now())),
+        (1, 1, 3,"Student Performance Assessment",'nickedes',str(datetime.now())),
+        (1, 2, 1,"Inculcating Life Skills",'nickedes',str(datetime.now())),
+        (1, 2, 2,"Inculcating Values",'nickedes',str(datetime.now())),
+        (1, 2, 3,"Improving Attitude towards Teaching / Learning",'nickedes',str(datetime.now())),
+        (1, 2, 4,"Career counselling",'nickedes',str(datetime.now())),
+        (1, 2, 5,"Visual and Performing Arts",'nickedes',str(datetime.now())),
+        (1, 2, 6,"Extra-curricular activities",'nickedes',str(datetime.now())),
+        (1, 2, 7,"Health and Physical Activities",'nickedes',str(datetime.now())),
+        (1, 3, 1,"Classrooms, Library, Laboratory, Computer Labs.....etc.",'nickedes',str(datetime.now())),
+        (1, 3, 2,"Principal's Office, Staff Room and Administration Offices",'nickedes',str(datetime.now())),
+        (1, 3, 3,"Sports and Games Facilities, Hobby Rooms, Arts and Music Facilities.",'nickedes',str(datetime.now())),
+        (1, 3, 4,"Girl's rest room, infirmary, water and sanitation, Health Management Facilities.",'nickedes',str(datetime.now())),
+        (1, 3, 5,"Furniture, Lightening Sanitation",'nickedes',str(datetime.now())),
+        (1, 3, 6,"Safety and Disaster Management provisions",'nickedes',str(datetime.now())),
+        (1, 3, 7,"Provision for differently abled children and inclusive practices.",'nickedes',str(datetime.now())),
+        (1, 3, 8,"Eco-Friendly Orientation, Aesthetics, Lawns and Green Plants",'nickedes',str(datetime.now())),
+        (1, 4, 1,"Teaching staff",'nickedes',str(datetime.now())),
+        (1, 4, 2,"Parents",'nickedes',str(datetime.now())),
+        (1, 4, 3,"Alumni",'nickedes',str(datetime.now())),
+        (1, 4, 4,"Students",'nickedes',str(datetime.now())),
+        (1, 4, 5,"Administrative staff",'nickedes',str(datetime.now())),
+        (1, 4, 6,"Alumni",'nickedes',str(datetime.now())),
+        (1, 4, 7,"Community",'nickedes',str(datetime.now())),
+        (1, 5, 1,"Institutional Planning",'nickedes',str(datetime.now())),
+        (1, 5, 2,"Institutional Improvement and Process of Accreditation and Certification",'nickedes',str(datetime.now())),
+        (1, 5, 3,"Goal Setting and Policy Making",'nickedes',str(datetime.now())),
+        (1, 5, 4,"Effective Co-Ordination within the school",'nickedes',str(datetime.now())),
+        (1, 5, 5,"Resource Management",'nickedes',str(datetime.now())),
+        (1, 5, 6,"Relationship Management (staff, parents, community, alumni etc.)",'nickedes',str(datetime.now())),
+        (1, 5, 7,"Data and Record Maintenance",'nickedes',str(datetime.now())),
+        (1, 5, 8,"Oral and Written Communication",'nickedes',str(datetime.now())),
+        (1, 5, 9,"Standard Operating Procedures ",'nickedes',str(datetime.now())),
+        (1, 5, 10,"Financial Administration",'nickedes',str(datetime.now())),
+        (1, 6, 1,"Vision and Mission Statement",'nickedes',str(datetime.now())),
+        (1, 6, 2,"Strategic plans for the school improvement",'nickedes',str(datetime.now())),
+        (1, 6, 3,"Quality and Change Management",'nickedes',str(datetime.now())),
+        (1, 6, 4,"Scholastic Leadership",'nickedes',str(datetime.now())),
+        (1, 6, 5,"Innovative practices",'nickedes',str(datetime.now()))
     ])
 conn.commit()
 cursor.execute('SELECT * from dbo.Stage')
 row = cursor.fetchall()
 print(row)
-
+cursor.execute('SELECT * from dbo.Category')
+row = cursor.fetchall()
+print(row)
+cursor.execute('SELECT * from dbo.SubCategory')
+row = cursor.fetchall()
+print(row)
+cursor.execute('SELECT * from dbo.Benefit')
+row = cursor.fetchall()
+print(row)
 conn.close()
