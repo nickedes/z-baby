@@ -193,7 +193,7 @@ def faq():
                            userval=checkloggedin(session['userid']))
 
 
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if 'username' in session:
         return redirect(url_for('index'))
@@ -273,7 +273,7 @@ def register():
         print(email)
         print(sch_name)
         print(designation)
-        print(subjects) 
+        print(subjects)
         print(sch_addr)
         print(countryval)
         print(stateval)
@@ -295,7 +295,10 @@ def update():
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
-        return redirect(url_for('index'))
+        return render_template('messages.html', label=labelval, menu=menuval,
+                               submenu=submenuval, userval=checkloggedin(
+                                   session['userid']),
+                               message="You are not logged in!")
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -333,6 +336,23 @@ def submit():
         pass
 
 
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    if 'username' not in session:
+        return render_template('messages.html', menu=menuval,
+                               submenu=submenuval, userval=checkloggedin(
+                                   session['userid']),
+                               message="You are not logged in!")
+    if request.method == 'GET':
+        if session['RoleID'] == 4:
+            dropdown = ['Category','SubCategory', 'Menu', 'SubMenu', 'Country', 'Block', 'District', 'State', 'Benefit', 'Stage']
+        elif session['RoleID'] == 5:
+            dropdown = [ table[2] for table in tables]
+        return render_template('edit.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, userval=checkloggedin(
+                                   session['userid']), menuarray=menuarray, dropdown=dropdown)
+
+
 @app.route('/review')
 def review():
     if 'username' not in session:
@@ -344,11 +364,12 @@ def review():
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
+
 @app.route('/language/<int:langid>')
 def language(langid):
     session.pop('LanguageID', None)
     session['LanguageID'] = langid
-    return "polpol:("
+    return redirect(request.args.get('next') or url_for('index'))
 
 if __name__ == '__main__':
     print("Fetching data...")
@@ -376,5 +397,6 @@ if __name__ == '__main__':
     state = values.gettablevalues('State')
     district = values.gettablevalues('District')
     block = values.gettablevalues('Block')
+    tables = values.gettablelist()
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)
