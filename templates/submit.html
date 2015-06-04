@@ -1,5 +1,6 @@
 {% include 'header.html' %}
-
+<script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
+<link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <h3>{{ label[51] }}</h3>
 <br>
 <div class="col-lg-8" style="margin-left:100px">
@@ -40,9 +41,13 @@
   	<div class="form-group">
 	    <label for="" class=" control-label">{{ label[36] }}</label> 
 	    <h6>{{ label[37] }}</h6> 
-	      <div class="">
-	        <input type="text" class="form-control" id=" " >
-	      </div>
+	    	<div class="">
+			<select id = "34" name="benefit" class="form-control" >
+			{% for data in category %}
+				<option value="{{ data }}" >{{ category[data] }}</option>
+			{% endfor %}
+			</select>
+			</div>
 	      <br><br>
   	</div>
   	<div class="form-group">
