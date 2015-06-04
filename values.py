@@ -16,29 +16,6 @@ def getConnection():
 
     return conn
 
-
-def getValues():
-    conn = getConnection()
-    cursor = conn.cursor()
-    cursor.execute(
-        'SELECT * FROM dbo.Label ORDER BY LabelID')
-    label = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.Menu ORDER BY MenuID')
-    menu = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.SubMenu ORDER BY SubMenuID')
-    submenu = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.Category ORDER BY CategoryID')
-    category = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.Subcategory ORDER BY SubCategoryID')
-    subcategory = cursor.fetchall()
-    conn.close()
-    return label, menu, submenu, category, subcategory
-
-
 def checkLogin(username, password):
     username = "'" + username + "'"
     passwordreal = "'" + password + "'"
@@ -69,23 +46,13 @@ def checkInnovation(userid):
     conn.close()
 
 
-def levels():
+def gettablevalues(tablename):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Country ORDER BY CountryID')
-    country = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.State ORDER BY StateID')
-    state = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.District ORDER BY DistrictID')
-    district = cursor.fetchall()
-    cursor.execute(
-        'SELECT * FROM dbo.Block ORDER BY BlockID')
-    block = cursor.fetchall()
-    conn.close()
-    return country, state, district, block
+        'SELECT * FROM dbo.%s ORDER BY %sID' %(tablename, tablename))
+    returnval = cursor.fetchall()
+    return returnval
 
 
 def addUser():

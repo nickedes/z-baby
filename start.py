@@ -28,7 +28,7 @@ def index():
     if 'username' in session:
         return redirect(url_for('home'))
     if 'LanguageID' not in session:
-        session['LanguageID'] = 1
+        session['LanguageID'] = masterlang
     if 'RoleID' not in session:
         session['RoleID'] = 0
     if 'userid' not in session:
@@ -198,13 +198,12 @@ def register():
     if 'username' in session:
         return redirect(url_for('index'))
     if 'LanguageID' not in session:
-        session['LanguageID'] = 1
+        session['LanguageID'] = masterlang
     if 'RoleID' not in session:
         session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
     if request.method == 'GET':
-        country, state, district, block = values.levels()
         label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/register':
@@ -237,7 +236,6 @@ def register():
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
-        country, state, district, block = values.levels()
         countrylist = {}
         for single_country in country:
             statelist = []
@@ -259,10 +257,10 @@ def register():
         designation = request.form['23']
         subjects = request.form['24']
         sch_addr = request.form['25']
-        country = request.form['26']
-        state = request.form['27']
-        district = request.form['28']
-        block = request.form['29']
+        countryval = request.form['26']
+        stateval = request.form['27']
+        districtval = request.form['28']
+        blockval = request.form['29']
         print(name)
         print(emp_id)
         print(DOB)
@@ -277,10 +275,10 @@ def register():
         print(designation)
         print(subjects) 
         print(sch_addr)
-        print(country)
-        print(state)
-        print(district)
-        print(block)
+        print(countryval)
+        print(stateval)
+        print(districtval)
+        print(blockval)
 
         return "dvfkvekv"
 
@@ -330,10 +328,19 @@ def review():
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
 
+@app.route('/language/<int:langid>')
+def language(langid):
+    session.pop('LanguageID', None)
+    session['LanguageID'] = langid
+    return "polpol:("
 
 if __name__ == '__main__':
     print("Fetching data...")
-    labels, menus, submenus, categories, subcategories = values.getValues()
+    labels = values.gettablevalues('Label')
+    menus = values.gettablevalues('Menu')
+    submenus = values.gettablevalues('SubMenu')
+    categories = values.gettablevalues('Category')
+    subcategories = values.gettablevalues('SubCategory')
     topmenu = []
     topsubmenu = []
     menuarray = [0 for menu in menus if menu[5] == -1]
@@ -344,5 +351,14 @@ if __name__ == '__main__':
             if submenu[5] == -1 and submenu[1] == menu[1]:
                 menuarray[submenu[1]-1] = 1
                 topsubmenu.append([submenu[1], submenu[3], submenu[4]])
+    languages = values.gettablevalues('Language')
+    for lang in languages:
+        if lang[2] == 1:
+            masterlang = lang[0]
+            break
+    country = values.gettablevalues('Country')
+    state = values.gettablevalues('State')
+    district = values.gettablevalues('District')
+    block = values.gettablevalues('Block')
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)
