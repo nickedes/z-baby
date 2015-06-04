@@ -468,12 +468,17 @@ print(row)
 cursor.execute('SELECT * from dbo.SubCategory')
 row = cursor.fetchall()
 print(row)
-'''
-<<<<<<< HEAD
+
 cursor.execute('SELECT * from dbo.Login')
-=======
+
 cursor.execute('SELECT * from dbo.Benefit')
->>>>>>> 0629cf27cf3103064d80664305947c76097ccfd2
+'''
+a= []
+val = "'" + "dbo.Login" +"'"
+cursor.execute('select * from sys.all_columns where object_id = OBJECT_ID(%s)' %(val))
 row = cursor.fetchall()
-print(row)
+
+for i in row:
+    a.append(i[1])
+print(a)
 conn.close()

@@ -1,6 +1,8 @@
 {% include 'header.html' %}
+<script>
 
-
+</script>
+<div class="col-md-12">
 <h3>Please select the table you want to edit: </h3>
 <form action='/edit' method="POST">
 	<div class="row" align="center">
@@ -12,13 +14,56 @@
 				</select type="hidden"> 
 			</div>
 		</div>
-<br><br>
+	<br><br>
 	<div class="container button">
-      	<div class="row" align="center">
-        	<div class="col-lg-12">
-          		<p><a class="btn btn-primary" role="button">Edit</a></p>
-        	</div>       
-		</div>
-	</div>
+      <div class="row" align="center">
+        <div class="col-lg-12">
+          <p><a class="btn btn-primary" id="showtable" name="add" role="button">Add/Edit/Delete</a></p>
+        </div>
+       </div>
+    </div>
+    {% if tables is not None %}
+    <div class="col-md-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Station Name</th>
+          <th>Title</th>
+          <th>Bodytext</th>
+          <th>Author</th>
+          <th>Timestamp</th>
+          <th>Approve</th>
+          <th>Reject</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in data: %}
+        <tr>
+          <td>{{ data.index(i) + 1 }}</td>
+          <td>{{ i[1] }}</td>
+          <td>{{ i[2] }}</td>
+          <td>{{ i[4] }}</td>
+          <td>{{ i[3] }}</td>
+          <td>{{ i[0] }}</td>
+          <td><a href="/metro/re_view2?id={{ i[0] }}"><button type="submit" class="btn btn-success">Approve</button></a></td>
+          <td><a href="/metro/re_view3?id={{ i[0] }}"><button type="submit" class="btn btn-danger">Reject</button></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
 </form>
+</div>
+
+<script>
+$("#showtable").click(function(event){
+  var val = $('option:selected').attr("value")
+   if( val == "Menu"){
+  	$('#SubMenu').hide();
+   }
+});
+</script>
+
 {% include 'footer.html' %}

@@ -331,18 +331,29 @@ def submit():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
     if 'username' not in session:
-        return render_template('messages.html', menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
-                                   session['userid']),
+        return render_template('messages.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, userval=checkloggedin(
+                                   session['userid']), menuarray=menuarray,
                                message="You are not logged in!")
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category','SubCategory', 'Menu', 'SubMenu', 'Country', 'Block', 'District', 'State', 'Benefit', 'Stage']
         elif session['RoleID'] == 5:
             dropdown = [ table[2] for table in tables]
+        column_names = {}
+        for dropdown_single in dropdown:
+            column_names[dropdown_single] = values.getColumns(dropdown_single)
+            column_names[] = values.gettablevalues(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, dropdown=dropdown)
+    else:
+        if 'add' in request.form:
+            pass
+        elif 'edit' in request.form:
+            pass
+        elif 'delete' in request.form:
+            pass
 
 
 @app.route('/review')
