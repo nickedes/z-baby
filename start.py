@@ -320,10 +320,18 @@ def submit():
         for cat in category:
             if cat[0] == session['LanguageID']:
                 category_dict[cat[1]] = cat[2]
+        subcat_dict = {}
+        for cat in category:
+            sublist = []
+            for sub in subcat:
+                if sub[1] == cat[1]:
+                    sublist.append([sub[3], sub[2]])
+            subcat_dict[cat[1]] = sublist
+        print(subcat_dict)
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, label=label_dict,
-                               benefit=bene_dict,stage=stage_dict,category=category_dict)
+                               benefit=bene_dict,stage=stage_dict,category=category_dict,subcategory=subcat_dict)
     else:
         pass
 
@@ -343,7 +351,7 @@ def edit():
         column_names = {}
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
-            column_names[] = values.gettablevalues(dropdown_single)
+            column_names[1] = values.gettablevalues(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, dropdown=dropdown)
