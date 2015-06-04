@@ -1,3 +1,21 @@
 {% include 'header.html' %}
+<script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
+<link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 
+<!-- Note the missing multiple attribute! -->
+<select id="example-multiple-selected" multiple="multiple">
+	<option value="cheese">Cheese</option>
+	<option value="tomatoes">Tomatoes</option>
+	<option value="mozarella">Mozzarella</option>
+	<option value="mushrooms">Mushrooms</option>
+	<option value="pepperoni">Pepperoni</option>
+	<option value="onions">Onions</option>
+</select>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#example-getting-selected').multiselect({
+        	buttonWidth: '400px'
+        });
+    });
+</script>
 {% include 'footer.html' %}

@@ -307,10 +307,10 @@ def submit():
         stages = values.stage()
         bene_dict = {}
         for ben in benefits:
-            bene_dict[ben[0]] = ben[1]
+            bene_dict[ben[1]] = ben[2]
         stage_dict = {}
         for stag in stages:
-            stage_dict[stag[0]] = stag[1]
+            stage_dict[stag[1]] = stag[2]
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, label=label_dict,

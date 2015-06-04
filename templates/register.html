@@ -1,6 +1,4 @@
 {% include 'header.html' %}
-<link href="{{url_for('static', filename='js/bootstrap-datepicker.js')}}" rel="stylesheet">
-<link href="{{url_for('static', filename='css/datepicker.css')}}" rel="stylesheet">
 
 <div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[30][1] }}</h3>
@@ -120,7 +118,7 @@
       <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control" >
         <option>..</option>
         {% for data in country %}
-          <option value="{{ clist[data[1]] }}" >{{ data[2] }}</option>
+          <option value="{{ data[1] }}" >{{ data[2] }}</option>
         {% endfor %}
       </select>
     </div>
@@ -165,15 +163,38 @@
 
 <script type="text/javascript">
   function configureDropDownLists(ddl1,ddl2) {
-  var states = ddl1.value ;
-  ddl2.options.length = 1;
-  states = states.split(",")
-  for(i = 0; i < states.length; i+=2)
-  {
-    state = states[i].split("'")[1]
-    stat_val = states[i+1].split("'")[0][1]
-    createOption(ddl2,state,stat_val);
-  }
+    var value = ddl1.value;
+    var country = '{{ clist }}'
+    // todo: variables shit! :P
+    y = country.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
+        {
+          l = y[j+1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+          break;
+        }
+      }
+    }
   }
 
   function district(ddl1,ddl2) {
@@ -214,6 +235,7 @@
   function stat(ddl1,ddl2) {
     var value = ddl1.value;
     var districts = '{{ dlist }}'
+    window.alert(districts)
     // todo: variables shit! :P
     y = districts.split(":")
     ddl2.options.length = 1;
