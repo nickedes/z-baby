@@ -414,6 +414,18 @@ cursor.executemany(
     ])
     
 conn.commit()
+
+cursor.execute('SELECT * from dbo.Stage')
+row = cursor.fetchall()
+print(row)
+cursor.execute('SELECT * from dbo.Category')
+row = cursor.fetchall()
+print(row)
+cursor.execute('DELETE from dbo.SubCategory where LanguageID = 1')
+conn.commit()
+cursor.execute('SELECT * from dbo.SubCategory')
+row = cursor.fetchall()
+print(row)
 cursor.executemany(
     "INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)",
     [
@@ -427,14 +439,14 @@ cursor.executemany(
         (1, 2, 5,"Visual and Performing Arts",'nickedes',str(datetime.now())),
         (1, 2, 6,"Extra-curricular activities",'nickedes',str(datetime.now())),
         (1, 2, 7,"Health and Physical Activities",'nickedes',str(datetime.now())),
-        (1, 3, 1,"Classrooms, Library, Laboratory, Computer Labs.....etc.",'nickedes',str(datetime.now())),
-        (1, 3, 2,"Principal's Office, Staff Room and Administration Offices",'nickedes',str(datetime.now())),
-        (1, 3, 3,"Sports and Games Facilities, Hobby Rooms, Arts and Music Facilities.",'nickedes',str(datetime.now())),
-        (1, 3, 4,"Girl's rest room, infirmary, water and sanitation, Health Management Facilities.",'nickedes',str(datetime.now())),
-        (1, 3, 5,"Furniture, Lightening Sanitation",'nickedes',str(datetime.now())),
+        (1, 3, 1,"Classrooms Library Laboratory Computer Labs.....etc.",'nickedes',str(datetime.now())),
+        (1, 3, 2,"Principal's Office Staff Room and Administration Offices",'nickedes',str(datetime.now())),
+        (1, 3, 3,"Sports and Games Facilities Hobby Rooms  Arts and Music Facilities.", 'nickedes',str(datetime.now())),
+        (1, 3, 4,"Girl's rest room infirmary water and sanitation Health Management Facilities.",'nickedes',str(datetime.now())),
+        (1, 3, 5,"Furniture Lightening Sanitation",'nickedes',str(datetime.now())),
         (1, 3, 6,"Safety and Disaster Management provisions",'nickedes',str(datetime.now())),
         (1, 3, 7,"Provision for differently abled children and inclusive practices.",'nickedes',str(datetime.now())),
-        (1, 3, 8,"Eco-Friendly Orientation, Aesthetics, Lawns and Green Plants",'nickedes',str(datetime.now())),
+        (1, 3, 8,"Eco-Friendly Orientation Aesthetics Lawns and Green Plants",'nickedes',str(datetime.now())),
         (1, 4, 1,"Teaching staff",'nickedes',str(datetime.now())),
         (1, 4, 2,"Parents",'nickedes',str(datetime.now())),
         (1, 4, 3,"Alumni",'nickedes',str(datetime.now())),
@@ -447,7 +459,7 @@ cursor.executemany(
         (1, 5, 3,"Goal Setting and Policy Making",'nickedes',str(datetime.now())),
         (1, 5, 4,"Effective Co-Ordination within the school",'nickedes',str(datetime.now())),
         (1, 5, 5,"Resource Management",'nickedes',str(datetime.now())),
-        (1, 5, 6,"Relationship Management (staff, parents, community, alumni etc.)",'nickedes',str(datetime.now())),
+        (1, 5, 6,"Relationship Management (staff parents community alumni etc.)",'nickedes',str(datetime.now())),
         (1, 5, 7,"Data and Record Maintenance",'nickedes',str(datetime.now())),
         (1, 5, 8,"Oral and Written Communication",'nickedes',str(datetime.now())),
         (1, 5, 9,"Standard Operating Procedures ",'nickedes',str(datetime.now())),
@@ -459,15 +471,6 @@ cursor.executemany(
         (1, 6, 5,"Innovative practices",'nickedes',str(datetime.now()))
     ])
 conn.commit()
-cursor.execute('SELECT * from dbo.Stage')
-row = cursor.fetchall()
-print(row)
-cursor.execute('SELECT * from dbo.Category')
-row = cursor.fetchall()
-print(row)
-cursor.execute('SELECT * from dbo.SubCategory')
-row = cursor.fetchall()
-print(row)
 '''
 cursor.execute('SELECT * from dbo.Benefit')
 row = cursor.fetchall()
