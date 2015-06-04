@@ -472,11 +472,7 @@ cursor.executemany(
     ])
 conn.commit()
 '''
-<<<<<<< HEAD
 cursor.execute('SELECT * from dbo.Login')
-=======
-cursor.execute('SELECT * from dbo.Benefit')
->>>>>>> 0629cf27cf3103064d80664305947c76097ccfd2
 row = cursor.fetchall()
 print(row)
 conn.close()

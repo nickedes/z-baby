@@ -299,6 +299,7 @@ def submit():
                                submenu=submenuval, userval=checkloggedin(
                                    session['userid']),
                                message="You are not logged in!")
+
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -333,7 +334,33 @@ def submit():
                                    session['userid']), menuarray=menuarray, label=label_dict,
                                benefit=bene_dict,stage=stage_dict,category=category_dict,subcategory=subcat_dict)
     else:
-        pass
+        title = request.form['31']
+        stage_id = request.form['33']
+        benefit_id = request.form['34']
+        category_id = request.form['36']
+        subcategory_id = request.form['37']
+        description = request.form['38']
+        upload = request.form['40']
+        resource = request.form['42']
+        support = request.form['44']
+        implement_time = request.form['46']
+        reach = request.form['47']
+        example = request.form['49']
+
+        print(title)
+        print(stage_id)
+        print(benefit_id)
+        print(category_id)
+        print(subcategory_id)
+        print(description)
+        print(upload)
+        print(resource)
+        print(support)
+        print(implement_time)
+        print(reach)
+        print(example)
+
+        return "litchi"
 
 
 @app.route('/edit', methods=['GET', 'POST'])
