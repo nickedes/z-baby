@@ -1,3 +1,4 @@
+
 {% include 'header.html' %}
 
 <div class="col-lg-8" style="margin-left:100px">
@@ -51,8 +52,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[18][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" class="form-control" name="18" placeholder="Enter {{ label[18][1] }}">
-        </textarea>
+        <textarea type="text" class="form-control" name="18" placeholder="Enter {{ label[18][1] }}"></textarea>
       </div>
       <br><br>
   </div>
@@ -60,8 +60,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[19][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" name="19"class="form-control" placeholder="Enter {{ label[19][1] }}">
-        </textarea>
+        <textarea type="text" name="19"class="form-control" placeholder="Enter {{ label[19][1] }}"></textarea>
       </div>
       <br><br>
   </div>
@@ -70,6 +69,13 @@
     <label class="col-sm-2 control-label">{{ label[20][1] }}</label>  
       <div class="col-sm-6">
         <input type="text" name="20" class="form-control" placeholder="Enter {{ label[20][1] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[53][1] }}</label>
+      <div class="col-sm-6">
+        <input type="text" name="53" class="form-control" placeholder="Enter {{ label[53][1] }}">
       </div>
       <br><br>
   </div>
@@ -97,8 +103,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[24][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" name= "24" sclass="form-control" placeholder="Enter {{ label[24][1] }}">
-        </textarea>
+        <textarea type="text" name= "24" sclass="form-control" placeholder="Enter {{ label[24][1] }}"></textarea>
       </div>
       <br><br>
   </div>
@@ -106,8 +111,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[25][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" name="25" class="form-control" placeholder="Enter {{ label[25][1] }}">
-        </textarea>
+        <textarea type="text" name="25" class="form-control" placeholder="Enter {{ label[25][1] }}"></textarea>
       </div>
       <br><br>
   </div>
@@ -115,7 +119,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[26][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control" >
+      <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
         <option>..</option>
         {% for data in country %}
           <option value="{{ data[1] }}" >{{ data[2] }}</option>

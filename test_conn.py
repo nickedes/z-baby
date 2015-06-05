@@ -478,14 +478,51 @@ print(row)
 cursor.execute('SELECT * from dbo.Category')
 row = cursor.fetchall()
 print(row)
-cursor.execute('SELECT * from dbo.SubCategory')
+Label (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, CreatedBy, CreateDate)
+
+cursor.execute("INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)",(53, 1, 0, '/register', 'Textbox', 'Alternate Number', 'kwikadi', str(datetime.now())))
+conn.commit()
+conn.commit()
+cursor.execute('SELECT * from dbo.Label')
 row = cursor.fetchall()
 print(row)
-
-'''
+conn.close()
 cursor.execute('SELECT * from dbo.Login')
-
+name = "Aditya"
+dob = "1993-01-14"
+sch_name = "Delhi Public School"
+sch_addr = "123, 3423 LOLPOL"
+ph = 9811821492
+alt_ph = 9711419959
+doj = "2012-03-03"
+awards = "None"
+empid = "23bjv32"
+qual = "None"
+gender = "Male"
+resi_addr = "1223 Indiana"
+email = "kwikadi@live.com"
+desig = "cevn"
+subj = "English"
+block = 1
+dist = 1
+state = 1
+country = 1
+cr_by = "admin"
+cr_date = datetime.now() 
+cursor.execute(
+            'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
+conn.commit()
+'''     
+cursor.execute('SELECT * FROM dbo.Registration')
+row = cursor.fetchall()
+print(row)
 '''
+name = "nameoffield"
+age = 22
+bigage = 9811821782
+date = 1992-02-20
+timing = datetime.now()
+cursor.execute('INSERT into dbo.Dummy VALUES (%s, %d, %d, %s, %s)', (name, age, bigage, date, timing))
 a= []
 val = "'" + "dbo.Login" +"'"
 cursor.execute('select * from sys.all_columns where object_id = OBJECT_ID(%s)' %(val))
@@ -494,4 +531,4 @@ row = cursor.fetchall()
 for i in row:
     a.append(i[1])
 print(a)
-conn.close()
+'''

@@ -23,6 +23,16 @@ def gettablelist():
     val = cursor.fetchall()
     return val
 
+def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
+    conn.commit()
+    conn.close()
+    return True
+
+
 def checkLogin(username, password):
     username = "'" + username + "'"
     passwordreal = "'" + password + "'"

@@ -7,6 +7,7 @@ from flask import (
     redirect,
     request
 )
+from datetime import datetime
 from errors import showerrors
 import values
 
@@ -251,36 +252,22 @@ def register():
         DOJ = request.form['17']
         awards = request.form['18']
         address = request.form['19']
-        phone = request.form['20']
+        phone = int(request.form['20'])
+        altphone = int(request.form['53'])
         email = request.form['21']
         sch_name = request.form['22']
         designation = request.form['23']
         subjects = request.form['24']
         sch_addr = request.form['25']
-        countryval = request.form['26']
-        stateval = request.form['27']
-        districtval = request.form['28']
-        blockval = request.form['29']
-        print(name)
-        print(emp_id)
-        print(DOB)
-        print(quali)
-        print(gender)
-        print(DOJ)
-        print(awards)
-        print(address)
-        print(phone)
-        print(email)
-        print(sch_name)
-        print(designation)
-        print(subjects)
-        print(sch_addr)
-        print(countryval)
-        print(stateval)
-        print(districtval)
-        print(blockval)
-
-        return "dvfkvekv"
+        countryval = int(request.form['26'])
+        stateval = int(request.form['27'])
+        districtval = int(request.form['28'])
+        blockval = int(request.form['29'])
+        # Registration (LoginID, Name, DateOfBirth, SchoolName, SchoolAddress, PhoneNumber, AlternateNumber, DateOfJoining, Awards, EmployeeID, Qualification, Gender, ResidentialAddress, EmailID, Designation, Subjects, BlockID, DistrictID, StateID, CountryID, CreatedBy, CreateDate)
+        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender, address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" +name, datetime.now())
+        if insertvals == True:
+            return "lolpol"
+        return redirect(url_for('/register'))
 
 
 @app.route('/update')
