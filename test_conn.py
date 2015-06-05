@@ -488,6 +488,7 @@ cursor.execute('SELECT * from dbo.Label')
 cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
+'''
 '''     
 cursor.execute('SELECT * from dbo.Login')
 name = "Aditya"
@@ -579,7 +580,6 @@ cursor.executemany(
 conn.commit()
 
 empid = "23bjv32"
-'''
 cursor.execute('UPDATE dbo.Label set PageName = %s WHERE LabelID = %d and RoleID = %d', ('/update', 53, 1))
 conn.commit()
 cursor.execute('UPDATE dbo.Label set PageName = %s WHERE LabelID = %d and RoleID = %d', ('/update', 53, 2))
@@ -587,7 +587,6 @@ conn.commit()
 cursor.execute('SELECT * FROM dbo.Label WHERE RoleID = %d', 1)
 row = cursor.fetchall()
 print(row)
-'''
 for i in row:
     a.append(i[1])
 print(a)
@@ -602,10 +601,14 @@ conn.commit()
 cursor.execute("DELETE FROM dbo.Idea where LoginID = 8")
 conn.commit()
 
-'''
 cursor.execute("SELECT * FROM dbo.Idea")
 row = cursor.fetchall()
 print(row)
-cursor.execute("SELECT * FROM dbo.Media")
+'''
+cursor.execute("SELECT * FROM dbo.Registration")
+row = cursor.fetchall()
+print(row)
+
+cursor.execute("SELECT * FROM dbo.Login")
 row = cursor.fetchall()
 print(row)
