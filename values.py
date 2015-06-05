@@ -15,6 +15,15 @@ def getConnection():
 
     return conn
 
+def getClient_ID():
+    CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+
+    config = ConfigParser()
+    config.read(os.path.join(CURRENT_DIR, 'config.ini'))
+
+    CLIENT_ID = config["Imgur"]["CLIENT_ID"]
+    return CLIENT_ID
+
 def gettablelist():
     conn = getConnection()
     cursor = conn.cursor()

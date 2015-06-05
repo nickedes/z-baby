@@ -11,6 +11,8 @@ from datetime import datetime
 from errors import showerrors
 import values
 from werkzeug import secure_filename
+import pyimgur
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -278,6 +280,7 @@ def update():
                            submenu=submenuval,
                            userval=checkloggedin(session['userid']))
 
+
 def allowed_file(filename, ALLOWED_EXTENSIONS):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
@@ -286,8 +289,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
-        return render_template('messages.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
+        return render_template('messages.html', userval=checkloggedin(
                                    session['userid']),
                                message="You are not logged in!")
 
@@ -323,7 +325,7 @@ def submit():
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, userval=checkloggedin(
                                    session['userid']), menuarray=menuarray, label=label_dict,
-                               benefit=bene_dict,stage=stage_dict,category=category_dict,subcategory=subcat_dict)
+                               benefit=bene_dict, stage=stage_dict, category=category_dict, subcategory=subcat_dict)
     else:
         title = request.form['31']
         stage_id = request.form['33']
@@ -337,13 +339,19 @@ def submit():
         implement_time = request.form['46']
         reach = request.form['47']
         example = request.form['49']
-        UPLOAD_FOLDER = '/home/nickedes/Documents'
-        ALLOWED_EXTENSIONS = set(['txt', 'mp4', 'png', 'jpg', 'jpeg', 'gif'])
+        UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
+        ALLOWED_EXTENSIONS = set(['mp4', 'png', 'jpg', 'jpeg', 'gif'])
         app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # return redirect(url_for('uploaded_file',filename=filename))
+            PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(PATH)
+            CLIENT_ID = values.getClient_ID()
+            im = pyimgur.Imgur(CLIENT_ID)
+            uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+            os.remove(PATH)
+            print(uploaded_image.title)
+            print(uploaded_image.link)
             print("file uploaded")
         print(title)
         print(stage_id)
@@ -370,9 +378,10 @@ def edit():
                                message="You are not logged in!")
     if request.method == 'GET':
         if session['RoleID'] == 4:
-            dropdown = ['Category','SubCategory', 'Menu', 'SubMenu', 'Country', 'Block', 'District', 'State', 'Benefit', 'Stage']
+            dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu',
+                        'Country', 'Block', 'District', 'State', 'Benefit', 'Stage']
         elif session['RoleID'] == 5:
-            dropdown = [ table[2] for table in tables]
+            dropdown = [table[2] for table in tables]
         column_names = {}
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
