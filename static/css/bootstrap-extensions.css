@@ -61,3 +61,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93d470', end
 .navbar-nav > li > a {
     color: #000000 !important;
 }
+
+.navbar-nav > .open > a:focus {
+    background-color: #FFF !important;
+    }    
