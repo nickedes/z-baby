@@ -338,7 +338,7 @@ cursor.executemany('INSERT INTO dbo.Menu values (%d, %d, %s, %s, %s, %d, %s, %s)
     [(1,8,'/home','Update Personal Information','/update', 1, 'nickedes', str(datetime.now())),
     (1,9,'/home','Submit Innovation','/submit', 1, 'kwikadi', str(datetime.now())),
     (1,10,'/home','Review Innovation','/review', 1, 'nickedes', str(datetime.now())),
-    (1,11,'/home','Create Techer Profile','/create', 2, 'kwikadi', str(datetime.now())),
+    (1,11,'/home','Create Teacher Profile','/create', 2, 'kwikadi', str(datetime.now())),
     (1,12,'/home','Submit Teacher Innovation','/submit', 2, 'nickedes', str(datetime.now())),
     (1,13,'/home','Update Teacher Profile','/update', 2, 'kwikadi', str(datetime.now())),
     (1,14,'/home','Review Teacher Innovation','/review', 2, 'nickedes', str(datetime.now())),
@@ -484,6 +484,7 @@ conn.commit()
 conn.commit()
 cursor.execute('SELECT * from dbo.Label')
 '''
+'''     
 cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
@@ -513,11 +514,9 @@ cr_date = datetime.now()
 cursor.execute(
             'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
 conn.commit()
-'''     
 cursor.execute('SELECT * FROM dbo.Registration')
 row = cursor.fetchall()
 print(row)
-'''
 name = "nameoffield"
 age = 22
 bigage = 9811821782
@@ -526,9 +525,68 @@ timing = datetime.now()
 cursor.execute('INSERT into dbo.Dummy VALUES (%s, %d, %d, %s, %s)', (name, age, bigage, date, timing))
 a= []
 val = "'" + "dbo.Login" +"'"
-cursor.execute('select * from sys.all_columns where object_id = OBJECT_ID(%s)' %(val))
-row = cursor.fetchall()
+        cursor.execute(
+            'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s) %(empid)')
+'''
+'''
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %d, %s,%s, %s, %s, %s)",
+    [
+        (10, 1, 2, '/update', 'Textbox', 'Name', 'nickedes', str(datetime.now())),
+        (11, 1, 2, '/update', 'Textbox', 'EmployeeID','nickedes', str(datetime.now())),
+        (12, 1, 2, '/update', 'DateSelector', 'Date of Birth', 'nickedes', str(datetime.now())),
+        (13, 1, 2, '/update', 'Textarea', 'Qualification', 'nickedes', str(datetime.now())),
+        (14, 1, 2, '/update', 'Text','Gender', 'nickedes', str(datetime.now())),
+        (15, 1, 2, '/update', 'RadioButton', 'Female', 'nickedes', str(datetime.now())),
+        (16, 1, 2, '/update', 'RadioButton', 'Male', 'nickedes', str(datetime.now())),
+        (17, 1, 2, '/update', 'DateSelector', 'DateOfJoining', 'nickedes', str(datetime.now())),
+        (18, 1, 2, '/update', 'Textarea', 'Awards', 'nickedes', str(datetime.now())),
+        (19, 1, 2, '/update', 'Textarea', 'ResidentialAddress', 'nickedes', str(datetime.now())),
+        (20, 1, 2, '/update', 'Textbox', 'PhoneNumber', 'nickedes', str(datetime.now())),
+        (21, 1, 2, '/update', 'Textbox', 'EmailID', 'nickedes', str(datetime.now())),
+        (22, 1, 2, '/update', 'Textbox', 'SchoolName', 'nickedes', str(datetime.now())),
+        (23, 1, 2, '/update', 'Textbox', 'Designation', 'nickedes', str(datetime.now())),
+        (24, 1, 2, '/update', 'Textarea', 'Subjects', 'nickedes', str(datetime.now())),
+        (25, 1, 2, '/update', 'Textarea', 'SchoolAddress', 'nickedes', str(datetime.now())),
+        (26, 1, 2, '/update', 'Dropdown', 'CountryID', 'nickedes', str(datetime.now())),
+        (27, 1, 2, '/update', 'Dropdown', 'StateID', 'nickedes', str(datetime.now())),
+        (28, 1, 2, '/update', 'Dropdown', 'DistrictID', 'nickedes', str(datetime.now())),
+        (29, 1, 2, '/update', 'Dropdown', 'BlockID', 'nickedes', str(datetime.now())),
+        (30, 1, 2, '/update', 'text', 'Please enter your Registration details','kwikadi', str(datetime.now())),
+        (10, 1, 1, '/update', 'Textbox', 'Name', 'nickedes', str(datetime.now())),
+        (11, 1, 1, '/update', 'Textbox', 'EmployeeID','nickedes', str(datetime.now())),
+        (12, 1, 1, '/update', 'DateSelector', 'Date of Birth', 'nickedes', str(datetime.now())),
+        (13, 1, 1, '/update', 'Textarea', 'Qualification', 'nickedes', str(datetime.now())),
+        (14, 1, 1, '/update', 'Text','Gender', 'nickedes', str(datetime.now())),
+        (15, 1, 1, '/update', 'RadioButton', 'Female', 'nickedes', str(datetime.now())),
+        (16, 1, 1, '/update', 'RadioButton', 'Male', 'nickedes', str(datetime.now())),
+        (17, 1, 1, '/update', 'DateSelector', 'DateOfJoining', 'nickedes', str(datetime.now())),
+        (18, 1, 1, '/update', 'Textarea', 'Awards', 'nickedes', str(datetime.now())),
+        (19, 1, 1, '/update', 'Textarea', 'ResidentialAddress', 'nickedes', str(datetime.now())),
+        (20, 1, 1, '/update', 'Textbox', 'PhoneNumber', 'nickedes', str(datetime.now())),
+        (21, 1, 1, '/update', 'Textbox', 'EmailID', 'nickedes', str(datetime.now())),
+        (22, 1, 1, '/update', 'Textbox', 'SchoolName', 'nickedes', str(datetime.now())),
+        (23, 1, 1, '/update', 'Textbox', 'Designation', 'nickedes', str(datetime.now())),
+        (24, 1, 1, '/update', 'Textarea', 'Subjects', 'nickedes', str(datetime.now())),
+        (25, 1, 1, '/update', 'Textarea', 'SchoolAddress', 'nickedes', str(datetime.now())),
+        (26, 1, 1, '/update', 'Dropdown', 'CountryID', 'nickedes', str(datetime.now())),
+        (27, 1, 1, '/update', 'Dropdown', 'StateID', 'nickedes', str(datetime.now())),
+        (28, 1, 1, '/update', 'Dropdown', 'DistrictID', 'nickedes', str(datetime.now())),
+        (29, 1, 1, '/update', 'Dropdown', 'BlockID', 'nickedes', str(datetime.now())),
+        (30, 1, 1, '/update', 'text', 'Please enter your Registration details','kwikadi', str(datetime.now()))
+    ])
+conn.commit()
 
+empid = "23bjv32"
+'''
+cursor.execute('UPDATE dbo.Label set PageName = %s WHERE LabelID = %d and RoleID = %d', ('/update', 53, 1))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set PageName = %s WHERE LabelID = %d and RoleID = %d', ('/update', 53, 2))
+conn.commit()
+cursor.execute('SELECT * FROM dbo.Label WHERE RoleID = %d', 1)
+row = cursor.fetchall()
+print(row)
+'''
 for i in row:
     a.append(i[1])
 print(a)

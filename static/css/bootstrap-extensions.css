@@ -2,14 +2,30 @@
  * Extra large button extensions. Extends `.btn`.
  */
 .btn-xlarge {
-    padding: 18px 28px;
-    font-size: 22px;
+    padding: 16px 26px;
+    font-size: 18px;
     line-height: normal;
     -webkit-border-radius: 8px;
        -moz-border-radius: 8px;
             border-radius: 8px;
     }
 
+.btn-custom { 
+    background-color: hsl(31, 100%, 45%) !important;
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e57600", endColorstr="#e57600");
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#e57600), to(#e57600));
+    background-image: -moz-linear-gradient(top, #e57600, #e57600);
+    background-image: -ms-linear-gradient(top, #e57600, #e57600);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e57600), color-stop(100%, #e57600));
+    background-image: -webkit-linear-gradient(top, #e57600, #e57600);
+    background-image: -o-linear-gradient(top, #e57600, #e57600);
+    background-image: linear-gradient(#e57600, #e57600);
+    border-color: #e57600 #e57600 hsl(31, 100%, 45%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.00);
+    -webkit-font-smoothing: antialiased; 
+}
 
 .container {
     position:relative;  
@@ -18,4 +34,30 @@
     position:absolute;
     right:0px;
     top:0px;    
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corben', Georgia, Times, serif;
+}
+p, div {
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
+}
+
+body { 
+    background: url(/static/img/back.png) repeat 0 0;
+}
+
+.navbar {
+    background: rgb(147,212,112); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(147,212,112,1) 0%, rgba(75,164,30,1) 1%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(147,212,112,1)), color-stop(1%,rgba(75,164,30,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(147,212,112,1) 0%,rgba(75,164,30,1) 1%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(147,212,112,1) 0%,rgba(75,164,30,1) 1%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(147,212,112,1) 0%,rgba(75,164,30,1) 1%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(147,212,112,1) 0%,rgba(75,164,30,1) 1%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93d470', endColorstr='#4ba41e',GradientType=0 ); /* IE6-9 */
+    }
+
+.navbar-nav > li > a {
+    color: #000000 !important;
 }

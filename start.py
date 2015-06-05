@@ -233,7 +233,7 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', topmenu=topmenu,
+        return render_template('register.html', role=0, topmenu=topmenu,
                                topsubmenu=topsubmenu,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
@@ -265,17 +265,56 @@ def register():
         stateval = int(request.form['27'])
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
-        # Registration (LoginID, Name, DateOfBirth, SchoolName, SchoolAddress, PhoneNumber, AlternateNumber, DateOfJoining, Awards, EmployeeID, Qualification, Gender, ResidentialAddress, EmailID, Designation, Subjects, BlockID, DistrictID, StateID, CountryID, CreatedBy, CreateDate)
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender, address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" +name, datetime.now())
         if insertvals == True:
-            return "lolpol"
-        return redirect(url_for('/register'))
+            return render_template('messages.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, userval=checkloggedin(
+                                   session['userid']), menuarray=menuarray,
+                               message="Please go to Login and sign in using your Employee ID as username and OTP as Password.")
+        return render_template('messages.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, userval=checkloggedin(
+                                   session['userid']), menuarray=menuarray,
+                               message="Something went wrong! Please try again later.")
 
 
-@app.route('/update')
+@app.route('/update', methods = ['GET', 'POST'])
 def update():
     if 'username' not in session:
         return redirect(url_for('index'))
+    if request.method == 'GET':
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/update':
+                label_dict[label[0]] = [label[4], label[5]]
+        countrylist = {}
+        for single_country in country:
+            statelist = []
+            for single_state in state:
+                if single_state[1] == single_country[1]:
+                    statelist.append([single_state[3], single_state[2]])
+            countrylist[single_country[1]] = statelist
+        statelist = {}
+        for single_state in state:
+            districtlist = []
+            for single_district in district:
+                if single_district[2] == single_state[2]:
+                    districtlist.append(
+                        [single_district[4], single_district[3]])
+            statelist[single_state[2]] = districtlist
+        districtdict = {}
+        for single_district in district:
+            blocklist = []
+            for single_block in block:
+                if single_block[3] == single_district[3]:
+                    blocklist.append([single_block[5], single_block[4]])
+            districtdict[single_district[3]] = blocklist
+
+        teachers = values.teacherUnderOperator(session['userid'])
+        return render_template('register.html', role=session['RoleID'], topmenu=topmenu,
+                               topsubmenu=topsubmenu, teachers=teachers,
+                               menuarray=menuarray, country=country, state=state,
+                               district=district, block=block, clist=countrylist,
+                               slist=statelist, dlist=districtdict, label=label_dict)
     return render_template('update.html', label=labelval, menu=menuval,
                            submenu=submenuval,
                            userval=checkloggedin(session['userid']))

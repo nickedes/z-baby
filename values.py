@@ -35,12 +35,28 @@ def gettablelist():
 def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute(
-        'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
-    conn.commit()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
+        conn.commit()
+        password = "dummy"
+        cursor.execute('SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s', empid)
+        loginid = cursor.fetchall()
+        cursor.execute(
+            'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", "admin", cr_date ))
+    except:
+        return False
+
     conn.close()
     return True
 
+def teacherUnderOperator(loginid):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %s', (loginid, loginid))
+    teachers = cursor.fetchall()
+    return teachers
 
 def checkLogin(username, password):
     username = "'" + username + "'"
