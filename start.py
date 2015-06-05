@@ -340,8 +340,9 @@ def submit():
         reach = request.form['47']
         example = request.form['49']
         UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
-        ALLOWED_EXTENSIONS = set(['mp4', 'png', 'jpg', 'jpeg', 'gif'])
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
         app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+        medias = {}
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
             filename = secure_filename(file.filename)
             PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -350,29 +351,18 @@ def submit():
             im = pyimgur.Imgur(CLIENT_ID)
             uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
             os.remove(PATH)
-            print(uploaded_image.title)
-            print(uploaded_image.link)
+            image_link = uploaded_image.link 
+            medias['image'] = image_link
             print("file uploaded")
-        print(session['userid'])
-        print(title)
-        print(stage_id)
-        print(benefit_id)
-        print(category_id)
-        print(subcategory_id)
-        print(description)
-        print(file)
-        print(resource)
-        print(support)
-        print(implement_time)
-        print(reach)
-        print(example)
-        print("idea:",values.getLatestIdea())
-        IdeaID = values.getLatestIdea()
+        IdeaID = values.getLatestIdea() + 1
+        LoginID = session['userid']
         # "IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date"
-        insert = values.insertIdea(IdeaID, session['userid'],title,stage_id,benefit_id,description,resource,support,implement_time,reach,"teacher", datetime.now())
-        if insert == True:
+        insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id, description, resource, support, implement_time, reach, LoginID, datetime.now())
+        MediaID = values.getLatestMedia() + 1
+        example = values.insertMedia(MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now())
+        if insert == True and example == True:
             return "done"
-        return redirect(url_for('/register'))
+        return redirect(url_for('/submit'))
 
 
 @app.route('/edit', methods=['GET', 'POST'])

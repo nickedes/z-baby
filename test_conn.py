@@ -487,7 +487,6 @@ cursor.execute('SELECT * from dbo.Label')
 cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
-conn.close()
 '''     
 cursor.execute('SELECT * from dbo.Login')
 name = "Aditya"
@@ -532,4 +531,21 @@ row = cursor.fetchall()
 for i in row:
     a.append(i[1])
 print(a)
+cursor.execute("SELECT TOP 1 * FROM dbo.Idea ORDER BY IdeaID DESC")
+latest_idea = cursor.fetchall()
+print(latest_idea[0][0])
+
+cursor.execute("DELETE FROM dbo.Media where IdeaID = 2")
+conn.commit()
+
+
+cursor.execute("DELETE FROM dbo.Idea where LoginID = 8")
+conn.commit()
+
 '''
+cursor.execute("SELECT * FROM dbo.Idea")
+row = cursor.fetchall()
+print(row)
+cursor.execute("SELECT * FROM dbo.Media")
+row = cursor.fetchall()
+print(row)

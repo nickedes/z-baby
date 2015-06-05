@@ -110,12 +110,11 @@ def addIdea(UserId):
 def getLatestIdea():
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT TOP 1 * FROM dbo.Idea ORDER BY IdeaID DESC") 
+    cursor.execute("SELECT TOP 1 * FROM dbo.Idea ORDER BY IdeaID DESC")
     latest_idea = cursor.fetchall()
-    print(latest_idea)
     if not latest_idea:
-        return 1
-    return latest_idea
+        return 0
+    return latest_idea[0][0]
 
 
 def insertIdea(IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date):
@@ -123,6 +122,27 @@ def insertIdea(IdeaID, LoginID, title, stage, benefit, desc, resource, support, 
     cursor = conn.cursor()
     cursor.execute(
         'INSERT INTO dbo.Idea VALUES (%d, %s, %s, %d, %d, %s, %s, %s, %d, %s, %s, %s)', (IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date))
+    conn.commit()
+    conn.close()
+    return True
+
+
+def getLatestMedia():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT TOP 1 * FROM dbo.Media ORDER BY MediaID DESC")
+    latest_Media = cursor.fetchall()
+    if not latest_Media:
+        return 0
+    return latest_Media[0][0]
+
+
+def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
+    # MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now()
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO dbo.Media VALUES (%d, %d, %s, %s, %s, %s)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
     conn.commit()
     conn.close()
     return True
