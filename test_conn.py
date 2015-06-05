@@ -471,7 +471,6 @@ cursor.executemany(
         (1, 6, 5,"Innovative practices",'nickedes',str(datetime.now()))
     ])
 conn.commit()
-<<<<<<< HEAD
 cursor.execute('SELECT * from dbo.Stage')
 row = cursor.fetchall()
 print(row)
@@ -484,6 +483,8 @@ cursor.execute("INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)",(
 conn.commit()
 conn.commit()
 cursor.execute('SELECT * from dbo.Label')
+'''
+cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
 conn.close()

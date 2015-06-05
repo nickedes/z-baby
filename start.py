@@ -10,7 +10,7 @@ from flask import (
 from datetime import datetime
 from errors import showerrors
 import values
-
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -278,6 +278,10 @@ def update():
                            submenu=submenuval,
                            userval=checkloggedin(session['userid']))
 
+def allowed_file(filename, ALLOWED_EXTENSIONS):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
@@ -286,6 +290,7 @@ def submit():
                                submenu=submenuval, userval=checkloggedin(
                                    session['userid']),
                                message="You are not logged in!")
+
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -320,7 +325,40 @@ def submit():
                                    session['userid']), menuarray=menuarray, label=label_dict,
                                benefit=bene_dict,stage=stage_dict,category=category_dict,subcategory=subcat_dict)
     else:
-        pass
+        title = request.form['31']
+        stage_id = request.form['33']
+        benefit_id = request.form['34']
+        category_id = request.form['36']
+        subcategory_id = request.form['37']
+        description = request.form['38']
+        file = request.files['file']
+        resource = request.form['42']
+        support = request.form['44']
+        implement_time = request.form['46']
+        reach = request.form['47']
+        example = request.form['49']
+        UPLOAD_FOLDER = '/home/nickedes/Documents'
+        ALLOWED_EXTENSIONS = set(['txt', 'mp4', 'png', 'jpg', 'jpeg', 'gif'])
+        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # return redirect(url_for('uploaded_file',filename=filename))
+            print("file uploaded")
+        print(title)
+        print(stage_id)
+        print(benefit_id)
+        print(category_id)
+        print(subcategory_id)
+        print(description)
+        print(file)
+        print(resource)
+        print(support)
+        print(implement_time)
+        print(reach)
+        print(example)
+
+        return "litchi"
 
 
 @app.route('/edit', methods=['GET', 'POST'])

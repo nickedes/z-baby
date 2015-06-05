@@ -4,7 +4,7 @@
 <h3>{{ label[51] }}</h3>
 <br>
 <div class="col-lg-8" style="margin-left:100px">
-<form action="/register" method="POST">
+<form action="/submit" method="POST" enctype="multipart/form-data">
 	<div class="form-group">
 	    <div>
 	    	<label for="" class="control-label">{{ label[31] }}</label>
@@ -12,16 +12,16 @@
 	    </div>
 	    <br>
       	<div class="">
-        	<input type="text" class="form-control" id=" ">
+        	<input type="text" class="form-control" name="31">
       	</div>
       	<br>
   	</div>
   	<div class="form-group">
   		<div>
-	    	<label for="" class="control-label">{{ label[33] }}</label>  			
+	    	<label for="" class="control-label">{{ label[33] }}</label>	
   		</div>
   		<br>
-	    <select id = "33" name="stage" class="form-control" >
+	    <select id = "33" name="33" class="form-control" >
 	        {% for data in stage %}
 	          <option value="{{ data }}" >{{ stage[data] }}</option>
 	        {% endfor %}
@@ -31,7 +31,7 @@
   	<div class="form-group">
 	    <label for="" class="control-label">{{ label[34] }}</label>
 	    <h6>{{ label[35] }}</h6>  
-	    <select id = "34" name="benefit" class="form-control" >
+	    <select id = "34" name="34" class="form-control" >
 	        {% for data in benefit %}
 	          <option value="{{ data }}" >{{ benefit[data] }}</option>
 	        {% endfor %}
@@ -42,7 +42,7 @@
 	    <label for="" class=" control-label">{{ label[36] }}</label> 
 	    <h6>{{ label[37] }}</h6> 
 	    <div class="">
-			<select id = "ddl1"  class="form-control" onchange="DropDown(this,document.getElementById('ddl2'))">
+			<select id = "ddl1" name="36" class="form-control" onchange="DropDown(this,document.getElementById('ddl2'))">
 			<option>..</option>
 			{% for data in category %}
 				<option value="{{ data }}" >{{ category[data] }}</option>
@@ -50,7 +50,7 @@
 			</select>
 			</div>
 			<div class="col-sm-6">
-	    	<select id = "ddl2"  class="form-control">
+	    	<select id = "ddl2"  name ="37" class="form-control">
 	      	<option>..</option>
 	      	</select>       
 		</div>
@@ -60,39 +60,39 @@
 	    <label for="" class=" control-label">{{ label[38] }}</label>
 	    <h6>{{ label[39] }}</h6> 
 	      <div class="">
-	        <input type="text" class="form-control" id=" " >
+	        <input type="text" class="form-control" name="38" >
 	      </div>
 	      <br><br>
   	</div>
   	<div class="form-group">
 	    <label for="" class=" control-label">{{ label[40] }}</label>
 	    <h6>{{ label[41] }}</h6>  
-	      <div class="">
-	        <input type="text" class="form-control" id=" " >
-	      </div>
-	      <br><br>
+		<div class="">
+		<input type="file" name="file">
+		</div>
+		<br><br>
   	</div>
   	<div class="form-group">
 	    <label for="" class=" control-label">{{ label[42] }}</label>
 	    <h6>{{ label[43] }}</h6>  
-	      <div class="">
-	        <textarea class="form-control" id=" " >
-	       	</textarea>
-	      </div>
-	      <br><br>
+		<div class="">
+		<textarea class="form-control" name="42" >
+		</textarea>
+		</div>
+		<br><br>
   	</div>
   	<div class="form-group">
 	    <label for="" class=" control-label">{{ label[44] }}</label>
 	    <h6>{{ label[45] }}</h6>  
 	      <div class="">
-	        <input type="text" class="form-control" id=" " >
+	        <input type="text" class="form-control" name="44" >
 	      </div>
 	      <br><br>
   	</div>
   	<div class="form-group">
 	    <label for="" class=" control-label">{{ label[46] }}</label>  
 	      <div class="">
-	        <input type="text" class="form-control" id=" " >
+	        <input type="text" class="form-control" name="46" >
 	      </div>
 	      <br><br>
   	</div>
@@ -100,7 +100,7 @@
 	    <label for="" class=" control-label">{{ label[47] }}</label>
 	    <h6>{{ label[48] }}</h6> 
 	      <div class="">
-	        <textarea class="form-control" id=" " >
+	        <textarea class="form-control" name="47" >
 	        </textarea>
 	      </div>
 	      <br><br>
@@ -109,7 +109,7 @@
 	    <label for="" class=" control-label">{{ label[49] }}</label>
 	    <h6>{{ label[50] }}</h6> 
 	      <div class="">
-	        <textarea class="form-control" id=" " >
+	        <textarea class="form-control" name="49" >
 	        </textarea>
 	      </div>
 	      <br><br>
