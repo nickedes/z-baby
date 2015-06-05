@@ -353,6 +353,7 @@ def submit():
             print(uploaded_image.title)
             print(uploaded_image.link)
             print("file uploaded")
+        print(session['userid'])
         print(title)
         print(stage_id)
         print(benefit_id)
@@ -365,8 +366,13 @@ def submit():
         print(implement_time)
         print(reach)
         print(example)
-
-        return "litchi"
+        print("idea:",values.getLatestIdea())
+        IdeaID = values.getLatestIdea()
+        # "IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date"
+        insert = values.insertIdea(IdeaID, session['userid'],title,stage_id,benefit_id,description,resource,support,implement_time,reach,"teacher", datetime.now())
+        if insert == True:
+            return "done"
+        return redirect(url_for('/register'))
 
 
 @app.route('/edit', methods=['GET', 'POST'])

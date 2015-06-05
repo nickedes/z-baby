@@ -2,6 +2,7 @@ import os
 import pymssql
 from configparser import ConfigParser
 
+
 def getConnection():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,6 +16,7 @@ def getConnection():
 
     return conn
 
+
 def getClient_ID():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -24,6 +26,7 @@ def getClient_ID():
     CLIENT_ID = config["Imgur"]["CLIENT_ID"]
     return CLIENT_ID
 
+
 def gettablelist():
     conn = getConnection()
     cursor = conn.cursor()
@@ -31,6 +34,7 @@ def gettablelist():
         'SELECT * FROM information_schema.tables')
     val = cursor.fetchall()
     return val
+
 
 def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date):
     conn = getConnection()
@@ -77,20 +81,23 @@ def gettablevalues(tablename):
     cursor = conn.cursor()
     if tablename != 'Register':
         cursor.execute(
-            'SELECT * FROM dbo.%s ORDER BY %sID' %(tablename, tablename))
-    elif tablename =="Register":
+            'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
+    elif tablename == "Register":
         cursor.execute(
             'SELECT * FROM dbo.Register ORDER BY LoginID')
     returnval = cursor.fetchall()
     conn.close()
     return returnval
 
+
 def getColumns(tablename):
     val = "'dbo." + tablename + "'"
-    cursor.execute('select * from sys.all_columns where object_id = OBJECT_ID(%s)' %(val))
+    cursor.execute(
+        'select * from sys.all_columns where object_id = OBJECT_ID(%s)' % (val))
     column_list = cursor.fetchall()
     columns = [single_column[1] for single_column in column_list]
     return columns
+
 
 def addUser():
     pass
@@ -98,3 +105,24 @@ def addUser():
 
 def addIdea(UserId):
     pass
+
+
+def getLatestIdea():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT TOP 1 * FROM dbo.Idea ORDER BY IdeaID DESC") 
+    latest_idea = cursor.fetchall()
+    print(latest_idea)
+    if not latest_idea:
+        return 1
+    return latest_idea
+
+
+def insertIdea(IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO dbo.Idea VALUES (%d, %s, %s, %d, %d, %s, %s, %s, %d, %s, %s, %s)', (IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date))
+    conn.commit()
+    conn.close()
+    return True

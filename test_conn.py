@@ -488,6 +488,7 @@ cursor.execute('SELECT * from dbo.Login')
 row = cursor.fetchall()
 print(row)
 conn.close()
+'''     
 cursor.execute('SELECT * from dbo.Login')
 name = "Aditya"
 dob = "1993-01-14"
@@ -513,11 +514,10 @@ cr_date = datetime.now()
 cursor.execute(
             'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
 conn.commit()
-'''     
 cursor.execute('SELECT * FROM dbo.Registration')
 row = cursor.fetchall()
 print(row)
-'''
+
 name = "nameoffield"
 age = 22
 bigage = 9811821782
