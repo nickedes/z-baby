@@ -40,7 +40,11 @@ def index():
     for menu in menus:
         if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
-    return render_template('slash.html', topmenu=topmenu, menubody=menubody, topsubmenu=topsubmenu, label=label_dict, menuarray=menuarray)
+
+    message = request.args.get('msg')
+    return render_template('slash.html', topmenu=topmenu, menubody=menubody,
+                            topsubmenu=topsubmenu, label=label_dict,
+                           menuarray=menuarray, message=message)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -60,8 +64,9 @@ def login():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
+        message = request.args.get('msg')
         return render_template('signin.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu,
+                               topsubmenu=topsubmenu, message=message,
                                menuarray=menuarray, label=label_dict)
     else:
         if 'signin' in request.form:
@@ -70,9 +75,7 @@ def login():
                 request.form['username'], request.form['password'])
             print(logged_in_val)
             if logged_in_val is None:
-                return render_template('messages.html', menuarray=menuarray,
-                                       topmenu=topmenu, topsubmenu=topsubmenu,
-                                       message="Incorrect credentials, please try again!")
+                return redirect('/login?msg=Incorrect%20username%20or%20password!')
 
             else:
                 session['RoleID'] = logged_in_val[0][0]
@@ -86,8 +89,7 @@ def login():
 @app.route('/home')
 def home():
     if 'username' not in session:
-        return render_template('messages.html',
-                               message="You are not logged in!")
+        return redirect('/login?msg=You%20are%20not%20logged%20in!')
 
     else:
         label_dict = {}
@@ -212,7 +214,7 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', role=0, topmenu=topmenu,
+        return render_template('register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
@@ -247,13 +249,8 @@ def register():
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
                                          address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" + name, datetime.now())
         if insertvals == True:
-            return render_template('messages.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               message="Please go to Login and sign in using your Employee ID as username and OTP as Password.")
-
-        return render_template('messages.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               message="Something went wrong! Please try again later.")
+            return redirect('/login?msg=Please%20sign%20in%20using%20your%20Employee%20ID%20as%20username%20and%20OTP%20as%20Password.')
+        return redirect('/?msg=Something%20went%20wrong!%20Please%20try%20again%20later.')
 
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -289,7 +286,7 @@ def update():
             districtdict[single_district[3]] = blocklist
 
         teachers = values.teacherUnderOperator(session['userid'])
-        return render_template('register.html', role=session['RoleID'], topmenu=topmenu,
+        return render_template('register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
@@ -306,13 +303,8 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
-<<<<<<< HEAD
-        return render_template('messages.html', message="You are not logged in!")
-=======
-        return render_template('messages.html', userval=checkloggedin(
-            session['userid']),
-            message="You are not logged in!")
->>>>>>> 69984344e18c3efee92c2287042c99cfe417772c
+        return redirect('/login?msg=You%20are%20not%20logged%20in!')
+
 
     if request.method == 'GET':
         label_dict = {}
@@ -391,9 +383,7 @@ def submit():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
     if 'username' not in session:
-        return render_template('messages.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               message="You are not logged in!")
+        return redirect('/login?msg=You%20are%20not%20logged%20in!')
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu',
@@ -418,8 +408,7 @@ def edit():
 @app.route('/review')
 def review():
     if 'username' not in session:
-        return render_template('messages.html', label=labelval, menu=menuval,
-                               submenu=submenuval, message="You are not logged in!")
+        return redirect('/login?msg=You%20are%20not%20logged%20in!')
 
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
