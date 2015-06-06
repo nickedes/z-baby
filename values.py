@@ -49,7 +49,6 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         cursor.execute(
             'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s', empid)
         loginid = cursor.fetchall()
-        print(loginid)
         cursor.execute(
             'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", "admin", cr_date))
         conn.commit()
@@ -60,10 +59,11 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
 
 
 def teacherUnderOperator(loginid):
+    print(loginid)
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %s', (loginid, loginid))
+        'SELECT * FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
     teachers = cursor.fetchall()
     return teachers
 

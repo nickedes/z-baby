@@ -316,8 +316,9 @@ def update():
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
-    return render_template('update.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
+    return render_template('update.html', topmenu=topmenu,
+                           topsubmenu=topsubmenu,
+                           menuarray=menuarray,
                            userval=checkloggedin(session['userid']))
 
 
