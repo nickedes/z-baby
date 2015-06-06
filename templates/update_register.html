@@ -139,7 +139,11 @@
       <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
         <option>..</option>
         {% for data in country %}
-          <option value="{{ data[1] }}" >{{ data[2] }}</option>
+          {% if data[1]== detail[19] %}
+            <option value="{{ data[1] }}" selected>{{ data[2] }}</option>
+          {% else %}
+            <option value="{{ data[1] }}" >{{ data[2] }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -150,7 +154,7 @@
     <label class="col-sm-2 control-label">{{ label[27][1] }}</label> 
     <div class="col-sm-6">
       <select id = "ddl2" name="27" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
-      <option>..</option>
+      <option value="{{ detail[18] }}" selected>{{ clist[detail[19]][detail[18]-1][0] }}</option>
       </select>
     </div>
   <br><br>
@@ -160,7 +164,7 @@
     <label class="col-sm-2 control-label">{{ label[28][1] }}</label> 
     <div class="col-sm-6">
       <select name="28" id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
-      <option>..</option>
+      <option value="{{ detail[17] }}" selected>{{ slist[detail[18]][detail[17]-1][0] }}</option>
       </select>       
     </div>
   <br><br>
@@ -170,7 +174,7 @@
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
       <select id = "ddl4" class="form-control" name="29">
-      <option>..</option>
+      <option value="{{ detail[16] }}" selected>{{ dlist[detail[17]][detail[16]-1][0] }}</option>
       </select>
     </div>
   <br><br>
