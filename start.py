@@ -222,13 +222,6 @@ def register():
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
-        countrylist = {}
-        for single_country in country:
-            statelist = []
-            for single_state in state:
-                if single_state[1] == single_country[1]:
-                    statelist.append([single_state[3], single_state[2]])
-            countrylist[single_country[1]] = statelist
         name = request.form['10']
         emp_id = request.form['11']
         DOB = request.form['12']
@@ -291,13 +284,42 @@ def update():
             districtdict[single_district[3]] = blocklist
 
         teachers = values.teacherUnderOperator(session['userid'])
-        return render_template('register.html', topmenu=topmenu,
+        details = values.getRegisteration_details(session['userid'])
+
+        return render_template('update_register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict)
-    return render_template('update.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+                               slist=statelist, dlist=districtdict, label=label_dict, detail=details[0])
+    else:
+        name = request.form['10']
+        emp_id = request.form['11']
+        DOB = request.form['12']
+        quali = request.form['13']
+        gender = request.form.get('14', '')
+        DOJ = request.form['17']
+        awards = request.form['18']
+        address = request.form['19']
+        phone = int(request.form['20'])
+        altphone = int(request.form['53'])
+        email = request.form['21']
+        sch_name = request.form['22']
+        designation = request.form['23']
+        subjects = request.form['24']
+        sch_addr = request.form['25']
+        countryval = int(request.form['26'])
+        stateval = int(request.form['27'])
+        districtval = int(request.form['28'])
+        blockval = int(request.form['29'])
+        updatevals = values.update_register(session['userid'],name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
+                                         address, email, designation, subjects, blockval, districtval, stateval, countryval)
+        if updatevals == True:
+            return redirect('/login?msg=Updated%20Registration%20details.')
+        return redirect('/?msg=Something%20went%20wrong!%20Please%20try%20again%20later.')
+
+    return render_template('update.html', topmenu=topmenu,
+                           topsubmenu=topsubmenu,
+                           menuarray=menuarray)
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
