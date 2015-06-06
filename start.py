@@ -244,17 +244,19 @@ def register():
         stateval = int(request.form['27'])
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
-        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender, address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" +name, datetime.now())
+        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
+                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" + name, datetime.now())
         if insertvals == True:
             return render_template('messages.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                message="Please go to Login and sign in using your Employee ID as username and OTP as Password.")
+
         return render_template('messages.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                message="Something went wrong! Please try again later.")
 
 
-@app.route('/update', methods = ['GET', 'POST'])
+@app.route('/update', methods=['GET', 'POST'])
 def update():
     if 'username' not in session:
         return redirect(url_for('index'))
@@ -304,7 +306,13 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
+<<<<<<< HEAD
         return render_template('messages.html', message="You are not logged in!")
+=======
+        return render_template('messages.html', userval=checkloggedin(
+            session['userid']),
+            message="You are not logged in!")
+>>>>>>> 69984344e18c3efee92c2287042c99cfe417772c
 
     if request.method == 'GET':
         label_dict = {}
@@ -361,17 +369,20 @@ def submit():
             file.save(PATH)
             CLIENT_ID = values.getClient_ID()
             im = pyimgur.Imgur(CLIENT_ID)
-            uploaded_image = im.upload_image(PATH, title="Uploaded with PyImgur")
+            uploaded_image = im.upload_image(
+                PATH, title="Uploaded with PyImgur")
             os.remove(PATH)
-            image_link = uploaded_image.link 
+            image_link = uploaded_image.link
             medias['image'] = image_link
             print("file uploaded")
         IdeaID = values.getLatestIdea() + 1
         LoginID = session['userid']
         # "IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date"
-        insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id, description, resource, support, implement_time, reach, LoginID, datetime.now())
+        insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
+                                   description, resource, support, implement_time, reach, LoginID, datetime.now())
         MediaID = values.getLatestMedia() + 1
-        example = values.insertMedia(MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now())
+        example = values.insertMedia(
+            MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now())
         if insert == True and example == True:
             return "done"
         return redirect(url_for('/submit'))
