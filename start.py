@@ -20,12 +20,6 @@ app.secret_key = os.urandom(24)
 showerrors(app)
 
 
-def checkloggedin(userid):
-    if userid != 0:
-        return True
-    return False
-
-
 @app.route('/')
 def index():
     if 'username' in session:
@@ -76,9 +70,7 @@ def login():
                 request.form['username'], request.form['password'])
             print(logged_in_val)
             if logged_in_val is None:
-                return render_template('messages.html',
-                                       userval=checkloggedin(
-                                           session['userid']), menuarray=menuarray,
+                return render_template('messages.html', menuarray=menuarray,
                                        topmenu=topmenu, topsubmenu=topsubmenu,
                                        message="Incorrect credentials, please try again!")
 
@@ -95,7 +87,6 @@ def login():
 def home():
     if 'username' not in session:
         return render_template('messages.html',
-                               userval=checkloggedin(session['userid']),
                                message="You are not logged in!")
 
     else:
@@ -111,7 +102,6 @@ def home():
         return render_template('home.html', topmenu=topmenu,
                                topsubmenu=topsubmenu,
                                menuarray=menuarray,
-                               userval=checkloggedin(session['userid']),
                                inno=inno, label=label_dict,
                                menulist=menulist)
 
@@ -127,20 +117,16 @@ def about(pagename):
 
     if pagename == 'ziiei':
         return render_template('ziiei.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'sas':
         return render_template('sas.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'litchi':
         return render_template('litchi.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'upgovt':
         return render_template('upgovt.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/ziiei/<pagename>')
@@ -154,24 +140,19 @@ def workflow(pagename):
 
     if pagename == 'workflow':
         return render_template('workflow.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'apply':
         return render_template('apply.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'benefits':
         return render_template('benefits.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'examples':
         return render_template('examples.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'terms':
         return render_template('terms.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               userval=checkloggedin(session['userid']))
+                               topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -185,15 +166,13 @@ def logout():
 @app.route('/contact')
 def contact():
     return render_template('enquiry.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray,
-                           userval=checkloggedin(session['userid']))
+                           topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/faq')
 def faq():
     return render_template('faq.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray,
-                           userval=checkloggedin(session['userid']))
+                           topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -268,12 +247,10 @@ def register():
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender, address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" +name, datetime.now())
         if insertvals == True:
             return render_template('messages.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, userval=checkloggedin(
-                                   session['userid']), menuarray=menuarray,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
                                message="Please go to Login and sign in using your Employee ID as username and OTP as Password.")
         return render_template('messages.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, userval=checkloggedin(
-                                   session['userid']), menuarray=menuarray,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
                                message="Something went wrong! Please try again later.")
 
 
@@ -316,8 +293,7 @@ def update():
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     return render_template('update.html', label=labelval, menu=menuval,
-                           submenu=submenuval,
-                           userval=checkloggedin(session['userid']))
+                           submenu=submenuval)
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
@@ -328,9 +304,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
-        return render_template('messages.html', userval=checkloggedin(
-                                   session['userid']),
-                               message="You are not logged in!")
+        return render_template('messages.html', message="You are not logged in!")
 
     if request.method == 'GET':
         label_dict = {}
@@ -362,8 +336,7 @@ def submit():
             subcat_dict[cat[1]] = sublist
         print(subcat_dict)
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, userval=checkloggedin(
-                                   session['userid']), menuarray=menuarray, label=label_dict,
+                               topsubmenu=topsubmenu, menuarray=menuarray, label=label_dict,
                                benefit=bene_dict, stage=stage_dict, category=category_dict, subcategory=subcat_dict)
     else:
         title = request.form['31']
@@ -408,8 +381,7 @@ def submit():
 def edit():
     if 'username' not in session:
         return render_template('messages.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, userval=checkloggedin(
-                                   session['userid']), menuarray=menuarray,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
                                message="You are not logged in!")
     if request.method == 'GET':
         if session['RoleID'] == 4:
@@ -422,8 +394,7 @@ def edit():
             column_names[dropdown_single] = values.getColumns(dropdown_single)
             column_names[1] = values.gettablevalues(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, userval=checkloggedin(
-                                   session['userid']), menuarray=menuarray, dropdown=dropdown)
+                               topsubmenu=topsubmenu, menuarray=menuarray, dropdown=dropdown)
     else:
         if 'add' in request.form:
             pass
@@ -437,9 +408,7 @@ def edit():
 def review():
     if 'username' not in session:
         return render_template('messages.html', label=labelval, menu=menuval,
-                               submenu=submenuval, userval=checkloggedin(
-                                   session['userid']),
-                               message="You are not logged in!")
+                               submenu=submenuval, message="You are not logged in!")
 
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
