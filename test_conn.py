@@ -604,11 +604,16 @@ conn.commit()
 cursor.execute("SELECT * FROM dbo.Idea")
 row = cursor.fetchall()
 print(row)
-'''
 cursor.execute("SELECT * FROM dbo.Registration")
 row = cursor.fetchall()
 print(row)
 
 cursor.execute("SELECT * FROM dbo.Login")
+row = cursor.fetchall()
+print(row)
+cursor.execute('UPDATE dbo.Label set LabelValue = %s WHERE LabelID = %d and PageName = %s', ('Please update your Registration details', 30, '/update'))
+conn.commit()
+'''
+cursor.execute("SELECT * FROM dbo.Registration where LoginID = 7")
 row = cursor.fetchall()
 print(row)

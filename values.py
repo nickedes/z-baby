@@ -101,18 +101,20 @@ def checkInnovation(userid):
 def gettablevalues(tablename):
     conn = getConnection()
     cursor = conn.cursor()
-    if tablename != 'Register':
+    if tablename != 'Registration':
         cursor.execute(
             'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
-    elif tablename == "Register":
+    elif tablename == "Registration":
         cursor.execute(
-            'SELECT * FROM dbo.Register ORDER BY LoginID')
+            'SELECT * FROM dbo.Registration ORDER BY LoginID')
     returnval = cursor.fetchall()
     conn.close()
     return returnval
 
 
 def getColumns(tablename):
+    conn = getConnection()
+    cursor = conn.cursor()
     val = "'dbo." + tablename + "'"
     cursor.execute(
         'select * from sys.all_columns where object_id = OBJECT_ID(%s)' % (val))
@@ -168,3 +170,10 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     conn.commit()
     conn.close()
     return True
+
+def getRegisteration_details(LoginID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM dbo.Registration where LoginID = 7")
+    row = cursor.fetchall()
+    return row

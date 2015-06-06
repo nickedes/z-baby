@@ -4,7 +4,7 @@
 <div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[30][1] }}</h3>
 <br>
-{% if role == 2 %}
+{% if session['RoleID'] == 2 %}
 <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">

@@ -1,25 +1,300 @@
 {% include 'header.html' %}
 
-<form>
-  {% for data in register_labels %}
-    <div class="form-group">
-      <label for="" class="col-sm-2 control-label">{{data[3]}}</label>  
-      {% if data[3] != 'Gender' %}
-          <div class="col-sm-6">
-            <input type="email" class="form-control" id="{{ data[3] }}" placeholder="Update {{ data[3] }}">
-          </div>
-        <br><br>
-      {% else %}
-        {% for value in register_sublabels %}
-          <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> {{ value[3] }}
-          </label>
-        {% endfor %}
-      {% endif %}
+<div class="col-lg-8" style="margin-left:100px">
+<h3>{{ label[30][1] }}</h3>
+<br>
+{% if session['RoleID'] == 2 %}
+<div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
+    <div class="col-sm-6">
+      <select id = "ddl4" class="form-control" name="29">
+      {% for teacher in teachers %}
+      <option>{{ teacher[1] }}</option>
+      {% endfor %}
+      </select>
     </div>
-  {% endfor %}
+  <br><br>
+  </div>
+{% endif %}
+<form action="/update" method="POST">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
+      <div class="col-sm-6">
+        <input type="text" class="form-control" name="10" placeholder="{{ detail[1] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[11][1] }}</label>  
+      <div class="col-sm-6">
+        <input type="text" class="form-control" name="11" placeholder="{{ detail[9] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[12][1] }}</label>  
+      <div class="col-sm-6">
+        <p><input type="text" id="datepicker1" name="12" placeholder = "{{ detail[2] }}"></p>
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[13][1] }}</label>  
+      <div class="col-sm-6">
+        <textarea class="form-control" name="13" placeholder="{{ detail[10] }}"></textarea>
+      </div>
+      <br><br>
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="14" class="col-lg-2 control-label">{{ label[14][1] }}</label>
+    <div class="col-lg-6">
+    {% if detail[11]=="Female" %}
+      <input type="radio" name="14" value="Female" checked> {{ label[15][1] }}
+      <input type="radio" name="14" value="Male"> {{ label[16][1] }}
+    {% else %}
+      <input type="radio" name="14" value="Female"> {{ label[15][1] }}
+      <input type="radio" name="14" value="Male" checked> {{ label[16][1] }}
+    {% endif %}
+    </div>
+  </div>
+  <br><br>
+   <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[17][1] }}</label>  
+      <div class="col-sm-6">
+        <p><input type="text" id="datepicker2" name="17" placeholder="{{ detail[7] }}"></p>
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[18][1] }}</label>  
+      <div class="col-sm-6">
+        <textarea type="text" class="form-control" name="18" placeholder="{{ detail[7] }}"></textarea>
+      </div>
+      <br><br>
+  </div>
+  <br><br>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[19][1] }}</label>  
+      <div class="col-sm-6">
+        <textarea type="text" name="19"class="form-control" placeholder="{{ detail[8] }}"></textarea>
+      </div>
+      <br><br>
+  </div>
+  <br><br>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[20][1] }}</label>  
+      <div class="col-sm-6">
+        <input type="text" name="20" class="form-control" placeholder="{{ detail[5] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[53][1] }}</label>
+      <div class="col-sm-6">
+        <input type="text" name="53" class="form-control" placeholder="{{ detail[6] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[21][1] }}</label>  
+      <div class="col-sm-6">
+        <input type="text" name="21" class="form-control" placeholder="{{ detail[13] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[22][1] }}</label>  
+      <div class="col-sm-6">
+        <input type="text" name="22" class="form-control" placeholder="{{ detail[3] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[23][1] }}</label>  
+      <div class="col-sm-6">
+        <input type="text" name="23" class="form-control" placeholder="{{ detail[14] }}">
+      </div>
+      <br><br>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[24][1] }}</label>  
+      <div class="col-sm-6">
+        <textarea type="text" name= "24" sclass="form-control" placeholder="{{ detail[15] }}"></textarea>
+      </div>
+      <br><br>
+  </div>
+  <br><br>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[25][1] }}</label>  
+      <div class="col-sm-6">
+        <textarea type="text" name="25" class="form-control" placeholder="{{ detail[4] }}"></textarea>
+      </div>
+      <br><br>
+  </div>
+  <br><br>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[26][1] }}</label> 
+    <div class="col-sm-6">
+      <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
+        <option>..</option>
+        {% for data in country %}
+          <option value="{{ data[1] }}" >{{ data[2] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[27][1] }}</label> 
+    <div class="col-sm-6">
+      <select id = "ddl2" name="27" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
+      <option>..</option>
+      </select>
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[28][1] }}</label> 
+    <div class="col-sm-6">
+      <select name="28" id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
+      <option>..</option>
+      </select>       
+    </div>
+  <br><br>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
+    <div class="col-sm-6">
+      <select id = "ddl4" class="form-control" name="29">
+      <option>..</option>
+      </select>
+    </div>
+  <br><br>
+  </div>
+
   
-  <button type="submit" class="btn btn-default">Submit</button>
+  <button type="submit"  class="btn btn-info btn-custom">Submit</button>
+  <br><br>
 </form>
+</div>
+
+
+<script type="text/javascript">
+  function configureDropDownLists(ddl1,ddl2) {
+    var value = ddl1.value;
+    var country = '{{ clist }}'
+    // todo: variables shit! :P
+    y = country.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
+        {
+          l = y[j+1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  function district(ddl1,ddl2) {
+    var value = ddl1.value;
+    var districts = '{{ slist }}'
+    // todo: variables shit! :P
+    y = districts.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
+        {
+          l = y[j+1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  function stat(ddl1,ddl2) {
+    var value = ddl1.value;
+    var districts = '{{ dlist }}'
+    // todo: variables shit! :P
+    y = districts.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
+        {
+          l = y[j+1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  function createOption(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.options.add(opt);
+  }
+</script>
 
 {% include 'footer.html' %}
