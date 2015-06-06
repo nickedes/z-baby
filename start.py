@@ -5,7 +5,8 @@ from flask import (
     session,
     url_for,
     redirect,
-    request
+    request,
+    flash
 )
 from datetime import datetime
 from errors import showerrors
@@ -16,7 +17,7 @@ import pyimgur
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-
+    
 showerrors(app)
 
 
@@ -41,10 +42,9 @@ def index():
         if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
 
-    message = request.args.get('msg')
     return render_template('slash.html', topmenu=topmenu, menubody=menubody,
                             topsubmenu=topsubmenu, label=label_dict,
-                           menuarray=menuarray, message=message)
+                            menuarray=menuarray)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -64,10 +64,9 @@ def login():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
-        message = request.args.get('msg')
-        return render_template('signin.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, message=message,
-                               menuarray=menuarray, label=label_dict)
+        return render_template('signin.html', topmenu=topmenu, 
+                                topsubmenu=topsubmenu, menuarray=menuarray,
+                                label=label_dict)
     else:
         if 'signin' in request.form:
             username = request.form['username']
@@ -75,12 +74,14 @@ def login():
                 request.form['username'], request.form['password'])
             print(logged_in_val)
             if logged_in_val is None:
-                return redirect('/login?msg=Incorrect%20username%20or%20password!')
+                flash('Incorrect Username or Password!', 'danger')
+                return redirect(url_for('login'))
 
             else:
                 session['RoleID'] = logged_in_val[0][0]
                 session['username'] = username
                 session['userid'] = logged_in_val[0][1]
+                flash('You have successfully logged in!', 'success')
                 return redirect(url_for('home'))
         elif 'submit' in request.form:
             pass
@@ -89,7 +90,8 @@ def login():
 @app.route('/home')
 def home():
     if 'username' not in session:
-        return redirect('/login?msg=You%20are%20not%20logged%20in!')
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('login'))
 
     else:
         label_dict = {}
@@ -242,13 +244,16 @@ def register():
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
                                          address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" + name, datetime.now())
         if insertvals == True:
-            return redirect('/login?msg=Please%20sign%20in%20using%20your%20Employee%20ID%20as%20username%20and%20OTP%20as%20Password.')
-        return redirect('/?msg=Something%20went%20wrong!%20Please%20try%20again%20later.')
+            flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
+            return redirect(url_for('login'))
+        flash('Something went wrong! Please try again later!', 'danger')
+        return redirect(url_for('index'))
 
 
 @app.route('/update', methods=['GET', 'POST'])
 def update():
     if 'username' not in session:
+        flash('You are not logged in!', 'warning')
         return redirect(url_for('index'))
     if request.method == 'GET':
         label_dict = {}
@@ -325,9 +330,8 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     if 'username' not in session:
-        return redirect('/login?msg=You%20are%20not%20logged%20in!')
-
-
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('login'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -358,8 +362,10 @@ def submit():
             subcat_dict[cat[1]] = sublist
         print(subcat_dict)
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, label=label_dict,
-                               benefit=bene_dict, stage=stage_dict, category=category_dict, subcategory=subcat_dict)
+                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               label=label_dict, benefit=bene_dict,
+                               stage=stage_dict, category=category_dict,
+                               subcategory=subcat_dict)
     else:
         title = request.form['31']
         stage_id = request.form['33']
@@ -391,7 +397,6 @@ def submit():
             print("file uploaded")
         IdeaID = values.getLatestIdea() + 1
         LoginID = session['userid']
-        # "IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date"
         insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach, LoginID, datetime.now())
         MediaID = values.getLatestMedia() + 1
@@ -405,7 +410,8 @@ def submit():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
     if 'username' not in session:
-        return redirect('/login?msg=You%20are%20not%20logged%20in!')
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('login'))
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu',
@@ -430,7 +436,8 @@ def edit():
 @app.route('/review')
 def review():
     if 'username' not in session:
-        return redirect('/login?msg=You%20are%20not%20logged%20in!')
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('login'))
 
     return render_template('review.html', label=labelval, menu=menuval,
                            submenu=submenuval)
