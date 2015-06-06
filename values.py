@@ -177,3 +177,17 @@ def getRegisteration_details(LoginID):
     cursor.execute("SELECT * FROM dbo.Registration where LoginID = 7")
     row = cursor.fetchall()
     return row
+
+def update_register(LoginID,name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
+                 empid, qual, gender, resi_addr, email, desig, subj, block,
+                 dist, state, country):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.Registration set Name=%s, DateOfBirth=%s, SchoolName=%s, SchoolAddress=%s, PhoneNumber=%d, AlternateNumber=%d, DateOfJoining=%s,Awards=%s,EmployeeID=%s,Qualification=%s,Gender=%s,ResidentialAddress=%s,EmailID=%s,Designation=%s,Subjects=%s,BlockID=%d,DistrictID=%d,StateID=%d,CountryID=%d WHERE LoginID = %d', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
+                 empid, qual, gender, resi_addr, email, desig, subj, block,
+                 dist, state, country,LoginID))
+    except:
+        return False
+    conn.commit()
+    return True
