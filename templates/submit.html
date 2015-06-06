@@ -1,9 +1,9 @@
 {% include 'header.html' %}
 <script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
 <link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
+<div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[51] }}</h3>
 <br>
-<div class="col-lg-8" style="margin-left:100px">
 <form action="/submit" method="POST" enctype="multipart/form-data">
 	<div class="form-group">
 	    <div>
@@ -111,7 +111,8 @@
 	      </div>
 	      <br><br>
   	</div>
-  	<button type="submit"  class="btn btn-info">{{ label[52] }}</button>
+  	<button type="submit"  class="btn btn-custom btn-info">{{ label[52] }}</button>
+  	<br><br><br>
 </form>
 <script type="text/javascript">
   function DropDown(ddl1,ddl2) {
