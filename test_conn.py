@@ -672,3 +672,6 @@ conn.commit()
 cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Block'", 29))
 conn.commit()
 '''
+cursor.execute("SELECT * FROM dbo.Registration WHERE EmployeeID = '11CSS02'")
+row = cursor.fetchall()
+print(row)

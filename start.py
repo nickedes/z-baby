@@ -287,6 +287,33 @@ def create():
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
+    else:
+        name = request.form['10']
+        emp_id = request.form['11']
+        DOB = request.form['12']
+        quali = request.form['13']
+        gender = request.form.get('14', '')
+        DOJ = request.form['17']
+        awards = request.form['18']
+        address = request.form['19']
+        phone = int(request.form['20'])
+        altphone = int(request.form['53'])
+        email = request.form['21']
+        sch_name = request.form['22']
+        designation = request.form['23']
+        subjects = request.form['24']
+        sch_addr = request.form['25']
+        countryval = int(request.form['26'])
+        stateval = int(request.form['27'])
+        districtval = int(request.form['28'])
+        blockval = int(request.form['29'])
+        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
+                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, session['userid'], datetime.now())
+        if insertvals == True:
+            flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
+            return redirect(url_for('login'))
+        flash('Something went wrong! Please try again later!', 'danger')
+        return redirect(url_for('index'))
 
 
 @app.route('/update', methods=['GET', 'POST'])

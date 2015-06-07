@@ -8,7 +8,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl4" class="form-control" name="29">
+      <select id = "new" class="form-control" name="29">
       {% for teacher in teachers %}
       <option>{{ teacher[1] }}</option>
       {% endfor %}
@@ -215,9 +215,9 @@
     }
   }
 
-  function district(ddl1,ddl2) {
+  function stat(ddl1,ddl2) {
     var value = ddl1.value;
-    var districts = '{{ slist }}'
+    var districts = '{{ dlist }}'
     // todo: variables shit! :P
     y = districts.split(":")
     ddl2.options.length = 1;
@@ -248,11 +248,11 @@
         }
       }
     }
-  }
+  }  
 
-  function stat(ddl1,ddl2) {
+  function district(ddl1,ddl2) {
     var value = ddl1.value;
-    var districts = '{{ dlist }}'
+    var districts = '{{ slist }}'
     // todo: variables shit! :P
     y = districts.split(":")
     ddl2.options.length = 1;

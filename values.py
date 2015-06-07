@@ -49,8 +49,10 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         cursor.execute(
             'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s', empid)
         loginid = cursor.fetchall()
+        if "teacher" in cr_by:
+            cr_by = "admin"
         cursor.execute(
-            'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", "admin", cr_date))
+            'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date))
         conn.commit()
         conn.close()
     except:
