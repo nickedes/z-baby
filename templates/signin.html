@@ -10,7 +10,9 @@
     <div class="panel-body">
       <form class="form-signin" role="form"  method="post" action='/login'>
         <h2 class="form-signin-heading">{{ label[1] }}</h2>
+        <br>
         <input type="text" name="username" class="form-control" placeholder="{{ label[2] }}" required autofocus>
+        <br>
         <input type="password" name="password" class="form-control" placeholder="{{ label[3] }}" required >
         <button class="btn btn-lg btn-primary btn-block btn-custom" type="submit" name="signin">{{ label[4] }}</button>
         <button class="btn btn-lg btn-primary btn-block btn-custom" type="submit" name="forgot">{{ label[5] }}</button>

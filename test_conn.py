@@ -620,6 +620,6 @@ column_list = cursor.fetchall()
 columns = [single_column[1] for single_column in column_list]
 print(columns)
 '''
-cursor.execute("SELECT * FROM dbo.Registration where LoginID = 7")
+cursor.execute("SELECT * FROM dbo.Subcategory")
 row = cursor.fetchall()
 print(row)

@@ -314,8 +314,10 @@ def update():
         updatevals = values.update_register(session['userid'],name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
                                          address, email, designation, subjects, blockval, districtval, stateval, countryval)
         if updatevals == True:
-            return redirect('/login?msg=Updated%20Registration%20details.')
-        return redirect('/?msg=Something%20went%20wrong!%20Please%20try%20again%20later.')
+            flash('Updated Registration Details.', 'success')
+            return redirect(url_for('home'))
+        flash('Something went wrong! Please try again later.', 'danger')
+        return redirect(url_for('home'))
 
     return render_template('update.html', topmenu=topmenu,
                            topsubmenu=topsubmenu,

@@ -39,21 +39,27 @@
 	    <br><br>
   	</div>
   	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[36] }}</label> 
+	    <label for="" class="control-label">{{ label[36] }}</label> 
 	    <h6>{{ label[37] }}</h6> 
 	    <div class="">
-			<select id = "ddl1" name="36" class="form-control" onchange="DropDown(this,document.getElementById('ddl2'))">
+			<select id = "ddl1" name="36" class="form-control">
 			<option>..</option>
 			{% for data in category %}
-				<option value="{{ data }}" >{{ category[data] }}</option>
+				<option id="{{ data }}" >{{ category[data] }}</option>
 			{% endfor %}
 			</select>
-			</div>
-			<div class="col-sm-6">
-	    	<select id = "ddl2"  name ="37" class="form-control">
-	      	<option>..</option>
-	      	</select>       
 		</div>
+	</div>
+	<div class="form-group">
+    		{% for subcat in subcategory %}
+			<div class="checkbox" id="{{subcat}}">
+    			<label>
+    			{% for data in subcategory[subcat] %}
+      				<input type="checkbox">{{ data[0] }}<br>
+      			{% endfor %}
+    			</label>
+  			</div>
+  			{% endfor %}
 	    <br><br>
   	</div>
   	<div class="form-group">
@@ -114,46 +120,14 @@
   	<button type="submit"  class="btn btn-custom btn-info">{{ label[52] }}</button>
   	<br><br><br>
 </form>
-<script type="text/javascript">
-  function DropDown(ddl1,ddl2) {
-    var value = ddl1.value;
-    var country = '{{ subcategory }}'
-    // todo: variables shit! :P
-    y = country.split(":")
-    ddl2.options.length = 1;
-    if(y[0][1] == value)
-    {
-      l = y[1].split(",")
-      for (i=0;i<l.length-1;i+=2)
-      {
-        dist = l[i].split("&")[1].split(";")[1];
-        dist_val = l[i+1][1]
-        createOption(ddl2,dist,dist_val);
-      }
-    }
-    else
-    {      
-      for(j=1;j<y.length-1;j++)
-      {
-        if (y[j][y[j].length - 1] == value )
-        {
-          l = y[j+1].split(",")
-          for (i=0;i<l.length-1;i+=2)
-          {
-            dist = l[i].split("&")[1].split(";")[1];
-            dist_val = l[i+1][1]
-            createOption(ddl2,dist,dist_val);
-          }
-          break;
-        }
-      }
-    }
-  }
-  function createOption(ddl, text, value) {
-    var opt = document.createElement('option');
-    opt.value = value;
-    opt.text = text;
-    ddl.options.add(opt);
-  }
+
+<script>
+$(".checkbox").hide();
+$("#ddl1").change(function(){
+	var id = $("#ddl1 :selected").attr("id");
+    $(".checkbox").hide();
+    $("#" + id + ".checkbox").show();
+}); 
 </script>
+
 {% include 'footer.html' %}
