@@ -5,19 +5,10 @@
 <h3>{{ label[30][1] }}</h3>
 <br>
 {% if session['RoleID'] == 2 %}
-<div class="form-group">
-    <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
-    <div class="col-sm-6">
-      <select id = "new" class="form-control" name="29">
-      {% for teacher in teachers %}
-      <option>{{ teacher[1] }}</option>
-      {% endfor %}
-      </select>
-    </div>
-  <br><br>
-  </div>
-{% endif %}
+<form action="/create" method="POST">
+{% else %}
 <form action="/register" method="POST">
+{% endif %}
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
       <div class="col-sm-6">

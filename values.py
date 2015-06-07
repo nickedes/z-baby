@@ -43,18 +43,21 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, cr_by, cr_date))
+            'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date))
         conn.commit()
+        print("reg done")
         password = "dummy"
         cursor.execute(
             'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s', empid)
         loginid = cursor.fetchall()
-        if "teacher" in cr_by:
-            cr_by = "admin"
-        cursor.execute(
-            'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date))
-        conn.commit()
-        conn.close()
+        try:
+            cursor.execute(
+                'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
+            print("login done")
+            conn.commit()
+            conn.close()
+        except:
+            return False
     except:
         return False
     return True

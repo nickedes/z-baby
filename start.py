@@ -242,8 +242,8 @@ def register():
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
-                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" + name, datetime.now())
-        if insertvals == True:
+                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, "admin", datetime.now())
+        if insertvals:
             flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
             return redirect(url_for('login'))
         flash('Something went wrong! Please try again later!', 'danger')
@@ -307,9 +307,10 @@ def create():
         stateval = int(request.form['27'])
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
+
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
                                          address, email, designation, subjects, blockval, districtval, stateval, countryval, session['userid'], datetime.now())
-        if insertvals == True:
+        if insertvals:
             flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
             return redirect(url_for('login'))
         flash('Something went wrong! Please try again later!', 'danger')
@@ -351,7 +352,7 @@ def update():
 
         teachers = values.teacherUnderOperator(session['userid'])
         details = values.getRegisteration_details(session['userid'])
-
+        print(teachers)
         return render_template('update_register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
