@@ -250,6 +250,45 @@ def register():
         return redirect(url_for('index'))
 
 
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if 'username' not in session:
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/register':
+                label_dict[label[0]] = [label[4], label[5]]
+        countrylist = {}
+        for single_country in country:
+            statelist = []
+            for single_state in state:
+                if single_state[1] == single_country[1]:
+                    statelist.append([single_state[3], single_state[2]])
+            countrylist[single_country[1]] = statelist
+        statelist = {}
+        for single_state in state:
+            districtlist = []
+            for single_district in district:
+                if single_district[2] == single_state[2]:
+                    districtlist.append(
+                        [single_district[4], single_district[3]])
+            statelist[single_state[2]] = districtlist
+        districtdict = {}
+        for single_district in district:
+            blocklist = []
+            for single_block in block:
+                if single_block[3] == single_district[3]:
+                    blocklist.append([single_block[5], single_block[4]])
+            districtdict[single_district[3]] = blocklist
+        return render_template('register.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu,
+                               menuarray=menuarray, country=country, state=state,
+                               district=district, block=block, clist=countrylist,
+                               slist=statelist, dlist=districtdict, label=label_dict)
+
+
 @app.route('/update', methods=['GET', 'POST'])
 def update():
     if 'username' not in session:
