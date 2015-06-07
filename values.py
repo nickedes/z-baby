@@ -187,7 +187,13 @@ def update_register(LoginID,name, dob, sch_name, sch_addr, ph, alt_ph, doj, awar
         cursor.execute('UPDATE dbo.Registration set Name=%s, DateOfBirth=%s, SchoolName=%s, SchoolAddress=%s, PhoneNumber=%d, AlternateNumber=%d, DateOfJoining=%s,Awards=%s,EmployeeID=%s,Qualification=%s,Gender=%s,ResidentialAddress=%s,EmailID=%s,Designation=%s,Subjects=%s,BlockID=%d,DistrictID=%d,StateID=%d,CountryID=%d WHERE LoginID = %d', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
                  empid, qual, gender, resi_addr, email, desig, subj, block,
                  dist, state, country,LoginID))
+        conn.commit()
+        try:
+            cursor.execute('UPDATE dbo.Login set Username=%s WHERE LoginID=%d',(empid,LoginID))
+            conn.commit()
+        except:
+            return False    
     except:
         return False
-    conn.commit()
+    conn.close()
     return True

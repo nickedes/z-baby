@@ -20,28 +20,28 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" name="10" placeholder="{{ detail[1] }}">
+        <input type="text" class="form-control" name="10" placeholder="{{ detail[1] }}" value="{{ detail[1] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[11][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" class="form-control" name="11" placeholder="{{ detail[9] }}">
+        <input type="text" class="form-control" name="11" placeholder="{{ detail[9] }}" value="{{ detail[9] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[12][1] }}</label>  
       <div class="col-sm-6">
-        <p><input type="text" id="datepicker1" name="12" placeholder = "{{ detail[2] }}"></p>
+        <p><input type="text" id="datepicker1" name="12" placeholder = "{{ detail[2] }}" value="{{ detail[2] }}"></p>
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[13][1] }}</label>  
       <div class="col-sm-6">
-        <textarea class="form-control" name="13" placeholder="{{ detail[10] }}"></textarea>
+        <textarea class="form-control" name="13" placeholder="{{ detail[10] }}">{{ detail[10] }}</textarea>
       </div>
       <br><br>
   </div>
@@ -62,14 +62,14 @@
    <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[17][1] }}</label>  
       <div class="col-sm-6">
-        <p><input type="text" id="datepicker2" name="17" placeholder="{{ detail[7] }}"></p>
+        <p><input type="text" id="datepicker2" name="17" placeholder="{{ detail[7] }}" value="{{ detail[7] }}"></p>
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[18][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" class="form-control" name="18" placeholder="{{ detail[8] }}"></textarea>
+        <textarea class="form-control" name="18" placeholder="{{ detail[8] }}">{{ detail[8] }}</textarea>
       </div>
       <br><br>
   </div>
@@ -77,7 +77,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[19][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" name="19"class="form-control" placeholder="{{ detail[12] }}"></textarea>
+        <textarea class="form-control" name="19" placeholder="{{ detail[12] }}">{{ detail[12] }}</textarea>
       </div>
       <br><br>
   </div>
@@ -85,42 +85,42 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[20][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" name="20" class="form-control" placeholder="{{ detail[5] }}">
+        <input type="text" name="20" class="form-control" placeholder="{{ detail[5] }}" value="{{ detail[5] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[53][1] }}</label>
       <div class="col-sm-6">
-        <input type="text" name="53" class="form-control" placeholder="{{ detail[6] }}">
+        <input type="text" name="53" class="form-control" placeholder="{{ detail[6] }}" value="{{ detail[6] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[21][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" name="21" class="form-control" placeholder="{{ detail[13] }}">
+        <input type="text" name="21" class="form-control" placeholder="{{ detail[13] }}" value="{{ detail[13] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[22][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" name="22" class="form-control" placeholder="{{ detail[3] }}">
+        <input type="text" name="22" class="form-control" placeholder="{{ detail[3] }}" value="{{ detail[3] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[23][1] }}</label>  
       <div class="col-sm-6">
-        <input type="text" name="23" class="form-control" placeholder="{{ detail[14] }}">
+        <input type="text" name="23" class="form-control" placeholder="{{ detail[14] }}" value="{{ detail[14] }}">
       </div>
       <br><br>
   </div>
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[24][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" name= "24" sclass="form-control" placeholder="{{ detail[15] }}"></textarea>
+        <textarea type="text" name= "24" sclass="form-control" placeholder="{{ detail[15] }}" >{{ detail[15] }}</textarea>
       </div>
       <br><br>
   </div>
@@ -128,7 +128,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[25][1] }}</label>  
       <div class="col-sm-6">
-        <textarea type="text" name="25" class="form-control" placeholder="{{ detail[4] }}"></textarea>
+        <textarea type="text" name="25" class="form-control" placeholder="{{ detail[4] }}">{{ detail[4] }}</textarea>
       </div>
       <br><br>
   </div>
@@ -139,7 +139,11 @@
       <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
         <option>..</option>
         {% for data in country %}
-          <option value="{{ data[1] }}" >{{ data[2] }}</option>
+          {% if data[1]== detail[19] %}
+            <option value="{{ data[1] }}" selected>{{ data[2] }}</option>
+          {% else %}
+            <option value="{{ data[1] }}" >{{ data[2] }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -150,7 +154,7 @@
     <label class="col-sm-2 control-label">{{ label[27][1] }}</label> 
     <div class="col-sm-6">
       <select id = "ddl2" name="27" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
-      <option>..</option>
+      <option value="{{ detail[18] }}" selected>{{ clist[detail[19]][detail[18]-1][0] }}</option>
       </select>
     </div>
   <br><br>
@@ -160,7 +164,7 @@
     <label class="col-sm-2 control-label">{{ label[28][1] }}</label> 
     <div class="col-sm-6">
       <select name="28" id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
-      <option>..</option>
+      <option value="{{ detail[17] }}" selected>{{ slist[detail[18]][detail[17]-1][0] }}</option>
       </select>       
     </div>
   <br><br>
@@ -170,7 +174,7 @@
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
       <select id = "ddl4" class="form-control" name="29">
-      <option>..</option>
+      <option value="{{ detail[16] }}" selected>{{ dlist[detail[17]][detail[16]-1][0] }}</option>
       </select>
     </div>
   <br><br>

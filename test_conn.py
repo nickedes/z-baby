@@ -613,7 +613,7 @@ row = cursor.fetchall()
 print(row)
 cursor.execute('UPDATE dbo.Label set LabelValue = %s WHERE LabelID = %d and PageName = %s', ('Please update your Registration details', 30, '/update'))
 conn.commit()
-val = "'dbo." + 'Registration' + "'"
+val = "'dbo." + 'Login' + "'"
 cursor.execute(
         'select * from sys.all_columns where object_id = OBJECT_ID(%s)' % (val))
 column_list = cursor.fetchall() 
