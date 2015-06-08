@@ -14,7 +14,7 @@
 	    <br><br>
 </div>
 {% for idea in ideas %}
-<form action="/submit" method="POST" enctype="multipart/form-data">
+<form action="/review" method="POST" enctype="multipart/form-data">
 	<div class="form-group">
 	    <div>
 	    	<label for="" class="control-label">{{ label[31] }}</label>
@@ -22,7 +22,7 @@
 	    </div>
 	    <br>
       	<div class="">
-        	<input type="text" class="form-control" name="31" value="{{idea[2]}}">
+        	<input type="text" class="form-control" name="31" value="{{ idea[2] }}">
       	</div>
       	<br>
   	</div>
@@ -34,8 +34,10 @@
 	    <select id = "33" name="33" class="form-control" >
 	          <option value="{{idea[3]}}" selected>"{{stage[idea[3]]}}"</option>
 	        {% for data in stage %}
-	        	{% if data != idea[3] %}
-	          		<option value="{{ data }}" selected="{{stage[idea[3]]}}">{{ stage[data] }}</option>
+	        	{% if data == idea[3] %}
+	          		<option value="{{ data }}" selected>{{ stage[data] }}</option>
+	          	{% else %}
+	          		<option value="{{ data }}">{{ stage[data] }}</option>
 	        	{% endif %}
 	        {% endfor %}
       	</select>
@@ -47,7 +49,9 @@
 	    <select id = "34" name="34" class="form-control" >
 	    	<option value="{{idea[4]}}" selected>"{{benefit[idea[4]]}}"</option>
 	        {% for data in benefit %}
-	        	{% if data != idea[4] %}
+	        	{% if data == idea[3] %}
+	          		<option value="{{ data }}" selected>{{ benefit[data] }}</option>
+	          	{% else %}
 	          		<option value="{{ data }}">{{ benefit[data] }}</option>
 	        	{% endif %}
 	        {% endfor %}
@@ -59,19 +63,43 @@
 	    <h6>{{ label[37] }}</h6> 
 	    <div class="">
 			<select id = "ddl1" name="36" class="form-control">
-			<option value="{{category[}}"></option>
 			{% for data in category %}
-				<option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
+				{% if data == subcats[idea[0]][1] %}
+					<option id="{{ data }}" value="{{data}}" selected>{{ category[data] }}</option>
+				{% else %}
+					<option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
+				{% endif %}
 			{% endfor %}
 			</select>
 		</div>
 	</div>
+	<!-- <div class="form-group">
+			<div class="checkbox" id="old">
+    			<label>
+    			{% for data in subcategory[subcats[idea[0]][1]] %}
+    				{% for sub in subcats[idea[0]] %}
+	      				{% if data[1] == sub[2] %}
+	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" selected>{{ data[0] }}<br>
+	      				{% else %}
+	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
+	      				{% endif %}
+      				{% endfor %}
+      			{% endfor %}
+    			</label>
+  			</div>
+	    <br><br>
+  	</div> -->
 	<div class="form-group">
     		{% for subcat in subcategory %}
 			<div class="checkbox" id="{{subcat}}">
     			<label>
     			{% for data in subcategory[subcat] %}
-      				<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
+    				{% if subcats[idea[0]][0][1] == data[2] and data[1] in sublist[idea[0]] %}
+      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" checked>{{ data[0] }}
+      				{% else %}
+      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
+      				{% endif %}
+      				<br>
       			{% endfor %}
     			</label>
   			</div>
@@ -82,7 +110,7 @@
 	    <label for="" class=" control-label">{{ label[38] }}</label>
 	    <h6>{{ label[39] }}</h6> 
 	      <div class="">
-	        <input type="text" class="form-control" name="38" >
+	        <input type="text" class="form-control" name="38" value="{{ idea[56] }}">
 	      </div>
 	      <br><br>
   	</div>
@@ -138,7 +166,7 @@
 </form>
 {% endfor %}
 <script>
-$(".checkbox").hide();
+// $(".checkbox").hide();
 $("#ddl1").change(function(){
 	var id = $("#ddl1 :selected").attr("id");
     $(".checkbox").hide();

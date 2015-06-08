@@ -536,11 +536,15 @@ def review():
         return redirect(url_for('login'))
     if request.method == 'GET':
         idea_details = values.getIdeaInfo(session['userid'])
+        print(idea_details)
+        subcatidea = {}
         for idea_single in idea_details:
-            subcatidea = values.getIdeaCatSubCat(session['userid'])
+            subcatidea[idea_single[0]] = values.getIdeaCatSubCat(idea_single[0])
+        print(subcatidea)
+        
         label_dict = {}
         for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
+            if label[1] == session['LanguageID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
         benefits = values.gettablevalues('Benefit')
         stages = values.gettablevalues('Stage')
@@ -565,11 +569,17 @@ def review():
                 if sub[1] == cat[1]:
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
+        sub_list = {}
+        for data in subcatidea:
+            sub_list[data] = []
+            for y in subcatidea[data]:
+                sub_list[data].append(y[2])
+        print(sub_list)
         return render_template('review.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
-                               subcategory=subcat_dict, ideas=idea_details)
+                               subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
     return render_template('review.html', topmenu=topmenu,
                            topsubmenu=topsubmenu, menuarray=menuarray)
 

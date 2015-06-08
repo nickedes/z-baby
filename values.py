@@ -110,14 +110,22 @@ def checkLogin(username, password):
         return label
 
 def getIdeaCatSubCat(ideaid):
-    pass
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', ideaid)
+    CatSubCats = cursor.fetchall()
+    conn.close()
+    return CatSubCats
 
 def getIdeaInfo(loginid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
         'SELECT * FROM dbo.Idea WHERE LoginID = %s', loginid)
+    ideas = cursor.fetchall()
     conn.close()
+    return ideas
 
 
 def checkInnovation(userid):
