@@ -681,12 +681,12 @@ conn.commit()
 cursor.execute(
     'DELETE FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
 conn.commit()
+cursor.execute('SELECT * FROM dbo.Block')
+row = cursor.fetchall()
+print(row)
+'''
 loginid = 9
 cursor.execute(
         'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
 teachers = cursor.fetchall()
 print(teachers)
-'''
-cursor.execute('SELECT * FROM dbo.Block')
-row = cursor.fetchall()
-print(row)

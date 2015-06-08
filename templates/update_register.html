@@ -7,17 +7,19 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "new" class="form-control" name="new">
+      <select id = "new" class="form-control" >
+      <option>..</option>
       {% for teacher in teachers %}
-      <option>{{ teacher[1] }}</option>
+        <option id="{{ teacher[1] }}" >{{ teacher[1] }}</option>
       {% endfor %}
       </select>
     </div>
   <br><br>
-  </div>
 {% endif %}
+  </div>
+<div class="teachers">  
 {% for detail in details %}
-<form action="/update" method="POST">
+<form action="/update" method="POST" id="{{ detail[9] }}">
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
       <div class="col-sm-6">
@@ -176,22 +178,21 @@
     <div class="col-sm-6">
       <select id = "ddl4" class="form-control" name="29">
         <!-- dlist[detail[17]][detail[16]-detail[17]-1][0] -->
-        {% for dis in dlist[detail[17]] %}
-          {% for block in dis %}
-            {% if block[1] == detail[16] %}
-              <option value="{{ detail[16] }}" selected>{{ block[0] }}</option>
-            {% endif %}
-          {% endfor %}
+        {% for block in dlist[detail[17]] %}
+          {% if block[1] == detail[16] %}
+            <option value="{{ detail[16] }}" selected>{{ block[0] }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
   <br><br>
   </div>
 
-{% endfor %}  
   <button type="submit"  class="btn btn-info btn-custom">Submit</button>
   <br><br>
 </form>
+{% endfor %}  
+</div>
 </div>
 
 
@@ -307,6 +308,12 @@
     opt.text = text;
     ddl.options.add(opt);
   }
+$("form").hide();
+$("#new").change(function(){
+  var id = $("#new :selected").attr("id");
+    $(".teachers").hide();
+    $("#"+id).show();
+});
 </script>
 
 {% include 'footer.html' %}

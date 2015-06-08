@@ -349,7 +349,6 @@ def update():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        print(districtdict)
         teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
             details = values.getRegisteration_details(session['userid'])
@@ -406,7 +405,7 @@ def submit():
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
+            if label[1] == session['LanguageID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
         benefits = values.gettablevalues('Benefit')
         stages = values.gettablevalues('Stage')
