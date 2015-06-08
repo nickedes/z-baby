@@ -620,6 +620,14 @@ column_list = cursor.fetchall()
 columns = [single_column[1] for single_column in column_list]
 print(columns)
 '''
-cursor.execute("SELECT * FROM dbo.Subcategory")
+cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
+row = cursor.fetchall()
+print(row)
+
+cursor.execute("SELECT * FROM dbo.Media")
+row = cursor.fetchall()
+print(row)
+
+cursor.execute("SELECT * FROM dbo.Idea")
 row = cursor.fetchall()
 print(row)
