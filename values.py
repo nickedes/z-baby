@@ -109,20 +109,31 @@ def checkLogin(username, password):
     else:
         return label
 
+
 def getIdeaCatSubCat(ideaid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', ideaid)
+        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', (ideaid))
     CatSubCats = cursor.fetchall()
     conn.close()
     return CatSubCats
+
+
+def getMedia(ideaid):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM dbo.Media WHERE IdeaID = %d', (ideaid))
+    media = cursor.fetchall()
+    conn.close()
+    return media
 
 def getIdeaInfo(loginid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Idea WHERE LoginID = %s', loginid)
+        'SELECT * FROM dbo.Idea WHERE LoginID = %d', (loginid))
     ideas = cursor.fetchall()
     conn.close()
     return ideas
@@ -179,7 +190,7 @@ def insertIdea(IdeaID, LoginID, title, stage, benefit, desc, resource, support, 
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO dbo.Idea VALUES (%d, %s, %s, %d, %d, %s, %s, %s, %d, %s, %s, %s)', (IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date))
+        'INSERT INTO dbo.Idea VALUES (%d, %d, %s, %d, %d, %s, %s, %s, %d, %s, %s, %s)', (IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date))
     conn.commit()
     conn.close()
     return True
@@ -199,8 +210,11 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     # MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now()
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute(
+    try:
+        cursor.execute(
         'INSERT INTO dbo.Media VALUES (%d, %d, %s, %s, %s, %s)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
+    except:
+        return False
     conn.commit()
     conn.close()
     return True

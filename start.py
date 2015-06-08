@@ -454,7 +454,7 @@ def submit():
         image_link = None
         try:
             file = request.files['file']
-            UPLOAD_FOLDER = '/home/kwikadi/github'
+            UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
             ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
             app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
             medias = {}
@@ -469,6 +469,7 @@ def submit():
                 os.remove(PATH)
                 image_link = uploaded_image.link
                 medias['image'] = image_link
+                print("done upload")
         except:
             pass
         IdeaID = values.getLatestIdea() + 1
@@ -480,19 +481,17 @@ def submit():
             print(LoginID)
         insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach, session['userid'], datetime.now())
-        if image_link is not None:
+        if image_link:
             MediaID = values.getLatestMedia() + 1
             example_img = values.insertMedia(
-                MediaID, IdeaID, 'image', medias['image'], session['userid'], datetime.now())
+                MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
+            print("done img")
         else:
             example_img = True
-
-        if example is not None:
-            MediaID = values.getLatestMedia() + 1
-            example_text = values.insertMedia(
-                MediaID, IdeaID, 'text', example, session['userid'], datetime.now())
-        else:
-            example_text = True
+        MediaID = values.getLatestMedia() + 1
+        example_text = values.insertMedia(
+            MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
+        print("done exm")
         ideacatsubcat = values.insertIdeaCatSubCat(
             IdeaID, category_id, subcategory_id)
         if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
@@ -538,10 +537,11 @@ def review():
         idea_details = values.getIdeaInfo(session['userid'])
         print(idea_details)
         subcatidea = {}
+        media = {}
         for idea_single in idea_details:
             subcatidea[idea_single[0]] = values.getIdeaCatSubCat(idea_single[0])
-        print(subcatidea)
-        
+            media[idea_single[0]] = values.getMedia(idea_single[0])
+        print(media)
         label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
@@ -574,12 +574,13 @@ def review():
             sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
-        print(sub_list)
         return render_template('review.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,
-                               stage=stage_dict, category=category_dict,
+                               stage=stage_dict, category=category_dict,media=media,
                                subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
+    else:
+        pass
     return render_template('review.html', topmenu=topmenu,
                            topsubmenu=topsubmenu, menuarray=menuarray)
 

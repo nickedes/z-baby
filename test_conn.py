@@ -723,6 +723,12 @@ print(ideaid)
 '''
 ideaid = 3
 cursor.execute(
-        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', ideaid)
+        'SELECT * FROM dbo.Idea ')
 CatSubCats = cursor.fetchall()
 print(CatSubCats)
+cursor.execute(
+        'DELETE FROM dbo.Idea WHERE IdeaID < 13')
+conn.commit()
+cursor.execute(
+    'SELECT * FROM dbo.Idea')
+print(cursor.fetchall())
