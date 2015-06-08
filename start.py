@@ -351,7 +351,6 @@ def update():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        print(districtdict)
         teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
             details = values.getRegisteration_details(session['userid'])
@@ -408,7 +407,7 @@ def submit():
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
+            if label[1] == session['LanguageID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
         benefits = values.gettablevalues('Benefit')
         stages = values.gettablevalues('Stage')
@@ -433,8 +432,9 @@ def submit():
                 if sub[1] == cat[1]:
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
+        teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               topsubmenu=topsubmenu, menuarray=menuarray,teachers=teachers, 
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
@@ -472,20 +472,25 @@ def submit():
         except:
             pass
         IdeaID = values.getLatestIdea() + 1
-        LoginID = session['userid']
+        if session['RoleID'] == 1:
+            LoginID = session['userid']
+        elif session['RoleID'] == 2:
+            Username = request.form['teacher']
+            LoginID = values.getLoginID(Username)
+            print(LoginID)
         insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
-                                   description, resource, support, implement_time, reach, LoginID, datetime.now())
+                                   description, resource, support, implement_time, reach, session['userid'], datetime.now())
         if image_link is not None:
             MediaID = values.getLatestMedia() + 1
             example_img = values.insertMedia(
-                MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now())
+                MediaID, IdeaID, 'image', medias['image'], session['userid'], datetime.now())
         else:
             example_img = True
 
         if example is not None:
             MediaID = values.getLatestMedia() + 1
             example_text = values.insertMedia(
-                MediaID, IdeaID, 'text', example, LoginID, datetime.now())
+                MediaID, IdeaID, 'text', example, session['userid'], datetime.now())
         else:
             example_text = True
         ideacatsubcat = values.insertIdeaCatSubCat(

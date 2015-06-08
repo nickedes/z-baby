@@ -227,3 +227,12 @@ def update_register(LoginID, name, dob, sch_name, sch_addr, ph, alt_ph, doj, awa
         return False
     conn.close()
     return True
+
+
+def getLoginID(Username):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+                'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
+    row = cursor.fetchall()
+    return row[0][0]
