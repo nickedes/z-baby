@@ -16,6 +16,7 @@
   <br><br>
   </div>
 {% endif %}
+{% for detail in details %}
 <form action="/update" method="POST">
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
@@ -174,13 +175,20 @@
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
       <select id = "ddl4" class="form-control" name="29">
-      <option value="{{ detail[16] }}" selected>{{ dlist[detail[17]][detail[16]-1][0] }}</option>
+        <!-- dlist[detail[17]][detail[16]-detail[17]-1][0] -->
+        {% for dis in dlist[detail[17]] %}
+          {% for block in dis %}
+            {% if block[1] == detail[16] %}
+              <option value="{{ detail[16] }}" selected>{{ block[0] }}</option>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
       </select>
     </div>
   <br><br>
   </div>
 
-  
+{% endfor %}  
   <button type="submit"  class="btn btn-info btn-custom">Submit</button>
   <br><br>
 </form>

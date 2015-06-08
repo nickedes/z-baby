@@ -349,15 +349,17 @@ def update():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-
+        print(districtdict)
         teachers = values.teacherUnderOperator(session['userid'])
-        details = values.getRegisteration_details(session['userid'])
-        print(teachers)
+        if session['RoleID'] == 1:
+            details = values.getRegisteration_details(session['userid'])
+        elif session['RoleID'] == 2:
+            details = values.getReg_underoperator(session['userid'])
         return render_template('update_register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict, detail=details[0])
+                               slist=statelist, dlist=districtdict, label=label_dict, details=details)
     else:
         name = request.form['10']
         emp_id = request.form['11']

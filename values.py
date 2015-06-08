@@ -45,7 +45,7 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         cursor.execute(
             'INSERT INTO dbo.Registration VALUES (%s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %d, %d, %d, %s, %s)', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date))
         conn.commit()
-        print("reg done")
+        # todo: Password Logic
         password = "dummy"
         cursor.execute(
             'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s', empid)
@@ -53,7 +53,6 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         try:
             cursor.execute(
                 'INSERT INTO dbo.Login VALUES (%d, %s, %s, %d, %s, %s, %s)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
-            print("login done")
             conn.commit()
             conn.close()
         except:
@@ -64,7 +63,6 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
 
 
 def teacherUnderOperator(loginid):
-    print(loginid)
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
@@ -72,6 +70,14 @@ def teacherUnderOperator(loginid):
     teachers = cursor.fetchall()
     return teachers
 
+
+def getReg_underoperator(loginid):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+    teachers = cursor.fetchall()
+    return teachers
 
 def checkLogin(username, password):
     username = "'" + username + "'"
@@ -176,28 +182,32 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     conn.close()
     return True
 
+
 def getRegisteration_details(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM dbo.Registration where LoginID = 7")
+    cursor.execute(
+        "SELECT * FROM dbo.Registration where LoginID = %d", LoginID)
     row = cursor.fetchall()
     return row
 
-def update_register(LoginID,name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
-                 empid, qual, gender, resi_addr, email, desig, subj, block,
-                 dist, state, country):
+
+def update_register(LoginID, name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
+                    empid, qual, gender, resi_addr, email, desig, subj, block,
+                    dist, state, country):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute('UPDATE dbo.Registration set Name=%s, DateOfBirth=%s, SchoolName=%s, SchoolAddress=%s, PhoneNumber=%d, AlternateNumber=%d, DateOfJoining=%s,Awards=%s,EmployeeID=%s,Qualification=%s,Gender=%s,ResidentialAddress=%s,EmailID=%s,Designation=%s,Subjects=%s,BlockID=%d,DistrictID=%d,StateID=%d,CountryID=%d WHERE LoginID = %d', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
-                 empid, qual, gender, resi_addr, email, desig, subj, block,
-                 dist, state, country,LoginID))
+                                                                                                                                                                                                                                                                                                                                                         empid, qual, gender, resi_addr, email, desig, subj, block,
+                                                                                                                                                                                                                                                                                                                                                         dist, state, country, LoginID))
         conn.commit()
         try:
-            cursor.execute('UPDATE dbo.Login set Username=%s WHERE LoginID=%d',(empid,LoginID))
+            cursor.execute(
+                'UPDATE dbo.Login set Username=%s WHERE LoginID=%d', (empid, LoginID))
             conn.commit()
         except:
-            return False    
+            return False
     except:
         return False
     conn.close()
