@@ -8,9 +8,9 @@
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
       <select id = "new" class="form-control" >
-      <option>..</option>
+      <option selected>..</option>
       {% for teacher in teachers %}
-        <option id="{{ teacher[1] }}" >{{ teacher[1] }}</option>
+        <option id="{{ teacher[1] }}" name="teacher_id" value="{{teacher[1]}}">{{ teacher[1] }}</option>
       {% endfor %}
       </select>
     </div>
@@ -19,6 +19,7 @@
 {% endif %}
 <div class="teachers">  
 {% for detail in details %}
+<div class="teacherform" id="{{ detail[9] }}">
 <form action="/update" method="POST" id="{{ detail[9] }}">
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[10][1] }}</label>  
@@ -191,6 +192,7 @@
   <button type="submit"  class="btn btn-info btn-custom">Submit</button>
   <br><br>
 </form>
+</div>
 {% endfor %}  
 </div>
 </div>
@@ -310,11 +312,11 @@
   }
 
 {% if session['RoleID'] == 2 %}
-$("form").hide();
+$(".teacherform").hide();
 $("#new").change(function(){
   var id = $("#new :selected").attr("id");
-    $(".teachers").hide();
-    $("#"+id).show();
+  $(".teacherform").hide();
+  $("#" + id + ".teacherform").show();
 });
 {% endif %}
 </script>
