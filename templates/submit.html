@@ -59,7 +59,7 @@
 			<select id = "ddl1" name="36" class="form-control">
 			<option>..</option>
 			{% for data in category %}
-				<option id="{{ data }}" >{{ category[data] }}</option>
+				<option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
 			{% endfor %}
 			</select>
 		</div>
@@ -69,7 +69,7 @@
 			<div class="checkbox" id="{{subcat}}">
     			<label>
     			{% for data in subcategory[subcat] %}
-      				<input type="checkbox">{{ data[0] }}<br>
+      				<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
       			{% endfor %}
     			</label>
   			</div>

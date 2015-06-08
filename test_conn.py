@@ -619,6 +619,15 @@ cursor.execute(
 column_list = cursor.fetchall() 
 columns = [single_column[1] for single_column in column_list]
 print(columns)
+cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
+row = cursor.fetchall()
+print(row)
+
+cursor.execute("SELECT * FROM dbo.Media")
+row = cursor.fetchall()
+print(row)
+
+cursor.execute("SELECT * FROM dbo.Idea")
 cursor.execute("SELECT * FROM dbo.Subcategory")
 row = cursor.fetchall()
 print(row)
@@ -684,9 +693,17 @@ conn.commit()
 cursor.execute('SELECT * FROM dbo.Block')
 row = cursor.fetchall()
 print(row)
-'''
 loginid = 9
 cursor.execute(
         'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
 teachers = cursor.fetchall()
 print(teachers)
+'''
+cursor.execute('SELECT * FROM dbo.Block')
+row = cursor.fetchall()
+print(row)
+Username = '11CSS87'
+cursor.execute(
+                'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
+row = cursor.fetchall()
+print(row)

@@ -428,9 +428,8 @@ def submit():
             sublist = []
             for sub in subcat:
                 if sub[1] == cat[1]:
-                    sublist.append([sub[3], sub[2]])
+                    sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
-        print(subcat_dict)
         teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,teachers=teachers, 
@@ -442,43 +441,62 @@ def submit():
         stage_id = request.form['33']
         benefit_id = request.form['34']
         category_id = request.form['36']
-        subcategory_id = request.form['37']
+        subcategory_id = request.form.getlist('37'+str(category_id))
         description = request.form['38']
-        file = request.files['file']
+        
         resource = request.form['42']
         support = request.form['44']
         implement_time = request.form['46']
         reach = request.form['47']
         example = request.form['49']
-        UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
-        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-        medias = {}
-        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
-            filename = secure_filename(file.filename)
-            PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(PATH)
-            CLIENT_ID = values.getClient_ID()
-            im = pyimgur.Imgur(CLIENT_ID)
-            uploaded_image = im.upload_image(
-                PATH, title="Uploaded with PyImgur")
-            os.remove(PATH)
-            image_link = uploaded_image.link
-            medias['image'] = image_link
-            print("file uploaded")
+        image_link = None
+        try:
+            file = request.files['file']
+            UPLOAD_FOLDER = '/home/kwikadi/github'
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+            app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+            medias = {}
+            if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+                filename = secure_filename(file.filename)
+                PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(PATH)
+                CLIENT_ID = values.getClient_ID()
+                im = pyimgur.Imgur(CLIENT_ID)
+                uploaded_image = im.upload_image(
+                    PATH, title="Uploaded with PyImgur")
+                os.remove(PATH)
+                image_link = uploaded_image.link
+                medias['image'] = image_link
+        except:
+            pass
         IdeaID = values.getLatestIdea() + 1
         if session['RoleID'] == 1:
             LoginID = session['userid']
-        elif: session['RoleID'] == 2:
-            LoginID = request.form['teacher']
+        elif session['RoleID'] == 2:
+            Username = request.form['teacher']
+            LoginID = values.getLoginID(Username)
+            print(LoginID)
         insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
-                                   description, resource, support, implement_time, reach, LoginID, datetime.now())
-        MediaID = values.getLatestMedia() + 1
-        example = values.insertMedia(
-            MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now())
-        if insert == True and example == True:
-            return "done"
-        return redirect(url_for('/submit'))
+                                   description, resource, support, implement_time, reach, session['userid'], datetime.now())
+        if image_link is not None:
+            MediaID = values.getLatestMedia() + 1
+            example_img = values.insertMedia(
+                MediaID, IdeaID, 'image', medias['image'], session['userid'], datetime.now())
+        else:
+            example_img = True
+
+        if example is not None:
+            MediaID = values.getLatestMedia() + 1
+            example_text = values.insertMedia(
+                MediaID, IdeaID, 'text', example, session['userid'], datetime.now())
+        else:
+            example_text = True
+        ideacatsubcat = values.insertIdeaCatSubCat(IdeaID, category_id, subcategory_id)
+        if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
+            flash('The idea has been submitted successfully!', 'success')
+            return redirect(url_for('home'))
+        flash('There was an error while submitting! Please try again!', 'danger')
+        return redirect(url_for('submit'))
 
 
 @app.route('/edit', methods=['GET', 'POST'])

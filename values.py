@@ -61,6 +61,18 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         return False
     return True
 
+def insertIdeaCatSubCat(idea_id, category_id, subcategory_id):
+    conn = getConnection()
+    cursor = conn.cursor()
+    vals = []
+    for subcategory in subcategory_id:
+        vals.append((idea_id, category_id, subcategory))
+    try:
+        cursor.executemany('INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
+        conn.commit()
+    except:
+        return False
+    return True
 
 def teacherUnderOperator(loginid):
     conn = getConnection()
@@ -212,3 +224,12 @@ def update_register(LoginID, name, dob, sch_name, sch_addr, ph, alt_ph, doj, awa
         return False
     conn.close()
     return True
+
+
+def getLoginID(Username):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+                'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
+    row = cursor.fetchall()
+    return row[0][0]
