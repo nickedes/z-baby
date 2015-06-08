@@ -6,14 +6,16 @@
 <br>
 <div class="dropdown">
 	    <label for="" class="control-label">Select Idea to update</label> 
-	    <select id = "34" name="34" class="form-control" >
+	    <select id = "new" name="ideaform" class="form-control" >
+	    	<option>..</option>
 	        {% for idea in ideas %}
-	          <option value="{{ idea[0] }}" >{{ idea[2] }}</option>
+	          <option value="{{ idea[0] }}" id="{{ idea[0] }}">{{ idea[2] }}</option>
 	        {% endfor %}
       	</select>
 	    <br><br>
 </div>
 {% for idea in ideas %}
+<div class="ideaform" id="{{ idea[0] }}">
 <form action="/review" method="POST" enctype="multipart/form-data">
 	<div class="form-group">
 	    <div>
@@ -172,6 +174,7 @@
   	<button type="submit"  class="btn btn-custom btn-info">{{ label[52] }}</button>
   	<br><br><br>
 </form>
+</div>
 {% endfor %}
 <script>
 // $(".checkbox").hide();
@@ -179,7 +182,13 @@ $("#ddl1").change(function(){
 	var id = $("#ddl1 :selected").attr("id");
     $(".checkbox").hide();
     $("#" + id + ".checkbox").show();
-}); 
+});
+$(".ideaform").hide();
+$("#new").change(function(){
+  var id = $("#new :selected").attr("id");
+  $(".ideaform").hide();
+  $("#" + id + ".ideaform").show();
+});
 </script>
 
 {% include 'footer.html' %}

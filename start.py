@@ -447,7 +447,7 @@ def submit():
         subcat_dict = {}
         for cat in category:
             sublist = []
-            for sub in subcat:
+            for sub in subcat: 
                 if sub[1] == cat[1]:
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
@@ -547,7 +547,7 @@ def edit():
             pass
 
 
-@app.route('/review')
+@app.route('/review', methods=['GET', 'POST'])
 def review():
     if 'username' not in session:
         flash('You are not logged in!', 'warning')
@@ -599,7 +599,66 @@ def review():
                                stage=stage_dict, category=category_dict,media=media,
                                subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
     else:
-        pass
+        IdeaID = request.form['ideaform']
+        title = request.form['31']
+        stage_id = request.form['33']
+        benefit_id = request.form['34']
+        category_id = request.form['36']
+        subcategory_id = request.form.getlist('37'+str(category_id))
+        description = request.form['38']
+
+        resource = request.form['42']
+        support = request.form['44']
+        implement_time = request.form['46']
+        reach = request.form['47']
+        example = request.form['49']
+        image_link = None
+        try:
+            file = request.files['file']
+            UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+            app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+            medias = {}
+            if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+                filename = secure_filename(file.filename)
+                PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(PATH)
+                CLIENT_ID = values.getClient_ID()
+                im = pyimgur.Imgur(CLIENT_ID)
+                uploaded_image = im.upload_image(
+                    PATH, title="Uploaded with PyImgur")
+                os.remove(PATH)
+                image_link = uploaded_image.link
+                medias['image'] = image_link
+                print("done upload")
+        except:
+            pass
+        if session['RoleID'] == 1:
+            LoginID = session['userid']
+        elif session['RoleID'] == 2:
+            Username = request.form['teacher']
+            LoginID = values.getLoginID(Username)
+            print(LoginID)
+        insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
+                                   description, resource, support, implement_time, reach, session['userid'], datetime.now())
+        if image_link:
+            example_img = values.updateMedia(
+                IdeaID, medias['image'], 'image', datetime.now())
+            print("done img")
+        else:
+            example_img = True
+        example_text = values.updateMedia(
+            IdeaID, example, 'text', datetime.now())
+        print("done exm")
+        ideacatsubcat = values.updateIdeaCatSubCat(
+            IdeaID, category_id, subcategory_id)
+        if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
+            flash('The idea has been submitted successfully!', 'success')
+            return redirect(url_for('home'))
+        flash(
+            'There was an error while submitting! Please try again!', 'danger')
+        return redirect(url_for('review'))
+
     return render_template('review.html', topmenu=topmenu,
                            topsubmenu=topsubmenu, menuarray=menuarray)
 
