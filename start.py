@@ -309,8 +309,12 @@ def create():
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
 
-        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
-                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, session['userid'], datetime.now())
+        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone,
+                                         altphone, DOJ, awards, emp_id, quali,
+                                         gender, address, email, designation,
+                                         subjects, blockval, districtval,
+                                         stateval, countryval,
+                                         session['userid'], datetime.now())
         if insertvals:
             flash(
                 'Please sign in using your Employee ID as Username and OTP as Password.', 'info')
@@ -362,6 +366,9 @@ def update():
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict, details=details)
     else:
+        teacher_id = None
+        if 'teacher_id' in request.form:
+            teacher_id = request.form['teacher_id']
         name = request.form['10']
         emp_id = request.form['11']
         DOB = request.form['12']
@@ -381,8 +388,20 @@ def update():
         stateval = int(request.form['27'])
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
-        updatevals = values.update_register(session['userid'], name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
-                                            address, email, designation, subjects, blockval, districtval, stateval, countryval)
+        if session['RoleID'] == 1:
+            updatevals = values.update_register(session['userid'], name, DOB,
+                                            sch_name, sch_addr, phone,
+                                            altphone, DOJ, awards, emp_id,
+                                            quali, gender, address, email,
+                                            designation, subjects, blockval,
+                                            districtval, stateval, countryval)
+        elif session['RoleID'] == 2:
+            updatevals = values.update_register(teacher_id, name, DOB,
+                                                sch_name, sch_addr, phone,
+                                                altphone, DOJ, awards, emp_id,
+                                                quali, gender, address, email,
+                                                designation, subjects, blockval,
+                                                districtval, stateval, countryval)
         if updatevals == True:
             flash('Updated Registration Details.', 'success')
             return redirect(url_for('home'))
@@ -434,7 +453,7 @@ def submit():
             subcat_dict[cat[1]] = sublist
         teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,teachers=teachers, 
+                               topsubmenu=topsubmenu, menuarray=menuarray, teachers=teachers,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)

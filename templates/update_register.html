@@ -10,7 +10,7 @@
       <select id = "new" class="form-control" >
       <option selected>..</option>
       {% for teacher in teachers %}
-        <option id="{{ teacher[1] }}" >{{ teacher[1] }}</option>
+        <option id="{{ teacher[1] }}" name="teacher_id" value="{{teacher[1]}}">{{ teacher[1] }}</option>
       {% endfor %}
       </select>
     </div>
