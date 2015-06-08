@@ -15,8 +15,8 @@
       </select>
     </div>
   <br><br>
+</div>
 {% endif %}
-  </div>
 <div class="teachers">  
 {% for detail in details %}
 <form action="/update" method="POST" id="{{ detail[9] }}">
@@ -308,12 +308,15 @@
     opt.text = text;
     ddl.options.add(opt);
   }
+
+{% if session['RoleID'] == 2 %}
 $("form").hide();
 $("#new").change(function(){
   var id = $("#new :selected").attr("id");
     $(".teachers").hide();
     $("#"+id).show();
 });
+{% endif %}
 </script>
 
 {% include 'footer.html' %}

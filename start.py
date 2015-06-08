@@ -431,8 +431,9 @@ def submit():
                     sublist.append([sub[3], sub[2]])
             subcat_dict[cat[1]] = sublist
         print(subcat_dict)
+        teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               topsubmenu=topsubmenu, menuarray=menuarray,teachers=teachers, 
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
@@ -466,7 +467,10 @@ def submit():
             medias['image'] = image_link
             print("file uploaded")
         IdeaID = values.getLatestIdea() + 1
-        LoginID = session['userid']
+        if session['RoleID'] == 1:
+            LoginID = session['userid']
+        elif: session['RoleID'] == 2:
+            LoginID = request.form['teacher']
         insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach, LoginID, datetime.now())
         MediaID = values.getLatestMedia() + 1
