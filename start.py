@@ -17,7 +17,7 @@ import pyimgur
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-    
+
 showerrors(app)
 
 
@@ -43,8 +43,8 @@ def index():
             menubody.append([menu[3], menu[4]])
 
     return render_template('slash.html', topmenu=topmenu, menubody=menubody,
-                            topsubmenu=topsubmenu, label=label_dict,
-                            menuarray=menuarray)
+                           topsubmenu=topsubmenu, label=label_dict,
+                           menuarray=menuarray)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -64,9 +64,9 @@ def login():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
-        return render_template('signin.html', topmenu=topmenu, 
-                                topsubmenu=topsubmenu, menuarray=menuarray,
-                                label=label_dict)
+        return render_template('signin.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               label=label_dict)
     else:
         if 'signin' in request.form:
             username = request.form['username']
@@ -244,7 +244,8 @@ def register():
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
                                          address, email, designation, subjects, blockval, districtval, stateval, countryval, "admin", datetime.now())
         if insertvals:
-            flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
+            flash(
+                'Please sign in using your Employee ID as Username and OTP as Password.', 'info')
             return redirect(url_for('login'))
         flash('Something went wrong! Please try again later!', 'danger')
         return redirect(url_for('index'))
@@ -311,7 +312,8 @@ def create():
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
                                          address, email, designation, subjects, blockval, districtval, stateval, countryval, session['userid'], datetime.now())
         if insertvals:
-            flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
+            flash(
+                'Please sign in using your Employee ID as Username and OTP as Password.', 'info')
             return redirect(url_for('login'))
         flash('Something went wrong! Please try again later!', 'danger')
         return redirect(url_for('index'))
@@ -380,8 +382,8 @@ def update():
         stateval = int(request.form['27'])
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
-        updatevals = values.update_register(session['userid'],name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
-                                         address, email, designation, subjects, blockval, districtval, stateval, countryval)
+        updatevals = values.update_register(session['userid'], name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
+                                            address, email, designation, subjects, blockval, districtval, stateval, countryval)
         if updatevals == True:
             flash('Updated Registration Details.', 'success')
             return redirect(url_for('home'))
@@ -432,7 +434,7 @@ def submit():
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
@@ -443,7 +445,7 @@ def submit():
         category_id = request.form['36']
         subcategory_id = request.form.getlist('37'+str(category_id))
         description = request.form['38']
-        
+
         resource = request.form['42']
         support = request.form['44']
         implement_time = request.form['46']
@@ -486,11 +488,13 @@ def submit():
                 MediaID, IdeaID, 'text', example, LoginID, datetime.now())
         else:
             example_text = True
-        ideacatsubcat = values.insertIdeaCatSubCat(IdeaID, category_id, subcategory_id)
+        ideacatsubcat = values.insertIdeaCatSubCat(
+            IdeaID, category_id, subcategory_id)
         if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
             flash('The idea has been submitted successfully!', 'success')
             return redirect(url_for('home'))
-        flash('There was an error while submitting! Please try again!', 'danger')
+        flash(
+            'There was an error while submitting! Please try again!', 'danger')
         return redirect(url_for('submit'))
 
 
@@ -525,9 +529,44 @@ def review():
     if 'username' not in session:
         flash('You are not logged in!', 'warning')
         return redirect(url_for('login'))
-
-    return render_template('review.html', label=labelval, menu=menuval,
-                           submenu=submenuval)
+    if request.method == 'GET':
+        idea_details = values.getIdeaInfo(session['userid'])
+        for idea_single in idea_details:
+            subcatidea = values.getIdeaCatSubCat(session['userid'])
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/submit':
+                label_dict[label[0]] = label[5]
+        benefits = values.gettablevalues('Benefit')
+        stages = values.gettablevalues('Stage')
+        category = values.gettablevalues('Category')
+        subcat = values.gettablevalues('SubCategory')
+        bene_dict = {}
+        for ben in benefits:
+            if ben[0] == session['LanguageID']:
+                bene_dict[ben[1]] = ben[2]
+        stage_dict = {}
+        for stag in stages:
+            if stag[0] == session['LanguageID']:
+                stage_dict[stag[1]] = stag[2]
+        category_dict = {}
+        for cat in category:
+            if cat[0] == session['LanguageID']:
+                category_dict[cat[1]] = cat[2]
+        subcat_dict = {}
+        for cat in category:
+            sublist = []
+            for sub in subcat:
+                if sub[1] == cat[1]:
+                    sublist.append([sub[3], sub[2], sub[1]])
+            subcat_dict[cat[1]] = sublist
+        return render_template('review.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               label=label_dict, benefit=bene_dict,
+                               stage=stage_dict, category=category_dict,
+                               subcategory=subcat_dict, ideas=idea_details)
+    return render_template('review.html', topmenu=topmenu,
+                           topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/language/<int:langid>')

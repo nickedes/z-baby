@@ -1,16 +1,149 @@
 {% include 'header.html' %}
-<link href="{{url_for('static', filename='css/theme.css')}}" rel="stylesheet">
-<div class="container theme-showcase" role="main">
-	<div class="jumbotron">
-	        <h1>Theme example</h1>
-	        <p>This is a template showcasing the optional theme stylesheet included in Bootstrap. Use it as a starting point to create something more unique by building on or modifying it.</p>
+<script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
+<link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
+<div class="col-lg-8" style="margin-left:100px">
+<h3>{{ label[51] }}</h3>
+<br>
+<div class="dropdown">
+	    <label for="" class="control-label">Select Idea to update</label> 
+	    <select id = "34" name="34" class="form-control" >
+	        {% for idea in ideas %}
+	          <option value="{{ idea[0] }}" >{{ idea[2] }}</option>
+	        {% endfor %}
+      	</select>
+	    <br><br>
+</div>
+{% for idea in ideas %}
+<form action="/submit" method="POST" enctype="multipart/form-data">
+	<div class="form-group">
+	    <div>
+	    	<label for="" class="control-label">{{ label[31] }}</label>
+	    	<h6>{{ label[32] }}</h6>
+	    </div>
+	    <br>
+      	<div class="">
+        	<input type="text" class="form-control" name="31" value="{{idea[2]}}">
+      	</div>
+      	<br>
+  	</div>
+  	<div class="form-group">
+  		<div>
+	    	<label for="" class="control-label">{{ label[33] }}</label>	
+  		</div>
+  		<br>
+	    <select id = "33" name="33" class="form-control" >
+	          <option value="{{idea[3]}}" selected>"{{stage[idea[3]]}}"</option>
+	        {% for data in stage %}
+	        	{% if data != idea[3] %}
+	          		<option value="{{ data }}" selected="{{stage[idea[3]]}}">{{ stage[data] }}</option>
+	        	{% endif %}
+	        {% endfor %}
+      	</select>
+	    <br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class="control-label">{{ label[34] }}</label>
+	    <h6>{{ label[35] }}</h6>  
+	    <select id = "34" name="34" class="form-control" >
+	    	<option value="{{idea[4]}}" selected>"{{benefit[idea[4]]}}"</option>
+	        {% for data in benefit %}
+	        	{% if data != idea[4] %}
+	          		<option value="{{ data }}">{{ benefit[data] }}</option>
+	        	{% endif %}
+	        {% endfor %}
+      	</select>
+	    <br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class="control-label">{{ label[36] }}</label> 
+	    <h6>{{ label[37] }}</h6> 
+	    <div class="">
+			<select id = "ddl1" name="36" class="form-control">
+			<option value="{{category[}}"></option>
+			{% for data in category %}
+				<option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
+			{% endfor %}
+			</select>
+		</div>
 	</div>
-</div>
+	<div class="form-group">
+    		{% for subcat in subcategory %}
+			<div class="checkbox" id="{{subcat}}">
+    			<label>
+    			{% for data in subcategory[subcat] %}
+      				<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
+      			{% endfor %}
+    			</label>
+  			</div>
+  			{% endfor %}
+	    <br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[38] }}</label>
+	    <h6>{{ label[39] }}</h6> 
+	      <div class="">
+	        <input type="text" class="form-control" name="38" >
+	      </div>
+	      <br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[40] }}</label>
+	    <h6>{{ label[41] }}</h6>  
+		<div class="">
+		<input type="file" name="file">
+		</div>
+		<br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[42] }}</label>
+	    <h6>{{ label[43] }}</h6>  
+		<div class="">
+		<textarea class="form-control" name="42" ></textarea>
+		</div>
+		<br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[44] }}</label>
+	    <h6>{{ label[45] }}</h6>  
+	      <div class="">
+	        <input type="text" class="form-control" name="44" >
+	      </div>
+	      <br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[46] }}</label>  
+	      <div class="">
+	        <input type="text" class="form-control" name="46" >
+	      </div>
+	      <br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[47] }}</label>
+	    <h6>{{ label[48] }}</h6> 
+	      <div class="">
+	        <textarea class="form-control" name="47" ></textarea>
+	      </div>
+	      <br><br>
+  	</div>
+  	<div class="form-group">
+	    <label for="" class=" control-label">{{ label[49] }}</label>
+	    <h6>{{ label[50] }}</h6> 
+	      <div class="">
+	        <textarea class="form-control" name="49" ></textarea>
+	      </div>
+	      <br><br>
+  	</div>
+  	<button type="submit"  class="btn btn-custom btn-info">{{ label[52] }}</button>
+  	<br><br><br>
+</form>
+{% endfor %}
+<script>
+$(".checkbox").hide();
+$("#ddl1").change(function(){
+	var id = $("#ddl1 :selected").attr("id");
+    $(".checkbox").hide();
+    $("#" + id + ".checkbox").show();
+}); 
+</script>
 
-<div class="container button">
-      <div class="row" align="center">
-        <div class="col-lg-12">
-          <p><a class="btn btn-primary btn-xlarge" href="/update" role="button">Review Information &raquo;</a></p>
-        </div>    
-</div>
 {% include 'footer.html' %}

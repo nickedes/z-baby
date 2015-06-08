@@ -80,6 +80,7 @@ def teacherUnderOperator(loginid):
     cursor.execute(
         'SELECT * FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
     teachers = cursor.fetchall()
+    conn.close()
     return teachers
 
 
@@ -89,6 +90,7 @@ def getReg_underoperator(loginid):
     cursor.execute(
         'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
     teachers = cursor.fetchall()
+    conn.close()
     return teachers
 
 def checkLogin(username, password):
@@ -101,10 +103,20 @@ def checkLogin(username, password):
         'SELECT RoleID, LoginID FROM dbo.Login WHERE Username = %s AND Password = %s'
         % (username, passwordreal))
     label = cursor.fetchall()
+    conn.close()
     if not label:
         return None
     else:
         return label
+
+def getIdeaCatSubCat(ideaid):
+    pass
+
+def getIdeaInfo(loginid):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT * FROM dbo.Idea WHERE LoginID = %s', loginid)
     conn.close()
 
 
@@ -114,11 +126,10 @@ def checkInnovation(userid):
     cursor.execute(
         'SELECT IdeaID from Idea WHERE LoginID = %d' % userid)
     ideaid = cursor.fetchall()
-    print(ideaid)
+    conn.close()
     if not ideaid:
         return False
     return True
-    conn.close()
 
 
 def gettablevalues(tablename):
@@ -144,14 +155,6 @@ def getColumns(tablename):
     column_list = cursor.fetchall()
     columns = [single_column[1] for single_column in column_list]
     return columns
-
-
-def addUser():
-    pass
-
-
-def addIdea(UserId):
-    pass
 
 
 def getLatestIdea():

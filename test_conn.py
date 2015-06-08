@@ -619,7 +619,7 @@ cursor.execute(
 column_list = cursor.fetchall() 
 columns = [single_column[1] for single_column in column_list]
 print(columns)
-'''
+
 cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
 row = cursor.fetchall()
 print(row)
@@ -692,11 +692,17 @@ cursor.execute(
     'DELETE FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
 conn.commit()
 loginid = 9
-cursor.execute(
-        'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID < %d', 9)
+conn.commit()
+cursor.execute('DELETE FROM dbo.Media WHERE IdeaID < %d', 9)
+conn.commit()
+'''
+cursor.execute('SELECT * FROM dbo.IdeaCatSubCat')
 teachers = cursor.fetchall()
+
 print(teachers)
 '''
 cursor.execute('SELECT * FROM dbo.Block')
 row = cursor.fetchall()
 print(row)
+'''
