@@ -242,8 +242,75 @@ def register():
         districtval = int(request.form['28'])
         blockval = int(request.form['29'])
         insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
-                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, "teacher-" + name, datetime.now())
-        if insertvals == True:
+                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, "admin", datetime.now())
+        if insertvals:
+            flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
+            return redirect(url_for('login'))
+        flash('Something went wrong! Please try again later!', 'danger')
+        return redirect(url_for('index'))
+
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if 'username' not in session:
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/register':
+                label_dict[label[0]] = [label[4], label[5]]
+        countrylist = {}
+        for single_country in country:
+            statelist = []
+            for single_state in state:
+                if single_state[1] == single_country[1]:
+                    statelist.append([single_state[3], single_state[2]])
+            countrylist[single_country[1]] = statelist
+        statelist = {}
+        for single_state in state:
+            districtlist = []
+            for single_district in district:
+                if single_district[2] == single_state[2]:
+                    districtlist.append(
+                        [single_district[4], single_district[3]])
+            statelist[single_state[2]] = districtlist
+        districtdict = {}
+        for single_district in district:
+            blocklist = []
+            for single_block in block:
+                if single_block[3] == single_district[3]:
+                    blocklist.append([single_block[5], single_block[4]])
+            districtdict[single_district[3]] = blocklist
+        return render_template('register.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu,
+                               menuarray=menuarray, country=country, state=state,
+                               district=district, block=block, clist=countrylist,
+                               slist=statelist, dlist=districtdict, label=label_dict)
+    else:
+        name = request.form['10']
+        emp_id = request.form['11']
+        DOB = request.form['12']
+        quali = request.form['13']
+        gender = request.form.get('14', '')
+        DOJ = request.form['17']
+        awards = request.form['18']
+        address = request.form['19']
+        phone = int(request.form['20'])
+        altphone = int(request.form['53'])
+        email = request.form['21']
+        sch_name = request.form['22']
+        designation = request.form['23']
+        subjects = request.form['24']
+        sch_addr = request.form['25']
+        countryval = int(request.form['26'])
+        stateval = int(request.form['27'])
+        districtval = int(request.form['28'])
+        blockval = int(request.form['29'])
+
+        insertvals = values.insertvalues(name, DOB, sch_name, sch_addr, phone, altphone, DOJ, awards, emp_id, quali, gender,
+                                         address, email, designation, subjects, blockval, districtval, stateval, countryval, session['userid'], datetime.now())
+        if insertvals:
             flash('Please sign in using your Employee ID as Username and OTP as Password.', 'info')
             return redirect(url_for('login'))
         flash('Something went wrong! Please try again later!', 'danger')
@@ -282,15 +349,17 @@ def update():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-
+        print(districtdict)
         teachers = values.teacherUnderOperator(session['userid'])
-        details = values.getRegisteration_details(session['userid'])
-
+        if session['RoleID'] == 1:
+            details = values.getRegisteration_details(session['userid'])
+        elif session['RoleID'] == 2:
+            details = values.getReg_underoperator(session['userid'])
         return render_template('update_register.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict, detail=details[0])
+                               slist=statelist, dlist=districtdict, label=label_dict, details=details)
     else:
         name = request.form['10']
         emp_id = request.form['11']

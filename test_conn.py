@@ -629,5 +629,74 @@ row = cursor.fetchall()
 print(row)
 
 cursor.execute("SELECT * FROM dbo.Idea")
+cursor.execute("SELECT * FROM dbo.Subcategory")
+row = cursor.fetchall()
+print(row)
+cursor.executemany(
+    "INSERT INTO dbo.Label VALUES (%d, %d, %d, %s,%s, %s, %s, %s)",
+    [
+        (10, 1, 2, '/register', 'Textbox', 'Name', 'nickedes', str(datetime.now())),
+        (11, 1, 2, '/register', 'Textbox', 'EmployeeID','nickedes', str(datetime.now())),
+        (12, 1, 2, '/register', 'DateSelector', 'Date of Birth', 'nickedes', str(datetime.now())),
+        (13, 1, 2, '/register', 'Textarea', 'Qualification', 'nickedes', str(datetime.now())),
+        (14, 1, 2, '/register', 'Text','Gender', 'nickedes', str(datetime.now())),
+        (15, 1, 2, '/register', 'RadioButton', 'Female', 'nickedes', str(datetime.now())),
+        (16, 1, 2, '/register', 'RadioButton', 'Male', 'nickedes', str(datetime.now())),
+        (17, 1, 2, '/register', 'DateSelector', 'DateOfJoining', 'nickedes', str(datetime.now())),
+        (18, 1, 2, '/register', 'Textarea', 'Awards', 'nickedes', str(datetime.now())),
+        (19, 1, 2, '/register', 'Textarea', 'ResidentialAddress', 'nickedes', str(datetime.now())),
+        (20, 1, 2, '/register', 'Textbox', 'PhoneNumber', 'nickedes', str(datetime.now())),
+        (21, 1, 2, '/register', 'Textbox', 'EmailID', 'nickedes', str(datetime.now())),
+        (22, 1, 2, '/register', 'Textbox', 'SchoolName', 'nickedes', str(datetime.now())),
+        (23, 1, 2, '/register', 'Textbox', 'Designation', 'nickedes', str(datetime.now())),
+        (24, 1, 2, '/register', 'Textarea', 'Subjects', 'nickedes', str(datetime.now())),
+        (25, 1, 2, '/register', 'Textarea', 'SchoolAddress', 'nickedes', str(datetime.now())),
+        (26, 1, 2, '/register', 'Dropdown', 'CountryID', 'nickedes', str(datetime.now())),
+        (27, 1, 2, '/register', 'Dropdown', 'StateID', 'nickedes', str(datetime.now())),
+        (28, 1, 2, '/register', 'Dropdown', 'DistrictID', 'nickedes', str(datetime.now())),
+        (29, 1, 2, '/register', 'Dropdown', 'BlockID', 'nickedes', str(datetime.now()))
+    ])
+#Todo: set pk changes
+conn.commit()
+
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Employee ID'", 11))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Date Of Joining'", 17))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Residential Address'", 19))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Phone Number'", 20))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Email ID'", 21))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'School Name'", 22))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'School Address'", 25))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Country'", 26))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'State'", 27))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'District'", 28))
+conn.commit()
+cursor.execute('UPDATE dbo.Label set LabelValue = %s  where LabelID = %d' % ("'Block'", 29))
+conn.commit()
+cursor.execute("SELECT * FROM dbo.Registration")
+row = cursor.fetchall()
+print(row)
+loginid = 9
+cursor.execute(
+    'DELETE FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+conn.commit()
+cursor.execute(
+    'DELETE FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+conn.commit()
+loginid = 9
+cursor.execute(
+        'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+teachers = cursor.fetchall()
+print(teachers)
+'''
+cursor.execute('SELECT * FROM dbo.Block')
 row = cursor.fetchall()
 print(row)
