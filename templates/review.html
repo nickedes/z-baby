@@ -4,6 +4,22 @@
 <div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[51] }}</h3>
 <br>
+{% if session['RoleID'] == 2 %}
+<div class="form-group">
+    <label class="col-sm-2 control-label">Teachers</label> 
+    <div class="col-sm-6">
+      <select id = "new" class="form-control" name="teacher">
+      <option>..</option>
+      {% for teacher in teachers %}
+        <option id="{{ teacher[1] }}" >{{ teacher[1] }}</option>
+      {% endfor %}
+      </select>
+    </div>
+  <br><br>
+</div>
+{% endif %}
+	
+<div id="all_ideas">
 <div class="dropdown" class="col-lg-8">
 
 	    <label for="" class="control-label">Select Idea to update</label> 
@@ -167,6 +183,7 @@
 </form>
 </div>
 {% endfor %}
+</div>
 <script>
 $(".hiddenalways").hide();
 $("#ddl1").change(function(){
@@ -180,6 +197,10 @@ $("#e1").change(function(){
   $(".ideaform").hide();
   $("#" + id + ".ideaform").show();
 });
+
+{% if session['RoleID'] == 2 %}
+$("#all_ideas").hide();
+{% endif %}
 </script>
 
 {% include 'footer.html' %}
