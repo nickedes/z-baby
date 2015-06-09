@@ -599,43 +599,18 @@ def review():
                                stage=stage_dict, category=category_dict,media=media,
                                subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
     else:
-        if 'idea' in request.form:
-            print("idea")
             IdeaID = request.form['idea']
-        if '31' in request.form:
-            print("title")
             title = request.form['31']    
-        if '33' in request.form:
-            print("stage_id")
             stage_id = request.form['33']    
-        if '34' in request.form:
-            print("benefit_id")
             benefit_id = request.form['34']
-        if '36' in request.form:
-            print("category_id")
             category_id = request.form['36']
-        if '37'+str(category_id) in request.form:
-            print("subcategory_id")
             subcategory_id = request.form.getlist('37'+str(category_id))
-        if '38' in request.form:
-            print("description")
             description = request.form['38']
-        if '42' in request.form:
-            print("resources")
             resource = request.form['42']
-        if '44' in request.form:
-            print("support")
             support = request.form['44']
-        if '46' in request.form:
-            print("implement_time")
             implement_time = request.form['46']
-        if '47' in request.form:
-            print("reach")
             reach = request.form['47']
-        if '49' in request.form:
-            print("example")
             example = request.form['49']
-
 
         image_link = None
         try:
