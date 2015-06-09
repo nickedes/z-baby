@@ -721,14 +721,6 @@ cursor.execute(
 ideaid = cursor.fetchall()
 print(ideaid)
 '''
-ideaid = 3
-cursor.execute(
-        'SELECT * FROM dbo.Idea ')
-CatSubCats = cursor.fetchall()
-print(CatSubCats)
-cursor.execute(
-        'DELETE FROM dbo.Idea WHERE IdeaID < 13')
-conn.commit()
-cursor.execute(
-    'SELECT * FROM dbo.Idea')
+LoginID = 9
+cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s',str(LoginID))
 print(cursor.fetchall())

@@ -554,7 +554,10 @@ def review():
         return redirect(url_for('login'))
     if request.method == 'GET':
         teachers = values.teacherUnderOperator(session['userid'])
-        idea_details = values.getIdeaInfo(session['userid'])
+        if session['RoleID'] == 1:
+            idea_details = values.getIdeaInfo(session['userid'])
+        elif session['RoleID'] == 2:
+            idea_details = values.getIdeaUnderOperator(session['userid'])
         print(idea_details)
         subcatidea = {}
         media = {}

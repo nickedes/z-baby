@@ -301,3 +301,9 @@ def updateIdeaCatSubCat(idea_id,category_id, subcategory_id):
     except:
         return False
     return True
+
+def getIdeaUnderOperator(LoginID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s',str(LoginID))
+    return cursor.fetchall()
