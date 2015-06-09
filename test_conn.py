@@ -706,7 +706,6 @@ cursor.execute('SELECT * FROM dbo.IdeaCatSubCat')
 teachers = cursor.fetchall()
 
 print(teachers)
-'''
 cursor.execute('SELECT * FROM dbo.Block')
 row = cursor.fetchall()
 print(row)
@@ -715,3 +714,21 @@ cursor.execute(
                 'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
 row = cursor.fetchall()
 print(row)
+cursor.execute('SELECT * FROM dbo.Login')
+userid = 8
+cursor.execute(
+        'SELECT * from Idea WHERE LoginID = %d' % userid)
+ideaid = cursor.fetchall()
+print(ideaid)
+'''
+ideaid = 3
+cursor.execute(
+        'SELECT * FROM dbo.Idea ')
+CatSubCats = cursor.fetchall()
+print(CatSubCats)
+cursor.execute(
+        'DELETE FROM dbo.Idea WHERE IdeaID < 13')
+conn.commit()
+cursor.execute(
+    'SELECT * FROM dbo.Idea')
+print(cursor.fetchall())
