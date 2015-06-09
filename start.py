@@ -637,12 +637,6 @@ def review():
                 print("done upload")
         except:
             pass
-        if session['RoleID'] == 1:
-            LoginID = session['userid']
-        elif session['RoleID'] == 2:
-            Username = request.form['teacher']
-            LoginID = values.getLoginID(Username)
-            print(LoginID)
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach)
         if image_link:

@@ -3,30 +3,13 @@
 <link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[51] }}</h3>
-<br>
-{% if session['RoleID'] == 2 %}
-<div class="form-group">
-    <label class="col-sm-2 control-label">Teachers</label> 
-    <div class="col-sm-6">
-      <select id = "new" class="form-control" name="teacher">
-      <option>..</option>
-      {% for teacher in teachers %}
-        <option id="{{ teacher[0] }}" >{{ teacher[1] }}</option>
-      {% endfor %}
-      </select>
-    </div>
-  <br><br>
-</div>
-{% endif %}
-	
+<br>	
 <div class="dropdown" class="col-lg-8">
 	    <label for="" class="control-label">Select Idea to update</label> 
 	    <select id = "e1" name="idea" class="" >
 	    	<option>..</option>
 	        {% for idea in ideas %}
-	        	<div  class="all_ideas" id="{{ idea[1] }}">
 	        	  <option  value="{{ idea[0] }}" id="{{ idea[0] }}" >{{ idea[2] }}</option>
-	        	</div>
 	        {% endfor %}
       	</select>
 	    <br><br>
@@ -34,6 +17,16 @@
 {% for idea in ideas %}
 <div class="ideaform" id="{{ idea[0] }}">
 <form action="/review" method="POST" enctype="multipart/form-data">
+	{% if session['RoleID'] == 2 %}
+	<div class="form-group"> 
+	    {% for teacher in teachers %}
+	    	{% if teacher[0] == idea[1] %}
+        	<input id="{{ teacher[0] }}"value="{{teacher[1]}}" disabled>
+        	{% endif %}
+      	{% endfor %}
+	    <br><br>
+  	</div>
+  	{% endif %}
 	<div class="form-group"> 
 	      <div class="hiddenalways">
 	        <input type="text" class="form-control" name="idea" value="{{ idea[0] }}">
@@ -196,15 +189,5 @@ $("#e1").change(function(){
   $(".ideaform").hide();
   $("#" + id + ".ideaform").show();
 });
-
-{% if session['RoleID'] == 2 %}
-$(".all_ideas").hide();
-$("#new").change(function(){
-	var id = $("#new :selected").attr("id");
-	$(".all_ideas").hide();
-	$("#" + id + ".all_ideas").show();
-});
-{% endif %}
 </script>
-
 {% include 'footer.html' %}
