@@ -535,16 +535,12 @@ def edit():
         column_names = {}
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
-            column_names[1] = values.gettablevalues(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, dropdown=dropdown)
+                               topsubmenu=topsubmenu, menuarray=menuarray, tables=dropdown)
     else:
-        if 'add' in request.form:
-            pass
-        elif 'edit' in request.form:
-            pass
-        elif 'delete' in request.form:
-            pass
+        table = request.form['table']
+        print(table)
+
 
 
 @app.route('/review', methods=['GET', 'POST'])
@@ -599,18 +595,18 @@ def review():
                                stage=stage_dict, category=category_dict,media=media,
                                subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
     else:
-            IdeaID = request.form['idea']
-            title = request.form['31']    
-            stage_id = request.form['33']    
-            benefit_id = request.form['34']
-            category_id = request.form['36']
-            subcategory_id = request.form.getlist('37'+str(category_id))
-            description = request.form['38']
-            resource = request.form['42']
-            support = request.form['44']
-            implement_time = request.form['46']
-            reach = request.form['47']
-            example = request.form['49']
+        IdeaID = request.form['idea']
+        title = request.form['31']    
+        stage_id = request.form['33']    
+        benefit_id = request.form['34']
+        category_id = request.form['36']
+        subcategory_id = request.form.getlist('37'+str(category_id))
+        description = request.form['38']
+        resource = request.form['42']
+        support = request.form['44']
+        implement_time = request.form['46']
+        reach = request.form['47']
+        example = request.form['49']
 
         image_link = None
         try:

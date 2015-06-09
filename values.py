@@ -154,12 +154,15 @@ def checkInnovation(userid):
 def gettablevalues(tablename):
     conn = getConnection()
     cursor = conn.cursor()
-    if tablename != 'Registration':
+    if tablename != 'Registration' and tablename != 'IdeaCatSubCat':
         cursor.execute(
             'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
     elif tablename == "Registration":
         cursor.execute(
             'SELECT * FROM dbo.Registration ORDER BY LoginID')
+    elif tablename == "Registration":
+        cursor.execute(
+            'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
     returnval = cursor.fetchall()
     conn.close()
     return returnval
