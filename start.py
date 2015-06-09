@@ -599,19 +599,44 @@ def review():
                                stage=stage_dict, category=category_dict,media=media,
                                subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
     else:
-        IdeaID = request.form['ideaform']
-        title = request.form['31']
-        stage_id = request.form['33']
-        benefit_id = request.form['34']
-        category_id = request.form['36']
-        subcategory_id = request.form.getlist('37'+str(category_id))
-        description = request.form['38']
+        if 'idea' in request.form:
+            print("idea")
+            IdeaID = request.form['idea']
+        if '31' in request.form:
+            print("title")
+            title = request.form['31']    
+        if '33' in request.form:
+            print("stage_id")
+            stage_id = request.form['33']    
+        if '34' in request.form:
+            print("benefit_id")
+            benefit_id = request.form['34']
+        if '36' in request.form:
+            print("category_id")
+            category_id = request.form['36']
+        if '37'+str(category_id) in request.form:
+            print("subcategory_id")
+            subcategory_id = request.form.getlist('37'+str(category_id))
+        if '38' in request.form:
+            print("description")
+            description = request.form['38']
+        if '42' in request.form:
+            print("resources")
+            resource = request.form['42']
+        if '44' in request.form:
+            print("support")
+            support = request.form['44']
+        if '46' in request.form:
+            print("implement_time")
+            implement_time = request.form['46']
+        if '47' in request.form:
+            print("reach")
+            reach = request.form['47']
+        if '49' in request.form:
+            print("example")
+            example = request.form['49']
 
-        resource = request.form['42']
-        support = request.form['44']
-        implement_time = request.form['46']
-        reach = request.form['47']
-        example = request.form['49']
+
         image_link = None
         try:
             file = request.files['file']
@@ -640,7 +665,7 @@ def review():
             LoginID = values.getLoginID(Username)
             print(LoginID)
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
-                                   description, resource, support, implement_time, reach, session['userid'], datetime.now())
+                                   description, resource, support, implement_time, reach)
         if image_link:
             example_img = values.updateMedia(
                 IdeaID, medias['image'], 'image', datetime.now())

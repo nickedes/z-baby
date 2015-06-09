@@ -1,12 +1,13 @@
-{% include 'header.html' %}
++{% include 'header.html' %}
 <script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
 <link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[51] }}</h3>
 <br>
-<div class="dropdown">
+<div class="dropdown" class="col-lg-8">
+
 	    <label for="" class="control-label">Select Idea to update</label> 
-	    <select id = "new" name="ideaform" class="form-control" >
+	    <select id = "e1" name="idea" class="" >
 	    	<option>..</option>
 	        {% for idea in ideas %}
 	          <option value="{{ idea[0] }}" id="{{ idea[0] }}">{{ idea[2] }}</option>
@@ -17,6 +18,12 @@
 {% for idea in ideas %}
 <div class="ideaform" id="{{ idea[0] }}">
 <form action="/review" method="POST" enctype="multipart/form-data">
+	<div class="form-group"> 
+	      <div class="hiddenalways">
+	        <input type="text" class="form-control" name="idea" value="{{ idea[0] }}">
+	      </div>
+	      <br><br>
+  	</div>
 	<div class="form-group">
 	    <div>
 	    	<label for="" class="control-label">{{ label[31] }}</label>
@@ -75,22 +82,6 @@
 			</select>
 		</div>
 	</div>
-	<!-- <div class="form-group">
-			<div class="checkbox" id="old">
-    			<label>
-    			{% for data in subcategory[subcats[idea[0]][1]] %}
-    				{% for sub in subcats[idea[0]] %}
-	      				{% if data[1] == sub[2] %}
-	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" selected>{{ data[0] }}<br>
-	      				{% else %}
-	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
-	      				{% endif %}
-      				{% endfor %}
-      			{% endfor %}
-    			</label>
-  			</div>
-	    <br><br>
-  	</div> -->
 	<div class="form-group">
     		{% for subcat in subcategory %}
 			<div class="checkbox" id="{{subcat}}">
@@ -177,15 +168,15 @@
 </div>
 {% endfor %}
 <script>
-// $(".checkbox").hide();
+$(".hiddenalways").hide();
 $("#ddl1").change(function(){
 	var id = $("#ddl1 :selected").attr("id");
     $(".checkbox").hide();
     $("#" + id + ".checkbox").show();
 });
 $(".ideaform").hide();
-$("#new").change(function(){
-  var id = $("#new :selected").attr("id");
+$("#e1").change(function(){
+  var id = $("#e1 :selected").attr("id");
   $(".ideaform").hide();
   $("#" + id + ".ideaform").show();
 });

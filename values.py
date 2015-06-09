@@ -260,12 +260,12 @@ def getLoginID(Username):
     return row[0][0]
 
 
-def updateIdea(IdeaID,title, stage_id, benefit_id,description, resource, support, implement_time, reach,cr_date):
+def updateIdea(IdeaID,title, stage_id, benefit_id,description, resource, support, implement_time, reach):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Idea set title=%s,IdueaTitle=%s,StageID=%d,BenefitID=%d,Description=%s,ResourcesRequired=%s,Support=%s,ImplementTime=%d,CreateDate=%s WHERE IdeaID = %d',(title, stage_id, benefit_id,description, resource, support, implement_time, reach,cr_date,IdeaID))
+            'UPDATE dbo.Idea set IdeaTitle=%s,StageID=%d,BenefitID=%d,Description=%s,ResourcesRequired=%s,Support=%s,ImplementTime=%d, Reach=%s WHERE IdeaID = %d',(title, stage_id, benefit_id,description, resource, support, implement_time, reach ,IdeaID))
         conn.commit()
     except:
         return False
@@ -274,7 +274,6 @@ def updateIdea(IdeaID,title, stage_id, benefit_id,description, resource, support
 
 
 def updateMedia(IdeaID,Mvalue,Mtype,cr_date):
-    # IdeaID, medias['image'], 'image', session['userid'], datetime.now())
     conn = getConnection()
     cursor = conn.cursor()
     try:
