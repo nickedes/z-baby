@@ -570,6 +570,17 @@ def edit():
                 cols = values.getColumns('SubMenu')
                 return render_template('SubMenu.html', topmenu=topmenu,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'Country':
+                data = values.gettablevalues('Country')
+                cols = values.getColumns('Country')
+                return render_template('Country.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'State':
+                data = values.gettablevalues('State')
+                cols = values.getColumns('State')
+                return render_template('State.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+
         print(table)
 
 
@@ -610,7 +621,21 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
-
+        if table == "Country":
+            CountryID = request.form['id']
+            value = request.form[str(CountryID)]
+            update = values.updateCat(CountryID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+        if table == "State":
+            CountryID = request.form['CatID']
+            StateID = request.form['StateID']
+            value = request.form[str(StateID)]
+            update = values.updateSubCat(CountryID, StateID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
         return redirect(url_for('edit'))
 
 
