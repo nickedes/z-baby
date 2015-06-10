@@ -389,3 +389,27 @@ def updateState(CountryID, StateID, StateName):
         return False
     conn.commit()
     return True
+
+
+def updateDistrict(CountryID, StateID, DistrictID, DistrictName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.District set DistrictName = %s WHERE CountryID = %d and StateID = %d and DistrictID = %d',
+                       (DistrictName, CountryID, StateID, DistrictID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def updateBlock(CountryID, StateID, DistrictID, BlockID, DistrictName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.Block set BlockName = %s WHERE CountryID = %d and StateID = %d and DistrictID = %d and BlockID =%d',
+                       (DistrictName, CountryID, StateID, DistrictID, BlockID))
+    except:
+        return False
+    conn.commit()
+    return True

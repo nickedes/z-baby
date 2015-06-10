@@ -580,7 +580,16 @@ def edit():
                 cols = values.getColumns('State')
                 return render_template('State.html', topmenu=topmenu,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
-
+            if table == 'District':
+                data = values.gettablevalues('District')
+                cols = values.getColumns('District')
+                return render_template('District.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'Block':
+                data = values.gettablevalues('Block')
+                cols = values.getColumns('Block')
+                return render_template('Block.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         print(table)
 
 
@@ -598,6 +607,8 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         if table == "SubCategory":
             CatID = request.form['CatID']
             SubCatID = request.form['SubCatID']
@@ -606,6 +617,8 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         if table == "Menu":
             MenuID = request.form['id']
             value = request.form[str(MenuID)]
@@ -613,6 +626,8 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         if table == "SubMenu":
             MenuID = request.form['MenuID']
             SubMenuID = request.form['SubMenuID']
@@ -621,6 +636,8 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         if table == "Country":
             CountryID = request.form['id']
             value = request.form[str(CountryID)]
@@ -628,6 +645,8 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         if table == "State":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
@@ -636,6 +655,31 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
+        if table == "District":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            DistrictID = request.form['DistrictID']
+            value = request.form[str(DistrictID)]
+            update = values.updateDistrict(CountryID, StateID, DistrictID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
+        if table == "Block":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            DistrictID = request.form['DistrictID']
+            BlockID = request.form['BlockID']
+            value = request.form[str(BlockID)]
+            update = values.updateBlock(CountryID, StateID, DistrictID, BlockID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         return redirect(url_for('edit'))
 
 
@@ -725,7 +769,6 @@ def review():
                 os.remove(PATH)
                 image_link = uploaded_image.link
                 medias['image'] = image_link
-                print("done upload")
         except:
             pass
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
@@ -733,7 +776,6 @@ def review():
         if image_link:
             example_img = values.updateMedia(
                 IdeaID, medias['image'], 'image', datetime.now())
-            print("done img")
         else:
             example_img = True
         example_text = values.updateMedia(
