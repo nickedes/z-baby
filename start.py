@@ -28,7 +28,7 @@ def lalloo():
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session['userid'] == 0:
+        if 'userid' not in session or session['userid'] == 0:
             flash('You are not logged in!', 'warning')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
@@ -62,7 +62,6 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print(request.path)
     if 'username' in session:
         return redirect(url_for('home'))
     if 'LanguageID' not in session:
