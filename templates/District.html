@@ -1,0 +1,48 @@
+{% include 'header.html' %}
+
+<table class="table">
+	<thead>
+		<tr>
+			{% for head in header %}
+				<th>  {{head}}  </th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<tr>
+					{% for data in row %}
+						<td>{{data}}</td>
+					{% endfor %}
+					<br>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br><br><br>
+<table class="table">
+	<thead>
+		<tr>
+			<th>  {{ header[3] }}  </th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<form action="/table" method="POST">
+				<input type="hidden" class="form-control" name="table" value="State">
+				<input type="hidden" class="form-control" name="CountryID" value="{{row[1]}}">
+				<input type="hidden" class="form-control" name="StateID" value="{{row[2]}}">
+				<input type="hidden" class="form-control" name="DistrictID" value="{{row[3]}}">
+				<tr>
+					<td>
+					<input type="text" class="form-control" name="{{row[3]}}" value="{{row[4]}}">
+					</td>
+					<td>
+					<button type="submit"  class="btn btn-custom btn-primary">SAVE</button>
+					</td>
+				</tr>
+			</form>
+		{% endfor %}
+	</tbody>
+</table>
+{% include 'footer.html' %}
