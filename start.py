@@ -390,11 +390,11 @@ def update():
         blockval = int(request.form['29'])
         if session['RoleID'] == 1:
             updatevals = values.update_register(session['userid'], name, DOB,
-                                            sch_name, sch_addr, phone,
-                                            altphone, DOJ, awards, emp_id,
-                                            quali, gender, address, email,
-                                            designation, subjects, blockval,
-                                            districtval, stateval, countryval)
+                                                sch_name, sch_addr, phone,
+                                                altphone, DOJ, awards, emp_id,
+                                                quali, gender, address, email,
+                                                designation, subjects, blockval,
+                                                districtval, stateval, countryval)
         elif session['RoleID'] == 2:
             updatevals = values.update_register(teacher_id, name, DOB,
                                                 sch_name, sch_addr, phone,
@@ -447,7 +447,7 @@ def submit():
         subcat_dict = {}
         for cat in category:
             sublist = []
-            for sub in subcat: 
+            for sub in subcat:
                 if sub[1] == cat[1]:
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
@@ -549,12 +549,17 @@ def review():
         flash('You are not logged in!', 'warning')
         return redirect(url_for('login'))
     if request.method == 'GET':
-        idea_details = values.getIdeaInfo(session['userid'])
+        teachers = values.teacherUnderOperator(session['userid'])
+        if session['RoleID'] == 1:
+            idea_details = values.getIdeaInfo(session['userid'])
+        elif session['RoleID'] == 2:
+            idea_details = values.getIdeaUnderOperator(session['userid'])
         print(idea_details)
         subcatidea = {}
         media = {}
         for idea_single in idea_details:
-            subcatidea[idea_single[0]] = values.getIdeaCatSubCat(idea_single[0])
+            subcatidea[idea_single[0]] = values.getIdeaCatSubCat(
+                idea_single[0])
             media[idea_single[0]] = values.getMedia(idea_single[0])
         print(media)
         label_dict = {}
@@ -592,12 +597,12 @@ def review():
         return render_template('review.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,
-                               stage=stage_dict, category=category_dict,media=media,
-                               subcategory=subcat_dict, ideas=idea_details,subcats=subcatidea,sublist=sub_list)
+                               stage=stage_dict, category=category_dict, media=media, teachers=teachers,
+                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea, sublist=sub_list)
     else:
         IdeaID = request.form['idea']
-        title = request.form['31']    
-        stage_id = request.form['33']    
+        title = request.form['31']
+        stage_id = request.form['33']
         benefit_id = request.form['34']
         category_id = request.form['36']
         subcategory_id = request.form.getlist('37'+str(category_id))
@@ -629,12 +634,6 @@ def review():
                 print("done upload")
         except:
             pass
-        if session['RoleID'] == 1:
-            LoginID = session['userid']
-        elif session['RoleID'] == 2:
-            Username = request.form['teacher']
-            LoginID = values.getLoginID(Username)
-            print(LoginID)
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach)
         if image_link:
