@@ -61,6 +61,7 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         return False
     return True
 
+
 def insertIdeaCatSubCat(idea_id, category_id, subcategory_id):
     conn = getConnection()
     cursor = conn.cursor()
@@ -68,11 +69,13 @@ def insertIdeaCatSubCat(idea_id, category_id, subcategory_id):
     for subcategory in subcategory_id:
         vals.append((idea_id, category_id, subcategory))
     try:
-        cursor.executemany('INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
+        cursor.executemany(
+            'INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
         conn.commit()
     except:
         return False
     return True
+
 
 def teacherUnderOperator(loginid):
     conn = getConnection()
@@ -92,6 +95,7 @@ def getReg_underoperator(loginid):
     teachers = cursor.fetchall()
     conn.close()
     return teachers
+
 
 def checkLogin(username, password):
     username = "'" + username + "'"
@@ -129,6 +133,7 @@ def getMedia(ideaid):
     conn.close()
     return media
 
+
 def getIdeaInfo(loginid):
     conn = getConnection()
     cursor = conn.cursor()
@@ -160,7 +165,7 @@ def gettablevalues(tablename):
     elif tablename == "Registration":
         cursor.execute(
             'SELECT * FROM dbo.Registration ORDER BY LoginID')
-    elif tablename == "Registration":
+    elif tablename == "IdeaCatSubCat":
         cursor.execute(
             'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
     returnval = cursor.fetchall()
@@ -215,7 +220,7 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     cursor = conn.cursor()
     try:
         cursor.execute(
-        'INSERT INTO dbo.Media VALUES (%d, %d, %s, %s, %s, %s)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
+            'INSERT INTO dbo.Media VALUES (%d, %d, %s, %s, %s, %s)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
     except:
         return False
     conn.commit()
@@ -258,17 +263,17 @@ def getLoginID(Username):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-                'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
+        'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
     row = cursor.fetchall()
     return row[0][0]
 
 
-def updateIdea(IdeaID,title, stage_id, benefit_id,description, resource, support, implement_time, reach):
+def updateIdea(IdeaID, title, stage_id, benefit_id, description, resource, support, implement_time, reach):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Idea set IdeaTitle=%s,StageID=%d,BenefitID=%d,Description=%s,ResourcesRequired=%s,Support=%s,ImplementTime=%d, Reach=%s WHERE IdeaID = %d',(title, stage_id, benefit_id,description, resource, support, implement_time, reach ,IdeaID))
+            'UPDATE dbo.Idea set IdeaTitle=%s,StageID=%d,BenefitID=%d,Description=%s,ResourcesRequired=%s,Support=%s,ImplementTime=%d, Reach=%s WHERE IdeaID = %d', (title, stage_id, benefit_id, description, resource, support, implement_time, reach, IdeaID))
         conn.commit()
     except:
         return False
@@ -276,12 +281,12 @@ def updateIdea(IdeaID,title, stage_id, benefit_id,description, resource, support
     return True
 
 
-def updateMedia(IdeaID,Mvalue,Mtype,cr_date):
+def updateMedia(IdeaID, Mvalue, Mtype, cr_date):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Media set MediaValue=%s,CreateDate=%s WHERE IdeaID = %d and MediaType = %s',(Mvalue,cr_date,IdeaID,Mtype))
+            'UPDATE dbo.Media set MediaValue=%s,CreateDate=%s WHERE IdeaID = %d and MediaType = %s', (Mvalue, cr_date, IdeaID, Mtype))
         conn.commit()
     except:
         return False
@@ -289,24 +294,38 @@ def updateMedia(IdeaID,Mvalue,Mtype,cr_date):
     return True
 
 
-def updateIdeaCatSubCat(idea_id,category_id, subcategory_id):
+def updateIdeaCatSubCat(idea_id, category_id, subcategory_id):
     # Todo: Improve
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d',(idea_id))
+    cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d', (idea_id))
     conn.commit()
     vals = []
     for subcategory in subcategory_id:
         vals.append((idea_id, category_id, subcategory))
     try:
-        cursor.executemany('INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
+        cursor.executemany(
+            'INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
         conn.commit()
     except:
         return False
     return True
 
+
 def getIdeaUnderOperator(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s',str(LoginID))
+    cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s', str(LoginID))
     return cursor.fetchall()
+
+
+def updateCat(CategoryID, CategoryValue):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d',(CategoryValue,CategoryID))
+    except:
+        return False
+    conn.commit()
+    return True
+    

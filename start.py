@@ -1,4 +1,3 @@
-import os
 from flask import (
     Flask,
     render_template,
@@ -545,8 +544,31 @@ def edit():
                                languages=languages, tables=dropdown)
     else:
         table = request.form['table']
+        if session['RoleID'] == 4:
+            if table == 'Category':
+                data = values.gettablevalues('Category')
+                cols = values.getColumns('Category')
+                print(data)
+                return render_template('Category_table.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         print(table)
 
+
+@app.route('/table', methods=['GET', 'POST'])
+def table():
+    if 'username' not in session:
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        table = request.form['table']
+        if table == "Category":
+            CatID = request.form['id']
+            value = request.form[str(CatID)]
+            update = values.updateCat(CatID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+        return redirect(url_for('edit'))
 
 
 @app.route('/review', methods=['GET', 'POST'])
