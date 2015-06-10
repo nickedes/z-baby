@@ -155,6 +155,12 @@ def checkInnovation(userid):
         return False
     return True
 
+def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    cursor.execute(
+        'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
 
 def gettablevalues(tablename):
     conn = getConnection()
