@@ -624,15 +624,15 @@ def table():
         if table == "Country":
             CountryID = request.form['id']
             value = request.form[str(CountryID)]
-            update = values.updateCat(CountryID, value)
+            update = values.updateCountry(CountryID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
         if table == "State":
-            CountryID = request.form['CatID']
+            CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             value = request.form[str(StateID)]
-            update = values.updateSubCat(CountryID, StateID, value)
+            update = values.updateState(CountryID, StateID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))

@@ -365,3 +365,27 @@ def updateSubMenu(MenuID, SubMenuID, MenuValue):
         return False
     conn.commit()
     return True
+
+
+def updateCountry(CountryID, CountryName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Country set CountryName = %s WHERE CountryID = %d', (CountryName, CountryID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def updateState(CountryID, StateID, StateName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.State set StateName = %s WHERE CountryID = %d and StateID = %d',
+                       (StateName, CountryID, StateID))
+    except:
+        return False
+    conn.commit()
+    return True
