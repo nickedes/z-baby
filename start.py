@@ -8,6 +8,7 @@ from flask import (
     request,
     flash
 )
+from functools import wraps
 from datetime import datetime
 from errors import showerrors
 import values
@@ -20,6 +21,18 @@ app.secret_key = os.urandom(24)
 
 showerrors(app)
 
+@app.before_request
+def lalloo():
+    pass
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session['userid'] == 0:
+            flash('You are not logged in!', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def index():
@@ -89,27 +102,23 @@ def login():
 
 
 @app.route('/home')
+@login_required
 def home():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
-
-    else:
-        label_dict = {}
-        for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
-                label_dict[label[0]] = label[5]
-        menulist = []
-        for menu in menus:
-            if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
-                menulist.append([menu[3], menu[4]])
-        inno = values.checkInnovation(session['userid'])
-        return render_template('home.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu,
-                               menuarray=menuarray,
-                               inno=inno, label=label_dict,
-                               menulist=menulist,
-                               languages=languages)
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
+            label_dict[label[0]] = label[5]
+    menulist = []
+    for menu in menus:
+        if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
+            menulist.append([menu[3], menu[4]])
+    inno = values.checkInnovation(session['userid'])
+    return render_template('home.html', topmenu=topmenu,
+                           topsubmenu=topsubmenu,
+                           menuarray=menuarray,
+                           inno=inno, label=label_dict,
+                           menulist=menulist,
+                           languages=languages)
 
 
 @app.route('/about/<pagename>')
@@ -254,10 +263,8 @@ def register():
 
 
 @app.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('index'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -326,10 +333,8 @@ def create():
 
 
 @app.route('/update', methods=['GET', 'POST'])
+@login_required
 def update():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('index'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -423,10 +428,8 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 
 
 @app.route('/submit', methods=['GET', 'POST'])
+@login_required
 def submit():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -527,10 +530,8 @@ def submit():
 
 
 @app.route('/edit', methods=['GET', 'POST'])
+@login_required
 def edit():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu',
@@ -550,10 +551,8 @@ def edit():
 
 
 @app.route('/review', methods=['GET', 'POST'])
+@login_required
 def review():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'GET':
         teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
@@ -600,6 +599,7 @@ def review():
             sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
+        print(subcatidea)
         return render_template('review.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,

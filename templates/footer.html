@@ -9,7 +9,7 @@
     <footer>
         <p class="pull-right">
         {% for language in languages %}
-        <a href="/language/{{language[0]}}?next={{request.path}}">{{language[1]}} </a>&middot;
+        <a href="/language/{{language[0]}}?next={{request.path}}"> {{language[1]}} </a>&middot;
         {% endfor %}
         <a href="#">Back to top</a></p>
         <p>&copy; Litchi &middot; </p>
