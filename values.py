@@ -317,3 +317,15 @@ def getIdeaUnderOperator(LoginID):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s', str(LoginID))
     return cursor.fetchall()
+
+
+def updateCat(CategoryID, CategoryValue):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d',(CategoryValue,CategoryID))
+    except:
+        return False
+    conn.commit()
+    return True
+    
