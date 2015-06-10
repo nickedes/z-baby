@@ -159,8 +159,26 @@ def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
-    cursor.execute(
-        'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+
+def insertSubCat(CategoryID, SubCategoryID, LanguageID, CategoryValue, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    # SubCategory (LanguageID, CategoryID, SubCategoryID, SubCategoryValue, CreatedBy, CreateDate)
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', (LanguageID, CategoryID, SubCategoryID, SubCategoryValue, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
 
 def gettablevalues(tablename):
     conn = getConnection()
@@ -178,6 +196,52 @@ def gettablevalues(tablename):
     conn.close()
     return returnval
 
+def insertMenu(menuvalues):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Menu VALUES (%d, %d, %s, %s, %s, %d, %s, %s)', menuvalues)
+    except:
+        return False
+    conn.commit()
+    return True
+
+def insertCountry(LanguageID, CountryID, CountryName, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)', (LanguageID, CountryID, CountryName, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+                # State (LanguageID, CountryID, StateID, StateName, CreatedBy, CreateDate)
+
+def insertState(LanguageID, CountryID, StateID, StateName, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.State VALUES (%d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, StateName, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+
+def insertSubMenu(submenuvalues):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.SubMenu VALUES (%d, %d, %d, %s, %s, %d, %s, %s)', submenuvalues)
+    except:
+        return False
+    conn.commit()
+    return True
 
 def getColumns(tablename):
     conn = getConnection()

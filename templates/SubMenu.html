@@ -24,6 +24,10 @@
 	<thead>
 		<tr>
 			<th>  {{ header[3] }}  </th>
+			<th>Save Edit</th>
+			<th>Translation Language</th>
+			<th>Translate</th>
+			<th>Save Translation</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -37,7 +41,24 @@
 					<input type="text" class="form-control" name="{{row[2]}}" value="{{row[3]}}">
 					</td>
 					<td>
-					<button type="submit"  class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">SAVE</button>
+					</td>
+					<div class="">
+						<select id = "ddl1" name="language" class="form-control">
+						<option>..</option>
+							{% for language in languages %}
+							{% if language[2] != 1 %}
+								<option id="{{ language[0] }}" value="{{ language[0] }}">{{ language[1] }}</option>
+							{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+					</td>
+					<td>
+					<input type="text" class="form-control" name="{{row[2]}}translate">
+					</td>
+					<td>
+					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">SAVE</button>
 					</td>
 				</tr>
 			</form>
