@@ -29,9 +29,9 @@
 	<tbody>
 		{% for row in table %}
 			<form action="/table" method="POST">
-				<input type="hidden" class="form-control" name="table" value="SubCategory">
-				<input type="hidden" class="form-control" name="CatID" value="{{row[1]}}">
-				<input type="hidden" class="form-control" name="SubCatID" value="{{row[2]}}">
+				<input type="hidden" class="form-control" name="table" value="State">
+				<input type="hidden" class="form-control" name="CountryID" value="{{row[1]}}">
+				<input type="hidden" class="form-control" name="StateID" value="{{row[2]}}">
 				<tr>
 					<td>
 					<input type="text" class="form-control" name="{{row[2]}}" value="{{row[3]}}">

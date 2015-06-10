@@ -558,10 +558,30 @@ def edit():
             if table == 'SubCategory':
                 data = values.gettablevalues('SubCategory')
                 cols = values.getColumns('SubCategory')
-                print(data)
-                print(cols)
                 return render_template('SubCategory.html', topmenu=topmenu,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'Menu':
+                data = values.gettablevalues('Menu')
+                cols = values.getColumns('Menu')
+                print(data)
+                return render_template('Menu.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'SubMenu':
+                data = values.gettablevalues('SubMenu')
+                cols = values.getColumns('SubMenu')
+                return render_template('SubMenu.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'Country':
+                data = values.gettablevalues('Country')
+                cols = values.getColumns('Country')
+                return render_template('Country.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'State':
+                data = values.gettablevalues('State')
+                cols = values.getColumns('State')
+                return render_template('State.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+
         print(table)
 
 
@@ -598,6 +618,36 @@ def table():
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
+        if table == "Menu":
+            MenuID = request.form['id']
+            value = request.form[str(MenuID)]
+            update = values.updateMenu(MenuID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+        if table == "SubMenu":
+            MenuID = request.form['MenuID']
+            SubMenuID = request.form['SubMenuID']
+            value = request.form[str(SubMenuID)]
+            update = values.updateSubMenu(MenuID, SubMenuID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+        if table == "Country":
+            CountryID = request.form['id']
+            value = request.form[str(CountryID)]
+            update = values.updateCountry(CountryID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+        if table == "State":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            value = request.form[str(StateID)]
+            update = values.updateState(CountryID, StateID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
         return redirect(url_for('edit'))
 
 
@@ -610,14 +660,12 @@ def review():
             idea_details = values.getIdeaInfo(session['userid'])
         elif session['RoleID'] == 2:
             idea_details = values.getIdeaUnderOperator(session['userid'])
-        print(idea_details)
         subcatidea = {}
         media = {}
         for idea_single in idea_details:
             subcatidea[idea_single[0]] = values.getIdeaCatSubCat(
                 idea_single[0])
             media[idea_single[0]] = values.getMedia(idea_single[0])
-        print(media)
         label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
