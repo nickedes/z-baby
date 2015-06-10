@@ -3,7 +3,8 @@
 <link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <div class="col-lg-8" style="margin-left:100px">
 <h3>{{ label[51] }}</h3>
-<br>	
+<br>
+{% if ideas %}
 <div class="dropdown" class="col-lg-8">
 	    <label for="" class="control-label">Select Idea to update</label> 
 	    <select id = "e1" name="idea" class="" >
@@ -176,8 +177,12 @@
 </form>
 </div>
 {% endfor %}
+{% endif %}
 <script>
 $(".hiddenalways").hide();
+var id = $("#ddl1 :selected").attr("id");
+$(".checkbox").hide();
+$("#" + id + ".checkbox").show();
 $("#ddl1").change(function(){
 	var id = $("#ddl1 :selected").attr("id");
     $(".checkbox").hide();
@@ -189,5 +194,6 @@ $("#e1").change(function(){
   $(".ideaform").hide();
   $("#" + id + ".ideaform").show();
 });
+
 </script>
 {% include 'footer.html' %}

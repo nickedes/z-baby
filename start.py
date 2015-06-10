@@ -1,4 +1,3 @@
-import os
 from flask import (
     Flask,
     render_template,
@@ -8,6 +7,7 @@ from flask import (
     request,
     flash
 )
+from functools import wraps
 from datetime import datetime
 from errors import showerrors
 import values
@@ -20,6 +20,18 @@ app.secret_key = os.urandom(24)
 
 showerrors(app)
 
+@app.before_request
+def lalloo():
+    pass
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session['userid'] == 0:
+            flash('You are not logged in!', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def index():
@@ -42,13 +54,14 @@ def index():
         if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
 
-    return render_template('slash.html', topmenu=topmenu, menubody=menubody,
+    return render_template('slash.html', languages=languages, topmenu=topmenu, menubody=menubody,
                            topsubmenu=topsubmenu, label=label_dict,
                            menuarray=menuarray)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print(request.path)
     if 'username' in session:
         return redirect(url_for('home'))
     if 'LanguageID' not in session:
@@ -64,7 +77,7 @@ def login():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
-        return render_template('signin.html', topmenu=topmenu,
+        return render_template('signin.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict)
     else:
@@ -88,26 +101,23 @@ def login():
 
 
 @app.route('/home')
+@login_required
 def home():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
-
-    else:
-        label_dict = {}
-        for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
-                label_dict[label[0]] = label[5]
-        menulist = []
-        for menu in menus:
-            if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
-                menulist.append([menu[3], menu[4]])
-        inno = values.checkInnovation(session['userid'])
-        return render_template('home.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu,
-                               menuarray=menuarray,
-                               inno=inno, label=label_dict,
-                               menulist=menulist)
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
+            label_dict[label[0]] = label[5]
+    menulist = []
+    for menu in menus:
+        if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
+            menulist.append([menu[3], menu[4]])
+    inno = values.checkInnovation(session['userid'])
+    return render_template('home.html', topmenu=topmenu,
+                           topsubmenu=topsubmenu,
+                           menuarray=menuarray,
+                           inno=inno, label=label_dict,
+                           menulist=menulist,
+                           languages=languages)
 
 
 @app.route('/about/<pagename>')
@@ -120,16 +130,16 @@ def about(pagename):
         session['userid'] = 0
 
     if pagename == 'ziiei':
-        return render_template('ziiei.html', topmenu=topmenu,
+        return render_template('ziiei.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'sas':
-        return render_template('sas.html', topmenu=topmenu,
+        return render_template('sas.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'litchi':
-        return render_template('litchi.html', topmenu=topmenu,
+        return render_template('litchi.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'upgovt':
-        return render_template('upgovt.html', topmenu=topmenu,
+        return render_template('upgovt.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
 
 
@@ -143,19 +153,19 @@ def workflow(pagename):
         session['userid'] = 0
 
     if pagename == 'workflow':
-        return render_template('workflow.html', topmenu=topmenu,
+        return render_template('workflow.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'apply':
-        return render_template('apply.html', topmenu=topmenu,
+        return render_template('apply.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'benefits':
-        return render_template('benefits.html', topmenu=topmenu,
+        return render_template('benefits.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'examples':
-        return render_template('examples.html', topmenu=topmenu,
+        return render_template('examples.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
     elif pagename == 'terms':
-        return render_template('terms.html', topmenu=topmenu,
+        return render_template('terms.html', languages=languages, topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray)
 
 
@@ -169,13 +179,13 @@ def logout():
 
 @app.route('/contact')
 def contact():
-    return render_template('enquiry.html', topmenu=topmenu,
+    return render_template('enquiry.html', languages=languages, topmenu=topmenu,
                            topsubmenu=topsubmenu, menuarray=menuarray)
 
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html', topmenu=topmenu,
+    return render_template('faq.html', languages=languages, topmenu=topmenu,
                            topsubmenu=topsubmenu, menuarray=menuarray)
 
 
@@ -217,7 +227,7 @@ def register():
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
         return render_template('register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu,
+                               topsubmenu=topsubmenu, languages=languages,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
@@ -252,10 +262,8 @@ def register():
 
 
 @app.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('index'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -284,7 +292,7 @@ def create():
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
         return render_template('register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu,
+                               topsubmenu=topsubmenu, languages=languages,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
@@ -324,10 +332,8 @@ def create():
 
 
 @app.route('/update', methods=['GET', 'POST'])
+@login_required
 def update():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('index'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -364,7 +370,8 @@ def update():
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict, details=details)
+                               slist=statelist, dlist=districtdict, label=label_dict, 
+                               languages=languages, details=details)
     else:
         teacher_id = None
         if 'teacher_id' in request.form:
@@ -410,7 +417,8 @@ def update():
 
     return render_template('update.html', topmenu=topmenu,
                            topsubmenu=topsubmenu,
-                           menuarray=menuarray)
+                           menuarray=menuarray,
+                           languages=languages)
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
@@ -419,10 +427,8 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 
 
 @app.route('/submit', methods=['GET', 'POST'])
+@login_required
 def submit():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -453,7 +459,8 @@ def submit():
             subcat_dict[cat[1]] = sublist
         teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, teachers=teachers,
+                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               teachers=teachers, languages=languages,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
@@ -522,10 +529,8 @@ def submit():
 
 
 @app.route('/edit', methods=['GET', 'POST'])
+@login_required
 def edit():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu',
@@ -536,7 +541,8 @@ def edit():
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, tables=dropdown)
+                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               languages=languages, tables=dropdown)
     else:
         table = request.form['table']
         if session['RoleID'] == 4:
@@ -567,10 +573,8 @@ def table():
 
 
 @app.route('/review', methods=['GET', 'POST'])
+@login_required
 def review():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'GET':
         teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
@@ -618,12 +622,12 @@ def review():
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
         print(subcatidea)
-        print(idea_details)
         return render_template('review.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict, media=media, teachers=teachers,
-                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea, sublist=sub_list)
+                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea, 
+                               languages=languages, sublist=sub_list)
     else:
         IdeaID = request.form['idea']
         title = request.form['31']
@@ -680,7 +684,8 @@ def review():
         return redirect(url_for('review'))
 
     return render_template('review.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray)
+                           topsubmenu=topsubmenu, menuarray=menuarray,
+                           languages=languages)
 
 
 @app.route('/language/<int:langid>')
@@ -716,5 +721,6 @@ if __name__ == '__main__':
     district = values.gettablevalues('District')
     block = values.gettablevalues('Block')
     tables = values.gettablelist()
+    languages = values.gettablevalues('Language')
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)
