@@ -1,3 +1,4 @@
+import os
 from flask import (
     Flask,
     render_template,
@@ -20,18 +21,21 @@ app.secret_key = os.urandom(24)
 
 showerrors(app)
 
+
 @app.before_request
 def lalloo():
     pass
 
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session['userid'] == 0:
+        if session['userid'] == 0 or session['userid'] is None:
             flash('You are not logged in!', 'warning')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
+
 
 @app.route('/')
 def index():
@@ -370,7 +374,7 @@ def update():
                                topsubmenu=topsubmenu, teachers=teachers,
                                menuarray=menuarray, country=country, state=state,
                                district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict, 
+                               slist=statelist, dlist=districtdict, label=label_dict,
                                languages=languages, details=details)
     else:
         teacher_id = None
@@ -459,7 +463,7 @@ def submit():
             subcat_dict[cat[1]] = sublist
         teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               topsubmenu=topsubmenu, menuarray=menuarray,
                                teachers=teachers, languages=languages,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
@@ -541,7 +545,7 @@ def edit():
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
         return render_template('edit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray, 
+                               topsubmenu=topsubmenu, menuarray=menuarray,
                                languages=languages, tables=dropdown)
     else:
         table = request.form['table']
@@ -551,6 +555,13 @@ def edit():
                 cols = values.getColumns('Category')
                 print(data)
                 return render_template('Category_table.html', topmenu=topmenu,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'SubCategory':
+                data = values.gettablevalues('SubCategory')
+                cols = values.getColumns('SubCategory')
+                print(data)
+                print(cols)
+                return render_template('SubCategory.html', topmenu=topmenu,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         print(table)
 
@@ -566,6 +577,14 @@ def table():
             CatID = request.form['id']
             value = request.form[str(CatID)]
             update = values.updateCat(CatID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+        if table == "SubCategory":
+            CatID = request.form['CatID']
+            SubCatID = request.form['SubCatID']
+            value = request.form[str(SubCatID)]
+            update = values.updateSubCat(CatID, SubCatID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
@@ -626,7 +645,7 @@ def review():
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict, media=media, teachers=teachers,
-                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea, 
+                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea,
                                languages=languages, sublist=sub_list)
     else:
         IdeaID = request.form['idea']

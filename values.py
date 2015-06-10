@@ -323,9 +323,21 @@ def updateCat(CategoryID, CategoryValue):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d',(CategoryValue,CategoryID))
+        cursor.execute(
+            'UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d', (CategoryValue, CategoryID))
     except:
         return False
     conn.commit()
     return True
-    
+
+
+def updateSubCat(CategoryID, SubCategoryID, CategoryValue):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.SubCategory set SubCategoryValue = %s WHERE CategoryID = %d and SubCategoryID = %d',
+                       (CategoryValue, CategoryID, SubCategoryID))
+    except:
+        return False
+    conn.commit()
+    return True
