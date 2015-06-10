@@ -341,3 +341,27 @@ def updateSubCat(CategoryID, SubCategoryID, CategoryValue):
         return False
     conn.commit()
     return True
+
+
+def updateMenu(MenuID, FormName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Menu set FormName = %s WHERE MenuID = %d', (FormName, MenuID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def updateSubMenu(MenuID, SubMenuID, MenuValue):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.SubMenu set FormName = %s WHERE MenuID = %d and SubMenuID = %d',
+                       (MenuValue, MenuID, SubMenuID))
+    except:
+        return False
+    conn.commit()
+    return True
