@@ -552,7 +552,8 @@ def edit():
             if table == 'Category':
                 data = values.gettablevalues('Category')
                 cols = values.getColumns('Category')
-                return render_template('Category_table.html', topmenu=topmenu,
+                print(data)
+                return render_template('Category_table.html', topmenu=topmenu, languages=languages,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
             if table == 'SubCategory':
                 data = values.gettablevalues('SubCategory')
@@ -594,21 +595,30 @@ def edit():
 
 
 @app.route('/table', methods=['GET', 'POST'])
+@login_required
 def table():
-    if 'username' not in session:
-        flash('You are not logged in!', 'warning')
-        return redirect(url_for('login'))
     if request.method == 'POST':
         table = request.form['table']
-        if table == "Category":
-            CatID = request.form['id']
-            value = request.form[str(CatID)]
-            update = values.updateCat(CatID, value)
-            if update:
-                flash('Edited successfully!', 'success')
-                return redirect(url_for('home'))
-            flash(
-            'There was an error while editing! Please try again!', 'danger')
+        if request.form['submit'] == 'edit':
+            if table == "Category":
+                CatID = request.form['id']
+                value = request.form[str(CatID)]
+                update = values.updateCat(CatID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                'There was an error while editing! Please try again!', 'danger')
+        elif request.form['submit'] == 'translate':
+            if table == "Category":
+                CatID = request.form['id']
+                langid = request.form['language']
+                value = request.form[str(CatID)+'translate']
+            print(CatID)
+            print(langid)
+            print(value)
+            values.insertCat(CatID, langid, value, session['userid'])
+
         if table == "SubCategory":
             CatID = request.form['CatID']
             SubCatID = request.form['SubCatID']

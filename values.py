@@ -155,6 +155,12 @@ def checkInnovation(userid):
         return False
     return True
 
+def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    cursor.execute(
+        'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
 
 def gettablevalues(tablename):
     conn = getConnection()
@@ -389,6 +395,7 @@ def updateState(CountryID, StateID, StateName):
         return False
     conn.commit()
     return True
+<<<<<<< HEAD
 
 
 def updateDistrict(CountryID, StateID, DistrictID, DistrictName):
@@ -413,3 +420,5 @@ def updateBlock(CountryID, StateID, DistrictID, BlockID, DistrictName):
         return False
     conn.commit()
     return True
+=======
+>>>>>>> 6d3d773baeff7d820dbf25fade9662fbb64d7a15
