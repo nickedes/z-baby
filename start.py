@@ -539,7 +539,29 @@ def edit():
                                topsubmenu=topsubmenu, menuarray=menuarray, tables=dropdown)
     else:
         table = request.form['table']
+        if session['RoleID'] == 4:
+            if table == 'Category':
+                data = values.gettablevalues('Category')
+                cols = values.getColumns('Category')
+                print(data)
+                return render_template('Category_table.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,table=data,header=cols)    
         print(table)
+
+
+@app.route('/table/<int:id>', methods=['GET', 'POST'])
+def table(ide):
+    if 'username' not in session:
+        flash('You are not logged in!', 'warning')
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        table = request.form('table')
+
+        if table == 'Category':
+            value = request.form(ide)
+            update = values.updateCat(ide, value)
+            flash('Editted successfully!', 'success')
+            return redirect(url_for('home'))
 
 
 
@@ -594,6 +616,8 @@ def review():
             sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
+        print(subcatidea)
+        print(idea_details)
         return render_template('review.html', topmenu=topmenu,
                                topsubmenu=topsubmenu, menuarray=menuarray,
                                label=label_dict, benefit=bene_dict,

@@ -619,10 +619,6 @@ cursor.execute(
 column_list = cursor.fetchall() 
 columns = [single_column[1] for single_column in column_list]
 print(columns)
-<<<<<<< HEAD
-
-=======
->>>>>>> b27209af50b1c833e6a319efb92a47d00737046d
 cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
 row = cursor.fetchall()
 print(row)
@@ -721,6 +717,11 @@ cursor.execute(
 ideaid = cursor.fetchall()
 print(ideaid)
 '''
-LoginID = 9
-cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s',str(LoginID))
+cursor.execute('SELECT * FROM dbo.Category ORDER BY CategoryID')
+print(cursor.fetchall())
+cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=2')
+conn.commit
+cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID=2')
+conn.commit
+cursor.execute('SELECT * FROM dbo.Idea')
 print(cursor.fetchall())
