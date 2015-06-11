@@ -716,7 +716,6 @@ cursor.execute(
         'SELECT * from Idea WHERE LoginID = %d' % userid)
 ideaid = cursor.fetchall()
 print(ideaid)
-'''
 cursor.execute('SELECT * FROM dbo.Category ORDER BY CategoryID')
 print(cursor.fetchall())
 cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=2')
@@ -725,3 +724,10 @@ cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID=2')
 conn.commit
 cursor.execute('SELECT * FROM dbo.Idea')
 print(cursor.fetchall())
+ide = 5
+cursor.execute('SELECT * FROM dbo.Idea WHERE IdeaID=%d',ide)
+if cursor.fetchall() == []:
+    print(True)
+else:
+    print(cursor.fetchall())
+'''

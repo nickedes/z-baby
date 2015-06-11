@@ -891,69 +891,79 @@ def review():
 @app.route('/super', methods=['GET', 'POST'])
 @login_required
 def super():
-    if session['userid'] == 5:
-        if request.method == 'POST':
-            table = request.form['table']
-            if table == "Media":
-                if request.form['submit'] == 'edit':
-                    MediaID = request.form['id']
-                    IdeaID = request.form[str(MediaID)]
-                    value = request.form[str(IdeaID)]
-                    Mtype = request.form['MediaType']
-                    update = values.SupdateMedia(MediaID, IdeaID, value, Mtype)
-                    if update:
-                        flash('Edited successfully!', 'success')
-                        return redirect(url_for('home'))
-                    flash(
-                        'There was problem saving the translation! Please try again!', 'warning')
+    # if session['userid'] == 5:
+    if request.method == 'POST':
+        print(request.form)
+        table = request.form['table']
+        if table == "Media":
+            if request.form['submit'] == 'edit':
+                MediaID = request.form['id']
+                IdeaID = request.form[str(MediaID)]
+                value = request.form[str(IdeaID)]
+                Mtype = request.form['MediaType']
+                update = values.SupdateMedia(MediaID, IdeaID, value, Mtype)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+
+            elif request.form['submit'] == 'image':
+                IdeaID = request.form['id']
+                if values.NoIdea(IdeaID):
+                    flash('No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
                     return(redirect(url_for('home')))
-                if request.form['submit'] == 'image':
-                    IdeaID = request.form['id']
-                    image_link = None
-                    try:
-                        file = request.files['file']
-                        UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
-                        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-                        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-                        medias = {}
-                        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
-                            filename = secure_filename(file.filename)
-                            PATH = os.path.join(
-                                app.config['UPLOAD_FOLDER'], filename)
-                            file.save(PATH)
-                            CLIENT_ID = values.getClient_ID()
-                            im = pyimgur.Imgur(CLIENT_ID)
-                            uploaded_image = im.upload_image(
-                                PATH, title="Uploaded with PyImgur")
-                            os.remove(PATH)
-                            image_link = uploaded_image.link
-                            medias['image'] = image_link
-                            print("done upload")
-                            if image_link:
-                                MediaID = values.getLatestMedia() + 1
-                                example_img = values.insertMedia(
-                                    MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
-                                print("done img")
-                                if example_img:
-                                    flash('Media Added successfully!', 'success')
-                                    return redirect(url_for('home'))
-                                flash('There was problem adding the Media! Please try again!', 'warning')
-                                return(redirect(url_for('home')))
-                    except:
-                        pass
-                if request.form['submit'] == 'text':
-                    IdeaID = request.form['id']
-                    example = request.form['example']
-                    MediaID = values.getLatestMedia() + 1
-                    example_text = values.insertMedia(
-                        MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
-                    print("done exm")
-                    if example_text:
-                        flash('Media Added successfully!', 'success')
-                        return redirect(url_for('home'))
+                print("in")
+                image_link = None
+                file = request.files['file']
+                print("in")
+                UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
+                ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+                app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+                medias = {}
+                if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+                    filename = secure_filename(file.filename)
+                    PATH = os.path.join(
+                        app.config['UPLOAD_FOLDER'], filename)
+                    file.save(PATH)
+                    CLIENT_ID = values.getClient_ID()
+                    im = pyimgur.Imgur(CLIENT_ID)
+                    uploaded_image = im.upload_image(
+                        PATH, title="Uploaded with PyImgur")
+                    os.remove(PATH)
+                    image_link = uploaded_image.link
+                    medias['image'] = image_link
+                    print("done upload")
+                    if image_link:
+                        MediaID = values.getLatestMedia() + 1
+                        example_img = values.insertMedia(
+                            MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
+                        print("done img")
+                        if example_img:
+                            flash('Media Added successfully!', 'success')
+                            return redirect(url_for('home'))
                     flash('There was problem adding the Media! Please try again!', 'warning')
                     return(redirect(url_for('home')))
 
+            elif request.form['submit'] == 'text':
+                IdeaID = request.form['id']
+                if values.NoIdea(IdeaID):
+                    flash('No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                example = request.form['example']
+                MediaID = values.getLatestMedia() + 1
+                example_text = values.insertMedia(
+                    MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
+                print("done exm")
+                if example_text:
+                    flash('Media Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash('There was problem adding the Media! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+
+            else:
+                pass
 
 
 @app.route('/language/<int:langid>')

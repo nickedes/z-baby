@@ -68,7 +68,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		<form action="/super" method="POST">
+		<form action="/super" method="POST" enctype="multipart/form-data">
+			<input type="hidden" class="form-control" name="table" value="Media">
 			<tr>
 				<td>
 				<input type="text" class="form-control" name="id">
@@ -77,14 +78,15 @@
 				<input type="file" name="file">
 				</td>
 				<td>
-				<input type="text" class="form-control" name="type" value="image" disabled>
+				<input type="text" class="form-control" value="image" disabled>
 				</td>
 				<td>
-				<button type="submit" name="submit" value="image" class="btn btn-custom btn-info">IMAGE</button>
+				<button type="submit" name="submit" value="image" class="btn btn-custom btn-primary">Image</button>
 				</td>
 			</tr>
 		</form>
 		<form action="/super" method="POST">
+			<input type="hidden" class="form-control" name="table" value="Media">
 			<tr>
 				<td>
 				<input type="text" class="form-control" name="id">
@@ -93,10 +95,10 @@
 				<input type="text" class="form-control" name="example">
 				</td>
 				<td>
-				<input type="text" class="form-control" name="type" value="image" disabled>
+				<input type="text" class="form-control" value="text" disabled>
 				</td>
 				<td>
-				<button type="submit" name="submit" value="text" class="btn btn-custom btn-info">Example</button>
+				<button type="submit" name="submit" value="text" class="btn btn-custom btn-primary">Example</button>
 				</td>
 			</tr>
 		</form>

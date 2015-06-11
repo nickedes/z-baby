@@ -503,3 +503,12 @@ def SupdateMedia(MediaID, IdeaID, value, Mtype):
         return False
     conn.commit()
     return True
+
+
+def NoIdea(IdeaID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Idea WHERE IdeaID=%d',IdeaID)
+    if cursor.fetchall() == [] :
+        return True
+    return False
