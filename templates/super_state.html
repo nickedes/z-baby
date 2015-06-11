@@ -25,6 +25,7 @@
 		<tr>
 			<th>  {{ header[3] }}  </th>
 			<th>Save Edit</th>
+			<th>Delete</th>
 			<th>Translation Language</th>
 			<th>Translate</th>
 			<th>Save Translation</th>
@@ -32,7 +33,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/table" method="POST">
+			<form action="/super" method="POST">
 				<input type="hidden" class="form-control" name="table" value="State">
 				<input type="hidden" class="form-control" name="CountryID" value="{{row[1]}}">
 				<input type="hidden" class="form-control" name="StateID" value="{{row[2]}}">
@@ -43,6 +44,10 @@
 					<td>
 					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
 					</td>
+					<td>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					</td>
+					<td>
 					<div class="">
 						<select id = "ddl1" name="language" class="form-control">
 						<option>..</option>
@@ -75,7 +80,7 @@
 	</thead>
 	<tbody>
 		<form action="/super" method="POST" enctype="multipart/form-data">
-			<input type="hidden" class="form-control" name="table" value="Country">
+			<input type="hidden" class="form-control" name="table" value="State">
 			<tr>
 				<td>
 				<input type="text" class="form-control" name="CID">

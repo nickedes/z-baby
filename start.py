@@ -1043,6 +1043,21 @@ def super():
                     flash('Edited successfully!', 'success')
                     return redirect(url_for('home'))
 
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                if values.CheckState(StateID):
+                    flash(
+                        "This State Can't be deleted,since it has districts", 'warning')
+                    return(redirect(url_for('home')))
+                delete = values.deleteState(LangID, CountryID, StateID)
+                if delete:
+                    flash('State Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the State! Please try again!', 'warning')
+
             elif request.form['submit'] == 'translate':
                 CountryID = request.form['id']
                 StateID = request.form['StateID']
@@ -1065,9 +1080,19 @@ def super():
                     return(redirect(url_for('home')))
                 LangID = session['LanguageID']
                 name = request.form['name']
-                StateID = values.getStateID(CountryID)
+                StateID = values.getStateID(CountryID) + 1
                 insert = values.insertState(
                     LangID, CountryID, StateID, name, session['userid'])
+                if insert:
+                    flash('State Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the State! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
+        
+
 
 @app.route('/language/<int:langid>')
 def language(langid):

@@ -739,6 +739,7 @@ if cursor.fetchall() == []:
 else:
     print("not empty")
 '''
-cursor.execute("SELECT TOP 1 * FROM dbo.Country ORDER BY CountryID DESC")
+CountryID = 2
+cursor.execute("SELECT max(StateID) FROM dbo.State WHERE CountryID = %d", CountryID)
 top = cursor.fetchall()
 print(top[0][0])

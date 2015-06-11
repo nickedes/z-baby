@@ -3,6 +3,7 @@ import pymssql
 from configparser import ConfigParser
 from datetime import datetime
 
+
 def getConnection():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -557,3 +558,36 @@ def getCountryID():
     if not top:
         return 0
     return top[0][0]
+
+
+def getStateID(CountryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(StateID) FROM dbo.State WHERE CountryID = %d", CountryID)
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def CheckState(StateID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.District WHERE StateID=%d', StateID)
+    if cursor.fetchall():
+        return True
+    return False
+
+
+def deleteState(LangID, CountryID, StateID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.State WHERE CountryID=%d and LanguageID=%d and StateID=%d',
+            (CountryID, LangID, StateID))
+    except:
+        return False
+    conn.commit()
+    return True
