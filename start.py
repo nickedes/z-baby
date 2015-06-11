@@ -1091,7 +1091,59 @@ def super():
                 return(redirect(url_for('home')))
             else:
                 pass
-        
+
+        elif table == 'District':
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                value = request.form[str(DistrictID)]
+                update = values.updateDistrict(
+                    LangID, CountryID, StateID, DistrictID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was an error while editing! Please try again!', 'danger')
+            elif request.form['submit'] == 'delete':
+                DistrictID = request.form['DistrictID']
+                if values.CheckDistrict(DistrictID):
+                    flash(
+                        "This District Can't be deleted,since it has blocks", 'warning')
+                    return(redirect(url_for('home')))
+                delete = values.deleteDistrict(
+                    LangID, CountryID, StateID, DistrictID)
+                if delete:
+                    flash('District Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the District! Please try again!', 'warning')
+
+            elif request.form['submit'] == 'add':
+                CountryID = request.form['CID']
+                if values.NoCountry(CountryID):
+                    flash(
+                        'No Such Country exists, for which you are adding State. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                StateID = request.form['SID']
+                if values.NoState(StateID):
+                    flash(
+                        'No Such State exists, for which you are adding District. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                LangID = session['LanguageID']
+                name = request.form['name']
+                DistrictID = values.getDistrictID(DistrictID) + 1
+                insert = values.insertDistrict(
+                    LangID, CountryID, StateID, DistrictID, name, session['userid'])
+                if insert:
+                    flash('District Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the District! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
 
 
 @app.route('/language/<int:langid>')

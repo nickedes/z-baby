@@ -591,3 +591,42 @@ def deleteState(LangID, CountryID, StateID):
         return False
     conn.commit()
     return True
+
+
+def CheckDistrict(DistrictID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Block WHERE DistrictID=%d', DistrictID)
+    if cursor.fetchall():
+        return True
+    return False
+
+
+def deleteDistrict(LangID, CountryID, StateID, DistrictID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.District WHERE CountryID=%d and LanguageID=%d and StateID=%d and DistrictID=%d',
+            (CountryID, LangID, StateID, DistrictID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+def NoCountry(CountryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Country WHERE CountryID=%d', CountryID)
+    if cursor.fetchall() == []:
+        return True
+    return False
+
+
+def NoState(StateID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.State WHERE StateID=%d', StateID)
+    if cursor.fetchall() == []:
+        return True
+    return False
