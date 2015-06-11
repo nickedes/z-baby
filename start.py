@@ -749,32 +749,63 @@ def table():
                     'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "District":
-            LangID = session['LanguageID']
-            CountryID = request.form['CountryID']
-            StateID = request.form['StateID']
-            DistrictID = request.form['DistrictID']
-            value = request.form[str(DistrictID)]
-            update = values.updateDistrict(
-                LangID, CountryID, StateID, DistrictID, value)
-            if update:
-                flash('Edited successfully!', 'success')
-                return redirect(url_for('home'))
-            flash(
-                'There was an error while editing! Please try again!', 'danger')
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                value = request.form[str(DistrictID)]
+                update = values.updateDistrict(
+                    LangID, CountryID, StateID, DistrictID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was an error while editing! Please try again!', 'danger')
+            elif request.form['submit'] == 'translate':
+                CountryID = request.form['id']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                langid = request.form['language']
+                value = request.form[str(DistrictID)+'translate']
+                update = values.insertDistrict(
+                    langid, CountryID, StateID, DistrictID, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
         if table == "Block":
-            LangID = session['LanguageID']
-            CountryID = request.form['CountryID']
-            StateID = request.form['StateID']
-            DistrictID = request.form['DistrictID']
-            BlockID = request.form['BlockID']
-            value = request.form[str(BlockID)]
-            update = values.updateBlock(
-                LangID, CountryID, StateID, DistrictID, BlockID, value)
-            if update:
-                flash('Edited successfully!', 'success')
-                return redirect(url_for('home'))
-            flash(
-                'There was an error while editing! Please try again!', 'danger')
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                BlockID = request.form['BlockID']
+                value = request.form[str(BlockID)]
+                update = values.updateBlock(
+                    LangID, CountryID, StateID, DistrictID, BlockID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was an error while editing! Please try again!', 'danger')
+            elif request.form['submit'] == 'translate':
+                CountryID = request.form['id']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                BlockID = request.form['BlockID']
+                langid = request.form['language']
+                value = request.form[str(DistrictID)+'translate']
+                update = values.insertBlock(
+                    langid, CountryID, StateID, DistrictID, BlockID, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
         return redirect(url_for('edit'))
 
 
