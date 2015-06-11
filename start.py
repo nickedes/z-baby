@@ -549,11 +549,11 @@ def edit():
     else:
         table = request.form['table']
         if session['RoleID'] == 5:
-            if table == 'Media':
-                data = values.gettablevalues(table)
-                cols = values.getColumns(table)
-                return render_template('super_media.html', topmenu=topmenu, languages=languages,
-                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            filename = 'super_' + table.lower() + '.html'
+            data = values.gettablevalues(table)
+            cols = values.getColumns(table)
+            return render_template(filename, topmenu=topmenu, languages=languages,
+                                   topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         if session['RoleID'] == 4:
             if table == 'Category':
                 data = values.gettablevalues('Category')
@@ -706,9 +706,10 @@ def table():
                 return(redirect(url_for('home')))
         if table == "Country":
             if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
                 CountryID = request.form['id']
                 value = request.form[str(CountryID)]
-                update = values.updateCountry(CountryID, value)
+                update = values.updateCountry(LangID, CountryID, value)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect(url_for('home'))
@@ -726,10 +727,11 @@ def table():
                 return(redirect(url_for('home')))
         if table == "State":
             if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 value = request.form[str(StateID)]
-                update = values.updateState(CountryID, StateID, value)
+                update = values.updateState(LangID, CountryID, StateID, value)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect(url_for('home'))
@@ -747,25 +749,27 @@ def table():
                     'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "District":
+            LangID = session['LanguageID']
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             DistrictID = request.form['DistrictID']
             value = request.form[str(DistrictID)]
             update = values.updateDistrict(
-                CountryID, StateID, DistrictID, value)
+                LangID, CountryID, StateID, DistrictID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
             flash(
                 'There was an error while editing! Please try again!', 'danger')
         if table == "Block":
+            LangID = session['LanguageID']
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             DistrictID = request.form['DistrictID']
             BlockID = request.form['BlockID']
             value = request.form[str(BlockID)]
             update = values.updateBlock(
-                CountryID, StateID, DistrictID, BlockID, value)
+                LangID, CountryID, StateID, DistrictID, BlockID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
@@ -887,6 +891,7 @@ def review():
                            topsubmenu=topsubmenu, menuarray=menuarray,
                            languages=languages)
 
+
 def upload_img(upload_file):
     file = upload_file
     UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
@@ -938,7 +943,8 @@ def super():
             elif request.form['submit'] == 'image':
                 IdeaID = request.form['id']
                 if values.NoIdea(IdeaID):
-                    flash('No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
+                    flash(
+                        'No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
                     return(redirect(url_for('home')))
                 print("in")
                 image_link = None
@@ -951,13 +957,15 @@ def super():
                     if example_img:
                         flash('Media Added successfully!', 'success')
                         return redirect(url_for('home'))
-                flash('There was problem adding the Media! Please try again!', 'warning')
+                flash(
+                    'There was problem adding the Media! Please try again!', 'warning')
                 return(redirect(url_for('home')))
 
             elif request.form['submit'] == 'text':
                 IdeaID = request.form['id']
                 if values.NoIdea(IdeaID):
-                    flash('No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
+                    flash(
+                        'No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
                     return(redirect(url_for('home')))
                 example = request.form['example']
                 MediaID = values.getLatestMedia() + 1
@@ -967,12 +975,99 @@ def super():
                 if example_text:
                     flash('Media Added successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem adding the Media! Please try again!', 'warning')
+                flash(
+                    'There was problem adding the Media! Please try again!', 'warning')
                 return(redirect(url_for('home')))
 
             else:
                 pass
 
+        elif table == 'Country':
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                CountryID = request.form['id']
+                value = request.form[str(CountryID)]
+                update = values.updateCountry(LangID, CountryID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                CountryID = request.form['id']
+                if values.CheckCountry(CountryID):
+                    flash(
+                        "This Country Can't be deleted,since it has states", 'warning')
+                    return(redirect(url_for('home')))
+                delete = values.deleteCountry(LangID, CountryID)
+                if delete:
+                    flash('Country Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the Country! Please try again!', 'warning')
+
+            elif request.form['submit'] == 'translate':
+                CountryID = request.form['id']
+                langid = request.form['language']
+                value = request.form[str(CountryID)+'translate']
+                update = values.insertCountry(
+                    langid, CountryID, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+
+            elif request.form['submit'] == 'add':
+                CountryID = values.getCountryID()+1
+                LangID = session['LanguageID']
+                name = request.form['name']
+                insert = values.insertCountry(
+                    LangID, CountryID, name, session['userid'])
+                if insert:
+                    flash('Country Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the Country! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+
+        elif table == 'State':
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                value = request.form[str(StateID)]
+                update = values.updateState(LangID, CountryID, StateID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+
+            elif request.form['submit'] == 'translate':
+                CountryID = request.form['id']
+                StateID = request.form['StateID']
+                langid = request.form['language']
+                value = request.form[str(StateID)+'translate']
+                update = values.insertState(
+                    langid, CountryID, StateID, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+
+            elif request.form['submit'] == 'add':
+                CountryID = request.form['CID']
+                if values.NoCountry(CountryID):
+                    flash(
+                        'No Such Country exists, for which you are adding State. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                LangID = session['LanguageID']
+                name = request.form['name']
+                StateID = values.getStateID(CountryID)
+                insert = values.insertState(
+                    LangID, CountryID, StateID, name, session['userid'])
 
 @app.route('/language/<int:langid>')
 def language(langid):

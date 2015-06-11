@@ -1,7 +1,7 @@
 import os
 import pymssql
 from configparser import ConfigParser
-
+from datetime import datetime
 
 def getConnection():
     CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -445,48 +445,48 @@ def updateSubMenu(MenuID, SubMenuID, MenuValue):
     return True
 
 
-def updateCountry(CountryID, CountryName):
+def updateCountry(LangID, CountryID, CountryName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Country set CountryName = %s WHERE CountryID = %d', (CountryName, CountryID))
+            'UPDATE dbo.Country set CountryName = %s WHERE CountryID = %d and LanguageID = %d', (CountryName, CountryID, LanguageID))
     except:
         return False
     conn.commit()
     return True
 
 
-def updateState(CountryID, StateID, StateName):
+def updateState(LangID, CountryID, StateID, StateName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.State set StateName = %s WHERE CountryID = %d and StateID = %d',
-                       (StateName, CountryID, StateID))
+        cursor.execute('UPDATE dbo.State set StateName = %s WHERE LanguageID = %d and CountryID = %d and StateID = %d',
+                       (StateName, LangID, CountryID, StateID))
     except:
         return False
     conn.commit()
     return True
 
 
-def updateDistrict(CountryID, StateID, DistrictID, DistrictName):
+def updateDistrict(LangID, CountryID, StateID, DistrictID, DistrictName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.District set DistrictName = %s WHERE CountryID = %d and StateID = %d and DistrictID = %d',
-                       (DistrictName, CountryID, StateID, DistrictID))
+        cursor.execute('UPDATE dbo.District set DistrictName = %s WHERE LanguageID = %d and CountryID = %d and StateID = %d and DistrictID = %d',
+                       (DistrictName, LangID, CountryID, StateID, DistrictID))
     except:
         return False
     conn.commit()
     return True
 
 
-def updateBlock(CountryID, StateID, DistrictID, BlockID, DistrictName):
+def updateBlock(LangID, CountryID, StateID, DistrictID, BlockID, DistrictName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.Block set BlockName = %s WHERE CountryID = %d and StateID = %d and DistrictID = %d and BlockID =%d',
-                       (DistrictName, CountryID, StateID, DistrictID, BlockID))
+        cursor.execute('UPDATE dbo.Block set BlockName = %s WHERE LanguageID = %d and CountryID = %d and StateID = %d and DistrictID = %d and BlockID =%d',
+                       (DistrictName, LangID, CountryID, StateID, DistrictID, BlockID))
     except:
         return False
     conn.commit()
@@ -508,8 +508,8 @@ def SupdateMedia(MediaID, IdeaID, value, Mtype):
 def NoIdea(IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Idea WHERE IdeaID=%d',IdeaID)
-    if cursor.fetchall() == [] :
+    cursor.execute('SELECT * FROM dbo.Idea WHERE IdeaID=%d', IdeaID)
+    if cursor.fetchall() == []:
         return True
     return False
 
@@ -518,8 +518,42 @@ def deleteMedia(MediaID, IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.Media WHERE MediaID=%d and IdeaID=%d',(MediaID, IdeaID))
+        cursor.execute(
+            'DELETE FROM dbo.Media WHERE MediaID=%d and IdeaID=%d', (MediaID, IdeaID))
     except:
         return False
     conn.commit()
     return True
+
+
+def CheckCountry(CountryID):
+    # Check if there is a state for this Country.
+    # If yes then NO DELETION!
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.State WHERE CountryID=%d', CountryID)
+    if cursor.fetchall():
+        return True
+    return False
+
+
+def deleteCountry(LangID, CountryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.Country WHERE CountryID=%d and LanguageID=%d', (CountryID, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def getCountryID():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT TOP 1 * FROM dbo.Country ORDER BY CountryID DESC")
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]

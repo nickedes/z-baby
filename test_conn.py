@@ -730,4 +730,15 @@ if cursor.fetchall() == []:
     print(True)
 else:
     print(cursor.fetchall())
+CountryID=1
+cursor.execute('SELECT * FROM dbo.State WHERE CountryID=%d', CountryID)
+
+# print(len(row))
+if cursor.fetchall() == []:
+    print("empty")
+else:
+    print("not empty")
 '''
+cursor.execute("SELECT TOP 1 * FROM dbo.Country ORDER BY CountryID DESC")
+top = cursor.fetchall()
+print(top[0][0])
