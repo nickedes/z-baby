@@ -240,6 +240,31 @@ def insertState(LanguageID, CountryID, StateID, StateName, CreatedBy):
     return True
 
 
+def insertDistrict(LanguageID, CountryID, StateID, DistrictID, DistrictName, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictID, DistrictName, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+
+def insertBlock(LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
 def insertSubMenu(submenuvalues):
     conn = getConnection()
     cursor = conn.cursor()
