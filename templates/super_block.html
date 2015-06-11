@@ -23,7 +23,9 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>  {{ header[5] }}  </th>
+			<th>{{ header[5] }}</th>
+			<th>Save Edit</th>
+			<th>Delete</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -39,11 +41,47 @@
 					<input type="text" class="form-control" name="{{row[4]}}" value="{{row[5]}}">
 					</td>
 					<td>
-					<button type="submit"  class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					</td>
+					<td>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
 					</td>
 				</tr>
 			</form>
 		{% endfor %}
+	</tbody>
+</table>
+<table class="table">
+	<thead>
+		<tr>
+			<th>{{ header[1] }}</th>
+			<th>{{ header[2] }}</th>
+			<th>{{ header[3] }}</th>
+			<th>{{ header[5] }}</th>
+			<th>Add</th>
+		</tr>
+	</thead>
+	<tbody>
+		<form action="/super" method="POST">
+			<input type="hidden" class="form-control" name="table" value="Block">
+			<tr>
+				<td>
+				<input type="text" class="form-control" name="CID">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="SID">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="DID">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="name">
+				</td>
+				<td>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
+				</td>
+			</tr>
+		</form>
 	</tbody>
 </table>
 {% include 'footer.html' %}

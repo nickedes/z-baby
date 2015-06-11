@@ -550,21 +550,21 @@ def deleteCountry(LangID, CountryID):
     return True
 
 
-def getCountryID():
+def getCountryID(LangID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT TOP 1 * FROM dbo.Country ORDER BY CountryID DESC")
+    cursor.execute("SELECT max(CountryID) FROM dbo.Country WHERE LanguageID = %d", LangID)
     top = cursor.fetchall()
     if not top:
         return 0
     return top[0][0]
 
 
-def getStateID(CountryID):
+def getStateID(LangID, CountryID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(StateID) FROM dbo.State WHERE CountryID = %d", CountryID)
+        "SELECT max(StateID) FROM dbo.State WHERE CountryID = %d and LanguageID = %d", (CountryID,LangID))
     top = cursor.fetchall()
     if not top:
         return 0
@@ -632,15 +632,24 @@ def NoState(StateID):
     return False
 
 
-def getDistrictID(CountryID,StateID):
+def getDistrictID(LangID,CountryID,StateID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(DistrictID) FROM dbo.District WHERE CountryID = %d and StateID = %d", (CountryID,StateID))
+        "SELECT max(DistrictID) FROM dbo.District WHERE LanguageID =%d and CountryID = %d and StateID = %d", (LangID,CountryID,StateID))
     top = cursor.fetchall()
     if not top:
         return 0
     return top[0][0]
+
+
+def NoDistrict(DistrictID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.District WHERE DistrictID=%d', DistrictID)
+    if cursor.fetchall() == []:
+        return True
+    return False
 
 
 def insertDistrict(LanguageID, CountryID, StateID, DistrictID, DistrictName, CreatedBy):
@@ -649,7 +658,45 @@ def insertDistrict(LanguageID, CountryID, StateID, DistrictID, DistrictName, Cre
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictName, CreatedBy, CreateDate))
+            'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictID,DistrictName, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def deleteBlock(LangID, CountryID, StateID, DistrictID, BlockID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.Block WHERE CountryID=%d and LanguageID=%d and StateID=%d and DistrictID=%d and BlockID=%d',
+            (CountryID, LangID, StateID, DistrictID, BlockID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def getBlockID(LangID,CountryID, StateID, DistrictID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(BlockID) FROM dbo.Block WHERE LanguageID = %d and CountryID = %d and StateID = %d \
+         and DistrictID = %d", (LangID,CountryID,StateID,DistrictID))
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def insertBlock(LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
