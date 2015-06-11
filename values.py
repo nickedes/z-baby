@@ -512,3 +512,14 @@ def NoIdea(IdeaID):
     if cursor.fetchall() == [] :
         return True
     return False
+
+
+def deleteMedia(MediaID, IdeaID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('DELETE FROM dbo.Media WHERE MediaID=%d and IdeaID=%d',(MediaID, IdeaID))
+    except:
+        return False
+    conn.commit()
+    return True
