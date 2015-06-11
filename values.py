@@ -155,6 +155,7 @@ def checkInnovation(userid):
         return False
     return True
 
+
 def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
@@ -166,6 +167,7 @@ def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
         return False
     conn.commit()
     return True
+
 
 def insertSubCat(CategoryID, SubCategoryID, LanguageID, CategoryValue, CreatedBy):
     conn = getConnection()
@@ -179,6 +181,7 @@ def insertSubCat(CategoryID, SubCategoryID, LanguageID, CategoryValue, CreatedBy
         return False
     conn.commit()
     return True
+
 
 def gettablevalues(tablename):
     conn = getConnection()
@@ -196,6 +199,7 @@ def gettablevalues(tablename):
     conn.close()
     return returnval
 
+
 def insertMenu(menuvalues):
     conn = getConnection()
     cursor = conn.cursor()
@@ -206,6 +210,7 @@ def insertMenu(menuvalues):
         return False
     conn.commit()
     return True
+
 
 def insertCountry(LanguageID, CountryID, CountryName, CreatedBy):
     conn = getConnection()
@@ -218,7 +223,8 @@ def insertCountry(LanguageID, CountryID, CountryName, CreatedBy):
         return False
     conn.commit()
     return True
-                # State (LanguageID, CountryID, StateID, StateName, CreatedBy, CreateDate)
+    # State (LanguageID, CountryID, StateID, StateName, CreatedBy, CreateDate)
+
 
 def insertState(LanguageID, CountryID, StateID, StateName, CreatedBy):
     conn = getConnection()
@@ -232,6 +238,7 @@ def insertState(LanguageID, CountryID, StateID, StateName, CreatedBy):
     conn.commit()
     return True
 
+
 def insertSubMenu(submenuvalues):
     conn = getConnection()
     cursor = conn.cursor()
@@ -242,6 +249,7 @@ def insertSubMenu(submenuvalues):
         return False
     conn.commit()
     return True
+
 
 def getColumns(tablename):
     conn = getConnection()
@@ -479,6 +487,18 @@ def updateBlock(CountryID, StateID, DistrictID, BlockID, DistrictName):
     try:
         cursor.execute('UPDATE dbo.Block set BlockName = %s WHERE CountryID = %d and StateID = %d and DistrictID = %d and BlockID =%d',
                        (DistrictName, CountryID, StateID, DistrictID, BlockID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def SupdateMedia(MediaID, IdeaID, value, Mtype):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.Media set IdeaID = %d, MediaValue = %s, MediaType = %s WHERE MediaID = %d',
+                       (IdeaID, value, Mtype, MediaID))
     except:
         return False
     conn.commit()

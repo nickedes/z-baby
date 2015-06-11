@@ -549,9 +549,10 @@ def edit():
     else:
         table = request.form['table']
         if session['RoleID'] == 5:
-            data = values.gettablevalues(table)
-            cols = values.getColumns(table)
-            return render_template('super.html', topmenu=topmenu, languages=languages,
+            if table == 'Media':
+                data = values.gettablevalues(table)
+                cols = values.getColumns(table)
+                return render_template('super_media.html', topmenu=topmenu, languages=languages,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         if session['RoleID'] == 4:
             if table == 'Category':
@@ -590,12 +591,12 @@ def edit():
                 data = values.gettablevalues('District')
                 cols = values.getColumns('District')
                 return render_template('District.html', topmenu=topmenu,
-                      topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
             if table == 'Block':
                 data = values.gettablevalues('Block')
                 cols = values.getColumns('Block')
                 return render_template('Block.html', topmenu=topmenu,
-                      topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         print(table)
 
 
@@ -617,11 +618,13 @@ def table():
                     CatID = request.form['id']
                     langid = request.form['language']
                     value = request.form[str(CatID)+'translate']
-                update = values.insertCat(CatID, langid, value, session['userid'])
+                update = values.insertCat(
+                    CatID, langid, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem saving the translation! Please try again!', 'warning')
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "SubCategory":
             if request.form['submit'] == 'edit':
@@ -637,11 +640,13 @@ def table():
                 SubCat = request.form['SubCatID']
                 langid = request.form['language']
                 value = request.form[str(SubCatID)+'translate']
-                update = values.insertSubCat(CatID, SubCatID, langid, value, session['userid'])
+                update = values.insertSubCat(
+                    CatID, SubCatID, langid, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem saving the translation! Please try again!', 'warning')
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "Menu":
             if request.form['submit'] == 'edit':
@@ -667,7 +672,8 @@ def table():
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem saving the translation! Please try again!', 'warning')
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "SubMenu":
             if request.form['submit'] == 'edit':
@@ -695,7 +701,8 @@ def table():
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem saving the translation! Please try again!', 'warning')
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "Country":
             if request.form['submit'] == 'edit':
@@ -709,11 +716,13 @@ def table():
                 CountryID = request.form['id']
                 langid = request.form['language']
                 value = request.form[str(CountryID)+'translate']
-                update = values.insertCountry(langid, CountryID, value, session['userid'])
+                update = values.insertCountry(
+                    langid, CountryID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem saving the translation! Please try again!', 'warning')
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "State":
             if request.form['submit'] == 'edit':
@@ -729,35 +738,39 @@ def table():
                 StateID = request.form['StateID']
                 langid = request.form['language']
                 value = request.form[str(StateID)+'translate']
-                update = values.insertState(langid, CountryID, StateID, value, session['userid'])
+                update = values.insertState(
+                    langid, CountryID, StateID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
-                flash('There was problem saving the translation! Please try again!', 'warning')
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "District":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             DistrictID = request.form['DistrictID']
             value = request.form[str(DistrictID)]
-            update = values.updateDistrict(CountryID, StateID, DistrictID, value)
+            update = values.updateDistrict(
+                CountryID, StateID, DistrictID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
             flash(
-            'There was an error while editing! Please try again!', 'danger')
+                'There was an error while editing! Please try again!', 'danger')
         if table == "Block":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             DistrictID = request.form['DistrictID']
             BlockID = request.form['BlockID']
             value = request.form[str(BlockID)]
-            update = values.updateBlock(CountryID, StateID, DistrictID, BlockID, value)
+            update = values.updateBlock(
+                CountryID, StateID, DistrictID, BlockID, value)
             if update:
                 flash('Edited successfully!', 'success')
                 return redirect(url_for('home'))
             flash(
-            'There was an error while editing! Please try again!', 'danger')
+                'There was an error while editing! Please try again!', 'danger')
         return redirect(url_for('edit'))
 
 
@@ -875,7 +888,72 @@ def review():
                            languages=languages)
 
 
-@app.route('/')
+@app.route('/super', methods=['GET', 'POST'])
+@login_required
+def super():
+    if session['userid'] == 5:
+        if request.method == 'POST':
+            table = request.form['table']
+            if table == "Media":
+                if request.form['submit'] == 'edit':
+                    MediaID = request.form['id']
+                    IdeaID = request.form[str(MediaID)]
+                    value = request.form[str(IdeaID)]
+                    Mtype = request.form['MediaType']
+                    update = values.SupdateMedia(MediaID, IdeaID, value, Mtype)
+                    if update:
+                        flash('Edited successfully!', 'success')
+                        return redirect(url_for('home'))
+                    flash(
+                        'There was problem saving the translation! Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                if request.form['submit'] == 'image':
+                    IdeaID = request.form['id']
+                    image_link = None
+                    try:
+                        file = request.files['file']
+                        UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
+                        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+                        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+                        medias = {}
+                        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+                            filename = secure_filename(file.filename)
+                            PATH = os.path.join(
+                                app.config['UPLOAD_FOLDER'], filename)
+                            file.save(PATH)
+                            CLIENT_ID = values.getClient_ID()
+                            im = pyimgur.Imgur(CLIENT_ID)
+                            uploaded_image = im.upload_image(
+                                PATH, title="Uploaded with PyImgur")
+                            os.remove(PATH)
+                            image_link = uploaded_image.link
+                            medias['image'] = image_link
+                            print("done upload")
+                            if image_link:
+                                MediaID = values.getLatestMedia() + 1
+                                example_img = values.insertMedia(
+                                    MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
+                                print("done img")
+                                if example_img:
+                                    flash('Media Added successfully!', 'success')
+                                    return redirect(url_for('home'))
+                                flash('There was problem adding the Media! Please try again!', 'warning')
+                                return(redirect(url_for('home')))
+                    except:
+                        pass
+                if request.form['submit'] == 'text':
+                    IdeaID = request.form['id']
+                    example = request.form['example']
+                    MediaID = values.getLatestMedia() + 1
+                    example_text = values.insertMedia(
+                        MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
+                    print("done exm")
+                    if example_text:
+                        flash('Media Added successfully!', 'success')
+                        return redirect(url_for('home'))
+                    flash('There was problem adding the Media! Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+
 
 
 @app.route('/language/<int:langid>')
