@@ -630,3 +630,27 @@ def NoState(StateID):
     if cursor.fetchall() == []:
         return True
     return False
+
+
+def getDistrictID(CountryID,StateID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(DistrictID) FROM dbo.District WHERE CountryID = %d and StateID = %d", (CountryID,StateID))
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def insertDistrict(LanguageID, CountryID, StateID, DistrictID, DistrictName, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictName, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
