@@ -548,6 +548,11 @@ def edit():
                                languages=languages, tables=dropdown)
     else:
         table = request.form['table']
+        if session['RoleID'] == 5:
+            data = values.gettablevalues(table)
+            cols = values.getColumns(table)
+            return render_template('super.html', topmenu=topmenu, languages=languages,
+                                       topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         if session['RoleID'] == 4:
             if table == 'Category':
                 data = values.gettablevalues('Category')
@@ -581,7 +586,16 @@ def edit():
                 cols = values.getColumns('State')
                 return render_template('State.html', topmenu=topmenu, languages=languages,
                                        topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
-
+            if table == 'District':
+                data = values.gettablevalues('District')
+                cols = values.getColumns('District')
+                return render_template('District.html', topmenu=topmenu,
+                      topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            if table == 'Block':
+                data = values.gettablevalues('Block')
+                cols = values.getColumns('Block')
+                return render_template('Block.html', topmenu=topmenu,
+                      topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
         print(table)
 
 
@@ -610,7 +624,7 @@ def table():
                 flash('There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "SubCategory":
-            if request.form['submit'] == 'edit'
+            if request.form['submit'] == 'edit':
                 CatID = request.form['CatID']
                 SubCatID = request.form['SubCatID']
                 value = request.form[str(SubCatID)]
@@ -630,7 +644,7 @@ def table():
                 flash('There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "Menu":
-            if request.form['submit'] == 'edit'
+            if request.form['submit'] == 'edit':
                 MenuID = request.form['id']
                 value = request.form[str(MenuID)]
                 update = values.updateMenu(MenuID, value)
@@ -656,7 +670,7 @@ def table():
                 flash('There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "SubMenu":
-            if request.form['submit'] == 'edit'
+            if request.form['submit'] == 'edit':
                 MenuID = request.form['MenuID']
                 SubMenuID = request.form['SubMenuID']
                 value = request.form[str(SubMenuID)]
@@ -684,7 +698,7 @@ def table():
                 flash('There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "Country":
-            if request.form['submit'] == 'edit'
+            if request.form['submit'] == 'edit':
                 CountryID = request.form['id']
                 value = request.form[str(CountryID)]
                 update = values.updateCountry(CountryID, value)
@@ -702,7 +716,7 @@ def table():
                 flash('There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
         if table == "State":
-            if request.form['submit'] == 'edit'
+            if request.form['submit'] == 'edit':
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 value = request.form[str(StateID)]
@@ -721,6 +735,29 @@ def table():
                     return redirect(url_for('home'))
                 flash('There was problem saving the translation! Please try again!', 'warning')
                 return(redirect(url_for('home')))
+        if table == "District":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            DistrictID = request.form['DistrictID']
+            value = request.form[str(DistrictID)]
+            update = values.updateDistrict(CountryID, StateID, DistrictID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
+        if table == "Block":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            DistrictID = request.form['DistrictID']
+            BlockID = request.form['BlockID']
+            value = request.form[str(BlockID)]
+            update = values.updateBlock(CountryID, StateID, DistrictID, BlockID, value)
+            if update:
+                flash('Edited successfully!', 'success')
+                return redirect(url_for('home'))
+            flash(
+            'There was an error while editing! Please try again!', 'danger')
         return redirect(url_for('edit'))
 
 
@@ -836,6 +873,9 @@ def review():
     return render_template('review.html', topmenu=topmenu,
                            topsubmenu=topsubmenu, menuarray=menuarray,
                            languages=languages)
+
+
+@app.route('/')
 
 
 @app.route('/language/<int:langid>')
