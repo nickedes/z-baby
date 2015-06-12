@@ -637,7 +637,7 @@ def table():
                     return redirect(url_for('home'))
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
-                SubCat = request.form['SubCatID']
+                SubCatID = request.form['SubCatID']
                 langid = request.form['language']
                 value = request.form[str(SubCatID)+'translate']
                 update = values.insertSubCat(
@@ -1235,6 +1235,42 @@ def super():
                 return(redirect(url_for('home')))
             else:
                 pass
+
+        elif table == 'Category':
+            if request.form['submit'] == 'edit':
+                CatID = request.form['id']
+                value = request.form[str(CatID)]
+                update = values.updateCat(CatID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+            elif request.form['submit'] == 'translate':
+                CatID = request.form['id']
+                langid = request.form['language']
+                value = request.form[str(CatID)+'translate']
+                update = values.insertCat(
+                    CatID, langid, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'add':
+                value=request.form['name']
+                LangID = session['LanguageID']
+                CatID = values.getCatID(LangID) + 1
+                insert = values.insertCat(LangID, CatID, value, session['userid'])
+                if insert:
+                    flash('Category Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the Category! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
+        
+
 
 @app.route('/language/<int:langid>')
 def language(langid):
