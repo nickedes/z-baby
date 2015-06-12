@@ -170,14 +170,14 @@ def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
     return True
 
 
-def insertSubCat(CategoryID, SubCategoryID, LanguageID, CategoryValue, CreatedBy):
+def insertSubCat(CategoryID, SubCategoryID, LanguageID, SubValue, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
     # SubCategory (LanguageID, CategoryID, SubCategoryID, SubCategoryValue, CreatedBy, CreateDate)
     try:
         cursor.execute(
-            'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', (LanguageID, CategoryID, SubCategoryID, SubCategoryValue, CreatedBy, CreateDate))
+            'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', (LanguageID, CategoryID, SubCategoryID, SubValue, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -398,24 +398,24 @@ def getIdeaUnderOperator(LoginID):
     return cursor.fetchall()
 
 
-def updateCat(CategoryID, CategoryValue):
+def updateCat(LangID, CategoryID, CategoryValue):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d', (CategoryValue, CategoryID))
+            'UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d and LanguageID = %d', (CategoryValue, CategoryID, LangID))
     except:
         return False
     conn.commit()
     return True
 
 
-def updateSubCat(CategoryID, SubCategoryID, CategoryValue):
+def updateSubCat(LangID, CategoryID, SubCategoryID, CategoryValue):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.SubCategory set SubCategoryValue = %s WHERE CategoryID = %d and SubCategoryID = %d',
-                       (CategoryValue, CategoryID, SubCategoryID))
+        cursor.execute('UPDATE dbo.SubCategory set SubCategoryValue = %s WHERE CategoryID = %d and SubCategoryID = %d and LanguageID = %d',
+                       (CategoryValue, CategoryID, SubCategoryID, LangID))
     except:
         return False
     conn.commit()
@@ -715,3 +715,21 @@ def getCatID(LangID):
     if not top:
         return 0
     return top[0][0]
+
+
+def CheckCategory(CategoryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.SubCategory WHERE CategoryID=%d', CategoryID)
+    if cursor.fetchall():
+        return True
+    return False
+
+
+def NoCategory(CategoryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Category WHERE CategoryID=%d', CategoryID)
+    if cursor.fetchall() == []:
+        return True
+    return False

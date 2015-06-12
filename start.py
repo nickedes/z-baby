@@ -1111,7 +1111,7 @@ def super():
                     return(redirect(url_for('home')))
                 LangID = session['LanguageID']
                 name = request.form['name']
-                StateID = values.getStateID(LangID,CountryID) + 1
+                StateID = values.getStateID(LangID, CountryID) + 1
                 insert = values.insertState(
                     LangID, CountryID, StateID, name, session['userid'])
                 if insert:
@@ -1165,7 +1165,8 @@ def super():
                     return(redirect(url_for('home')))
                 LangID = session['LanguageID']
                 name = request.form['name']
-                DistrictID = values.getDistrictID(LangID, CountryID, StateID) + 1
+                DistrictID = values.getDistrictID(
+                    LangID, CountryID, StateID) + 1
                 insert = values.insertDistrict(
                     LangID, CountryID, StateID, DistrictID, name, session['userid'])
                 if insert:
@@ -1224,7 +1225,8 @@ def super():
                     flash(
                         'No Such District exists, for which you are adding Block. Please try again!', 'warning')
                     return(redirect(url_for('home')))
-                BlockID = values.getBlockID(LangID, CountryID, StateID, DistrictID) + 1
+                BlockID = values.getBlockID(
+                    LangID, CountryID, StateID, DistrictID) + 1
                 insert = values.insertBlock(
                     LangID, CountryID, StateID, DistrictID, BlockID, name, session['userid'])
                 if insert:
@@ -1244,6 +1246,19 @@ def super():
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect(url_for('home'))
+            elif request.form['submit'] == 'delete':
+                LangID = session['userid']
+                CategoryID = request.form['id']
+                if values.CheckCategory(CategoryID):
+                    flash(
+                        "This Category Can't be deleted, since it has subcategories", 'warning')
+                    return(redirect(url_for('home')))
+                delete = values.deleteCategory(LangID, CategoryID)
+                if delete:
+                    flash('Category Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the Category! Please try again!', 'warning')
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
                 langid = request.form['language']
@@ -1254,22 +1269,74 @@ def super():
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
                 flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
+                    'There was problem saving the translation! \
+                    Please try again!', 'warning')
                 return(redirect(url_for('home')))
             elif request.form['submit'] == 'add':
-                value=request.form['name']
+                value = request.form['name']
                 LangID = session['LanguageID']
                 CatID = values.getCatID(LangID) + 1
-                insert = values.insertCat(LangID, CatID, value, session['userid'])
+                insert = values.insertCat(
+                    CatID, LangID, value, session['userid'])
                 if insert:
                     flash('Category Added successfully!', 'success')
                     return redirect(url_for('home'))
                 flash(
-                    'There was problem adding the Category! Please try again!', 'warning')
+                    'There was problem adding the Category! Please try again!',
+                     'warning')
                 return(redirect(url_for('home')))
             else:
                 pass
-        
+        elif table == "SubCategory":
+            if request.form['submit'] == 'edit':
+                CatID = request.form['CatID']
+                SubCatID = request.form['SubCatID']
+                value = request.form[str(SubCatID)]
+                update = values.updateSubCat(CatID, SubCatID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+            elif request.form['submit'] == 'delete':
+                LangID = session['userid']
+                CatID = request.form['CatID']
+                SubCatID = request.form['SubCatID']
+                delete = values.deleteSub(LangID, CatID, SubCatID)
+                if delete:
+                    flash('SubCategory Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the SubCategory! Please try again!', 'warning')
+            elif request.form['submit'] == 'translate':
+                CatID = request.form['id']
+                SubCatID = request.form['SubCatID']
+                langid = request.form['language']
+                value = request.form[str(SubCatID)+'translate']
+                update = values.insertSubCat(
+                    CatID, SubCatID, langid, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'add':
+                CategoryID = request.form['CID']
+                if values.NoCategory(CategoryID):
+                    flash(
+                        'No Such Category exists, for which you are adding SubCategory. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                LangID = session['LanguageID']
+                name = request.form['name']
+                SubCategoryID = values.getSubCategoryID(LangID, CategoryID) + 1
+                insert = values.insertSubCat(CategoryID, SubCategoryID, LangID, name, session['userid'])
+                if insert:
+                    flash('SubCategory Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the SubCategory! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
 
 
 @app.route('/language/<int:langid>')
