@@ -846,24 +846,13 @@ def insertStage(LanguageID, StageID, value, CreatedBy):
     return True
 
 
-def getLangID():
-    conn = getConnection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT max(LanguageID) FROM dbo.Language ")
-    top = cursor.fetchall()
-    if not top:
-        return 0
-    return top[0][0]
-
-
-def insertLang(LanguageID, name, CreatedBy):
+def insertLang(name, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Language VALUES (%d, %s, %s, %s)', (LanguageID, name, CreatedBy, CreateDate))
+            'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()

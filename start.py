@@ -1416,9 +1416,7 @@ def super():
         elif table == "Language":
             if request.form['submit'] == 'add':
                 name = request.form['name']
-                LangID = values.getLangID() + 1
-                insert = values.insertLang(
-                    LangID, name, session['userid'])
+                insert = values.insertLang(name, session['userid'])
                 if insert:
                     flash('Language Added successfully!', 'success')
                     return redirect(url_for('home'))
