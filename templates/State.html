@@ -32,7 +32,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/table" method="POST">
+			<form action="/table/State" method="POST">
 				<input type="hidden" class="form-control" name="table" value="State">
 				<input type="hidden" class="form-control" name="CountryID" value="{{row[1]}}">
 				<input type="hidden" class="form-control" name="StateID" value="{{row[2]}}">
@@ -43,6 +43,7 @@
 					<td>
 					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
 					</td>
+					<td>
 					<div class="">
 						<select id = "ddl1" name="language" class="form-control">
 						<option>..</option>
