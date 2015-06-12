@@ -980,3 +980,69 @@ def insertLang(name, CreatedBy):
         'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
     conn.commit()
     return True
+
+
+def getLangID():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(LanguageID) FROM dbo.Language ")
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def updateLang(LangID, name, masterlang):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        if masterlang == 'True':
+            masterlang = 1
+            print(1)
+        elif masterlang == 'False':
+            masterlang = 0
+            print(0)
+        else:
+            print(masterlang)
+        cursor.execute(
+            'UPDATE dbo.Language set LanguageName = %s,MasterLanguage=%d WHERE LanguageID = %d', (name, masterlang, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def checkLang(LangID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Menu WHERE LanguageID=%d', LangID)
+    if cursor.fetchall():
+        return True
+    cursor.execute('SELECT * FROM dbo.Benefit WHERE LanguageID=%d', LangID)
+    if cursor.fetchall():
+        return True
+    cursor.execute('SELECT * FROM dbo.Stage WHERE LanguageID=%d', LangID)
+    if cursor.fetchall():
+        return True
+    cursor.execute('SELECT * FROM dbo.Category WHERE LanguageID=%d', LangID)
+    if cursor.fetchall():
+        return True
+    cursor.execute('SELECT * FROM dbo.Country WHERE LanguageID=%d', LangID)
+    if cursor.fetchall():
+        return True
+    cursor.execute('SELECT * FROM dbo.Label WHERE LanguageID=%d', LangID)
+    if cursor.fetchall():
+        return True
+    return False
+
+
+def deleteLang(LangID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('DELETE FROM dbo.Language WHERE LanguageID=%d',LangID)
+    except:
+        return False
+    conn.commit()
+    return True
