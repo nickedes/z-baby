@@ -1425,6 +1425,7 @@ def super():
             else:
                 pass
         elif table == "Language":
+            # Todo: test
             if request.form['submit'] == 'add':
                 name = request.form['name']
                 insert = values.insertLang(name, session['userid'])
@@ -1460,6 +1461,44 @@ def super():
                 flash(
                     'There was problem deleting the Language! Please try again!', 'warning')
                 return redirect(url_for('home'))
+            else:
+                pass
+        elif table == "Benefit":
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                BenefitID = request.form['id']
+                value = request.form[str(BenefitID)]
+                update = values.updateBenefit(LangID, BenefitID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was editing the Stage! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                BenefitID = request.form['id']
+                delete = values.deleteStage(LangID, BenefitID)
+                if delete:
+                    flash('Stage Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the Stage! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'add':
+                value = request.form['name']
+                LangID = session['LanguageID']
+                BenefitID = values.getBenefitID(LangID) + 1
+                insert = values.insertStage(
+                    LangID, BenefitID, value, session['userid'])
+                if insert:
+                    flash('Stage Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the Stage! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
             else:
                 pass
 

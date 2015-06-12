@@ -876,12 +876,14 @@ def updateLang(LangID, name, masterlang):
     try:
         if masterlang == 'True':
             masterlang = 1
+            print(1)
         elif masterlang == 'False':
             masterlang = 0
+            print(0)
         else:
             print(masterlang)
         cursor.execute(
-            'UPDATE dbo.Language set LanguageName = %s,masterlang=%d WHERE LanguageID = %d', (name, masterlang, LangID))
+            'UPDATE dbo.Language set LanguageName = %s,MasterLanguage=%d WHERE LanguageID = %d', (name, masterlang, LangID))
     except:
         return False
     conn.commit()
