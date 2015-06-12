@@ -51,17 +51,19 @@ def index():
     # play with variables
     label_dict = {}
     for label in labels:
-        if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/':
+        if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
+                and label[3] == '/':
             label_dict[label[0]] = label[5]
 
     menubody = []
     for menu in menus:
-        if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] and menu[2] == '/':
+        if menu[5] == session['RoleID'] and menu[0] == session['LanguageID'] \
+                and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
 
-    return render_template('slash.html', languages=languages, topmenu=topmenu, menubody=menubody,
-                           topsubmenu=topsubmenu, label=label_dict,
-                           menuarray=menuarray)
+    return render_template('slash.html', languages=languages, topmenu=topmenu,
+                           menubody=menubody, topsubmenu=topsubmenu,
+                           label=label_dict, menuarray=menuarray)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -79,11 +81,12 @@ def login():
     label_dict = {}
     if request.method == 'GET':
         for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/login':
+            if label[1] == session['LanguageID'] and label[2] == \
+                    session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
-        return render_template('signin.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               label=label_dict)
+        return render_template('signin.html', languages=languages,
+                               topmenu=topmenu, topsubmenu=topsubmenu,
+                               menuarray=menuarray, label=label_dict)
     else:
         if 'signin' in request.form:
             username = request.form['username']
@@ -109,7 +112,8 @@ def login():
 def home():
     label_dict = {}
     for label in labels:
-        if label[1] == session['LanguageID'] and label[2] == session['RoleID'] and label[3] == '/home':
+        if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
+                and label[3] == '/home':
             label_dict[label[0]] = label[5]
     menulist = []
     for menu in menus:
@@ -1247,12 +1251,26 @@ def super():
 
         elif table == 'Category':
             if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
                 CatID = request.form['id']
                 value = request.form[str(CatID)]
-                update = values.updateCat(CatID, value)
+                update = values.updateCat(LangID, CatID, value)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect(url_for('home'))
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                CategoryID = request.form['id']
+                if values.CheckCategory(CategoryID):
+                    flash(
+                        "This Category Can't be deleted, since it has subcategories", 'warning')
+                    return(redirect(url_for('home')))
+                delete = values.deleteCategory(LangID, CategoryID)
+                if delete:
+                    flash('Category Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the Category! Please try again!', 'warning')
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
                 langid = request.form['language']
@@ -1263,19 +1281,75 @@ def super():
                     flash('Translated successfully!', 'success')
                     return redirect(url_for('home'))
                 flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
+                    'There was problem saving the translation! \
+                    Please try again!', 'warning')
                 return(redirect(url_for('home')))
             elif request.form['submit'] == 'add':
                 value = request.form['name']
                 LangID = session['LanguageID']
                 CatID = values.getCatID(LangID) + 1
                 insert = values.insertCat(
-                    LangID, CatID, value, session['userid'])
+                    CatID, LangID, value, session['userid'])
                 if insert:
                     flash('Category Added successfully!', 'success')
                     return redirect(url_for('home'))
                 flash(
-                    'There was problem adding the Category! Please try again!', 'warning')
+                    'There was problem adding the Category! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
+        elif table == "SubCategory":
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                CatID = request.form['CatID']
+                SubCatID = request.form['SubCatID']
+                value = request.form[str(SubCatID)]
+                update = values.updateSubCat(LangID, CatID, SubCatID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                CatID = request.form['CatID']
+                SubCatID = request.form['SubCatID']
+                print(LangID, CatID, SubCatID)
+                delete = values.deleteSub(LangID, CatID, SubCatID)
+                if delete:
+                    flash('SubCategory Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the SubCategory! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'translate':
+                CatID = request.form['id']
+                SubCatID = request.form['SubCatID']
+                langid = request.form['language']
+                value = request.form[str(SubCatID)+'translate']
+                update = values.insertSubCat(
+                    CatID, SubCatID, langid, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'add':
+                CategoryID = request.form['CID']
+                if values.NoCategory(CategoryID):
+                    flash(
+                        'No Such Category exists, for which you are adding SubCategory. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                LangID = session['LanguageID']
+                name = request.form['name']
+                SubCategoryID = values.getSubCatID(LangID, CategoryID) + 1
+                insert = values.insertSubCat(
+                    CategoryID, SubCategoryID, LangID, name, session['userid'])
+                if insert:
+                    flash('SubCategory Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the SubCategory! Please try again!', 'warning')
                 return(redirect(url_for('home')))
             else:
                 pass
