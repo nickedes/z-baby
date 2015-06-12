@@ -1321,6 +1321,40 @@ def super():
                 return(redirect(url_for('home')))
             else:
                 pass
+        elif table == 'Stage':
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                StageID = request.form['id']
+                value = request.form[str(StageID)]
+                update = values.updateStage(LangID, StageID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                StageID = request.form['id']
+                delete = values.deleteStage(LangID, StageID)
+                if delete:
+                    flash('Stage Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the Stage! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'add':
+                value = request.form['name']
+                LangID = session['LanguageID']
+                StageID = values.getStageID(LangID) + 1
+                insert = values.insertStage(
+                    LangID, StageID, value, session['userid'])
+                if insert:
+                    flash('Stage Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the Stage! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
 
 
 @app.route('/language/<int:langid>')
