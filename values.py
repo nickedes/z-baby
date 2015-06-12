@@ -849,7 +849,6 @@ def insertStage(LanguageID, StageID, value, CreatedBy):
 def insertLang(name, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
-    CreateDate = datetime.now()
 
     labelvals = gettablevalues('Label')
     menuvals = gettablevalues('Menu')
@@ -875,73 +874,104 @@ def insertLang(name, CreatedBy):
     finalcategory = []
     finalsubcategory = []
 
+    CreateDate = datetime.now()
+
+    cursor.execute(
+        'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
+    conn.commit()
+
+    lang_id = getLangID()
+
     for label in labelvals:
         if label[1] == 1:
-            label[1] = getLangID() + 1
-            label[6] = CreatedBy
-            label[7] = datetime.now()
-            finallabel.append(label)
+            labellist = list(label)
+            labellist[1] = lang_id
+            labellist[6] = CreatedBy
+            labellist[7] = datetime.now()
+            labeltuple = tuple(labellist)
+            finallabel.append(labeltuple)
 
     for menu in menuvals:
         if menu[0] == 1:
-            menu[0] = getLangID() + 1
-            menu[6] = CreatedBy
-            menu[7] = datetime.now()
-            finalmenu.append(menu)
+            menulist = list(menu)
+            menulist[0] = lang_id
+            menulist[6] = CreatedBy
+            menulist[7] = datetime.now()
+            menutuple = tuple(menulist)
+            finalmenu.append(menutuple)
     for submenu in submenuvals:
         if submenu[0] == 1:
-            submenu[0] = getLangID() + 1
-            submenu[6] = CreatedBy
-            submenu[7] = datetime.now()
-            finalsubmenu.append(submenu)
+            submenulist = list(submenu)
+            submenulist[0] = lang_id
+            submenulist[6] = CreatedBy
+            submenulist[7] = datetime.now()
+            submenutuple = tuple(submenulist)
+            finalsubmenu.append(submenutuple)
     for benefit in benefitvals:
         if benefit[0] == 1:
-            benefit[0] = getLangID() + 1
-            benefit[3] = CreatedBy
-            benefit[4] = datetime.now()
-            finalbenefit.append(benefit)
+            benefitlist = list(benefit)
+            benefitlist[0] = lang_id
+            benefitlist[3] = CreatedBy
+            benefitlist[4] = datetime.now()
+            benefittuple = tuple(benefitlist)
+            finalbenefit.append(benefittuple)
     for stage in stagevals:
         if stage[0] == 1:
-            stage[0] = getLangID() + 1
-            stage[3] = CreatedBy
-            stage[4] = datetime.now()
-            finalstage.append(stage)
+            stagelist = list(stage)
+            stagelist[0] = lang_id
+            stagelist[3] = CreatedBy
+            stagelist[4] = datetime.now()
+            stagetuple = tuple(stagelist)
+            finalstage.append(stagetuple)
     for block in blockvals:
         if block[0] == 1:
-            block[0] = getLangID() + 1
-            block[6] = CreatedBy
-            block[7] = datetime.now()
-            finalblock.append(block)
+            blocklist = list(block)
+            blocklist[0] = lang_id
+            blocklist[6] = CreatedBy
+            blocklist[7] = datetime.now()
+            blocktuple = tuple(blocklist)
+            finalblock.append(blocktuple)
     for district in districtvals:
         if district[0] == 1:
-            district[0] = getLangID() + 1
-            district[6] = CreatedBy
-            district[7] = datetime.now()
-            finaldistrict.append(district)
+            districtlist = list(district)
+            districtlist[0] = lang_id
+            districtlist[5] = CreatedBy
+            districtlist[6] = datetime.now()
+            districttuple = tuple(districtlist)
+            finaldistrict.append(districttuple)
     for state in statevals:
         if state[0] == 1:
-            state[0] = getLangID() + 1
-            state[4] = CreatedBy
-            state[5] = datetime.now()
-            finalstate.append(state)
+            statelist = list(state)
+            statelist[0] = lang_id
+            statelist[4] = CreatedBy
+            statelist[5] = datetime.now()
+            statetuple = tuple(statelist)
+            finalstate.append(statetuple)
     for country in countryvals:
         if country[0] == 1:
-            country[0] = getLangID() + 1
-            country[3] = CreatedBy
-            country[4] = datetime.now()
-            finalcountry.append(country)
+            countrylist = list(country)
+            countrylist[0] = lang_id
+            countrylist[3] = CreatedBy
+            countrylist[4] = datetime.now()
+            countrytuple = tuple(countrylist)
+            finalcountry.append(countrytuple)
     for category in categoryvals:
         if category[0] == 1:
-            category[0] = getLangID() + 1
-            category[3] = CreatedBy
-            category[4] = datetime.now()
-            finalcategory.append(category)
+            categorylist = list(category)
+            categorylist[0] = lang_id
+            categorylist[3] = CreatedBy
+            categorylist[4] = datetime.now()
+            categorytuple = tuple(categorylist)
+            finalcategory.append(categorytuple)
     for subcategory in subcategoryvals:
         if subcategory[0] == 1:
-            subcategory[0] = getLangID() + 1
-            subcategory[4] = CreatedBy
-            subcategory[5] = datetime.now()
-            finalsubcategory.append(subcategory)
+            subcategorylist = list(subcategory)
+            subcategorylist[0] = lang_id
+            subcategorylist[4] = CreatedBy
+            subcategorylist[5] = datetime.now()
+            subcategorytuple = tuple(subcategorylist)
+            finalsubcategory.append(subcategorytuple)
+
 
     cursor.executemany(
         'INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)', finallabel)
@@ -953,16 +983,16 @@ def insertLang(name, CreatedBy):
         'INSERT INTO dbo.SubMenu VALUES (%d, %d, %d, %s, %s, %d, %s, %s)', finalsubmenu)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', finalblock)
-    conn.commit()
-    cursor.executemany(
-        'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', finaldistrict)
+        'INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)', finalcountry)
     conn.commit()
     cursor.executemany(
         'INSERT INTO dbo.State VALUES (%d, %d, %d, %s, %s, %s)', finalstate)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)', finalcountry)
+        'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', finaldistrict)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', finalblock)
     conn.commit()
     cursor.executemany(
         'INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)', finalbenefit)
@@ -975,9 +1005,6 @@ def insertLang(name, CreatedBy):
     conn.commit()
     cursor.executemany(
         'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', finalsubcategory)
-    conn.commit()
-    cursor.execute(
-        'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
     conn.commit()
     return True
 
