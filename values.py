@@ -733,3 +733,38 @@ def NoCategory(CategoryID):
     if cursor.fetchall() == []:
         return True
     return False
+
+
+def getSubCatID(LangID, CategoryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(SubCategoryID) FROM dbo.SubCategory WHERE LanguageID = %d and CategoryID = %d", (LangID,CategoryID))
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+def deleteCategory(LangID, CategoryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.Category WHERE CategoryID=%d and LanguageID=%d', (CategoryID, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def deleteSub(LangID, CatID, SubCatID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.SubCategory WHERE CatID=%d and LanguageID=%d and SubCatID=%d',
+            (CatID, LangID, SubCatID))
+    except:
+        return False
+    conn.commit()
+    return True

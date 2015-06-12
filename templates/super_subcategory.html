@@ -33,7 +33,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/table" method="POST">
+			<form action="/super" method="POST">
 				<input type="hidden" class="form-control" name="table" value="SubCategory">
 				<input type="hidden" class="form-control" name="CatID" value="{{row[1]}}">
 				<input type="hidden" class="form-control" name="SubCatID" value="{{row[2]}}">
@@ -81,6 +81,9 @@
 		<form action="/super" method="POST">
 			<input type="hidden" class="form-control" name="table" value="SubCategory">
 			<tr>
+				<td>
+				<input type="text" class="form-control" name="CID">
+				</td>
 				<td>
 				<input type="text" class="form-control" name="name">
 				</td>
