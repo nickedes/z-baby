@@ -596,11 +596,8 @@ def table(tablename):
             'Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
-        if session['RoleID'] > 3:
-            if session['RoleID'] == 5:
-                filename = 'super_' + tablename.lower() + '.html'
-            if session['RoleID'] == 4:
-                filename = tablename + '.html'
+        if session['RoleID'] == 4:
+            filename = tablename + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
             return render_template(filename, topmenu=topmenu,
@@ -982,15 +979,26 @@ def upload_img(upload_file):
     return uploaded_image.link
 
 
-@app.route('/super', methods=['GET', 'POST'])
+@app.route('/super/<tablename>', methods=['GET', 'POST'])
 @login_required
-def super():
+def super(tablename):
     """ADD/EDIT/DELETE/VIEW for superadmin"""
     if session['RoleID'] != 5:
         flash(
             'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
-    if request.method == 'POST':
+    if request.method == 'GET':
+        if session['RoleID'] == 5:
+            filename = 'super_' + tablename.lower() + '.html'
+            data = values.gettablevalues(tablename)
+            cols = values.getColumns(tablename)
+            return render_template(filename, topmenu=topmenu,
+                                       languages=languages, topsubmenu=topsubmenu,
+                                       menuarray=menuarray, table=data, header=cols)
+        flash(
+            'You do not have the priviledge to access that function!', 'danger')
+        return redirect(url_for('home'))
+    elif request.method == 'POST':
         table = request.form['table']
         if table == "Media":
             if request.form['submit'] == 'edit':
@@ -1002,17 +1010,17 @@ def super():
                 update = values.SupdateMedia(MediaID, IdeaID, value, Mtype)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem saving the Media! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 MediaID = request.form['id']
                 IdeaID = request.form[str(MediaID)]
                 delete = values.deleteMedia(MediaID, IdeaID)
                 if delete:
                     flash('Media Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Media! Please try again!', 'warning')
             elif request.form['submit'] == 'image':
@@ -1020,7 +1028,7 @@ def super():
                 if values.NoIdea(IdeaID):
                     flash(
                         'No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 print("in")
                 image_link = None
                 image_link = upload_img(request.files['file'])
@@ -1031,17 +1039,17 @@ def super():
                     print("done img")
                     if example_img:
                         flash('Media Added successfully!', 'success')
-                        return redirect(url_for('home'))
+                        return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Media! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'text':
                 IdeaID = request.form['id']
                 if values.NoIdea(IdeaID):
                     flash(
                         'No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 example = request.form['example']
                 MediaID = values.getLatestMedia() + 1
                 example_text = values.insertMedia(
@@ -1049,10 +1057,10 @@ def super():
                 print("done exm")
                 if example_text:
                     flash('Media Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Media! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
 
             else:
                 pass
@@ -1065,7 +1073,7 @@ def super():
                 update = values.updateCountry(LangID, CountryID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
@@ -1073,11 +1081,11 @@ def super():
                 if values.CheckCountry(CountryID):
                     flash(
                         "This Country Can't be deleted,since it has states", 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 delete = values.deleteCountry(LangID, CountryID)
                 if delete:
                     flash('Country Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Country! Please try again!', 'warning')
 
@@ -1089,10 +1097,10 @@ def super():
                     langid, CountryID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem saving the translation! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'add':
                 LangID = session['LanguageID']
@@ -1102,10 +1110,10 @@ def super():
                     LangID, CountryID, name, session['userid'])
                 if insert:
                     flash('Country Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Country! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
 
         elif table == 'State':
             if request.form['submit'] == 'edit':
@@ -1116,7 +1124,7 @@ def super():
                 update = values.updateState(LangID, CountryID, StateID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
@@ -1125,11 +1133,11 @@ def super():
                 if values.CheckState(StateID):
                     flash(
                         "This State Can't be deleted,since it has districts", 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 delete = values.deleteState(LangID, CountryID, StateID)
                 if delete:
                     flash('State Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the State! Please try again!', 'warning')
 
@@ -1142,17 +1150,17 @@ def super():
                     langid, CountryID, StateID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem saving the translation! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'add':
                 CountryID = request.form['CID']
                 if values.NoCountry(CountryID):
                     flash(
                         'No Such Country exists, for which you are adding State. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 LangID = session['LanguageID']
                 name = request.form['name']
                 StateID = values.getStateID(LangID, CountryID) + 1
@@ -1160,10 +1168,10 @@ def super():
                     LangID, CountryID, StateID, name, session['userid'])
                 if insert:
                     flash('State Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the State! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
 
@@ -1178,7 +1186,7 @@ def super():
                     LangID, CountryID, StateID, DistrictID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'delete':
@@ -1186,12 +1194,12 @@ def super():
                 if values.CheckDistrict(DistrictID):
                     flash(
                         "This District Can't be deleted,since it has blocks", 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 delete = values.deleteDistrict(
                     LangID, CountryID, StateID, DistrictID)
                 if delete:
                     flash('District Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the District! Please try again!', 'warning')
 
@@ -1201,12 +1209,12 @@ def super():
                 if values.NoCountry(CountryID):
                     flash(
                         'No Such Country exists, for which you are adding State. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 StateID = request.form['SID']
                 if values.NoState(StateID):
                     flash(
                         'No Such State exists, for which you are adding District. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 LangID = session['LanguageID']
                 name = request.form['name']
                 DistrictID = values.getDistrictID(
@@ -1215,10 +1223,10 @@ def super():
                     LangID, CountryID, StateID, DistrictID, name, session['userid'])
                 if insert:
                     flash('District Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the District! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
 
@@ -1234,7 +1242,7 @@ def super():
                     LangID, CountryID, StateID, DistrictID, BlockID, value)
                 if update:
                     flash('Block Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'delete':
@@ -1247,7 +1255,7 @@ def super():
                     LangID, CountryID, StateID, DistrictID, BlockID)
                 if delete:
                     flash('Block Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Block! Please try again!', 'warning')
 
@@ -1260,25 +1268,25 @@ def super():
                 if values.NoCountry(CountryID):
                     flash(
                         'No Such Country exists, for which you are adding Block. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 if values.NoState(StateID):
                     flash(
                         'No Such State exists, for which you are adding Block. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 if values.NoDistrict(DistrictID):
                     flash(
                         'No Such District exists, for which you are adding Block. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 BlockID = values.getBlockID(
                     LangID, CountryID, StateID, DistrictID) + 1
                 insert = values.insertBlock(
                     LangID, CountryID, StateID, DistrictID, BlockID, name, session['userid'])
                 if insert:
                     flash('Block Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Block! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
 
@@ -1290,21 +1298,21 @@ def super():
                 update = values.updateCat(LangID, CatID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
                 CategoryID = request.form['id']
                 if values.CheckCategory(CategoryID):
                     flash(
                         "This Category Can't be deleted, since it has subcategories", 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 delete = values.deleteCategory(LangID, CategoryID)
                 if delete:
                     flash('Category Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Category! Please try again!', 'warning')
-                return redirect(url_for('home'))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
                 langid = request.form['language']
@@ -1313,11 +1321,11 @@ def super():
                     CatID, langid, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem saving the translation! \
                     Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
                 value = request.form['name']
                 LangID = session['LanguageID']
@@ -1326,11 +1334,11 @@ def super():
                     CatID, LangID, value, session['userid'])
                 if insert:
                     flash('Category Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Category! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
         elif table == "SubCategory":
@@ -1342,7 +1350,7 @@ def super():
                 update = values.updateSubCat(LangID, CatID, SubCatID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
                 CatID = request.form['CatID']
@@ -1350,10 +1358,10 @@ def super():
                 delete = values.deleteSub(LangID, CatID, SubCatID)
                 if delete:
                     flash('SubCategory Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the SubCategory! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
                 SubCatID = request.form['SubCatID']
@@ -1363,16 +1371,16 @@ def super():
                     CatID, SubCatID, langid, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem saving the translation! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
                 CategoryID = request.form['CID']
                 if values.NoCategory(CategoryID):
                     flash(
                         'No Such Category exists, for which you are adding SubCategory. Please try again!', 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 LangID = session['LanguageID']
                 name = request.form['name']
                 SubCategoryID = values.getSubCatID(LangID, CategoryID) + 1
@@ -1380,10 +1388,10 @@ def super():
                     CategoryID, SubCategoryID, LangID, name, session['userid'])
                 if insert:
                     flash('SubCategory Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the SubCategory! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
         elif table == 'Stage':
@@ -1394,21 +1402,21 @@ def super():
                 update = values.updateStage(LangID, StageID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was editing the Stage! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
                 StageID = request.form['id']
                 delete = values.deleteStage(LangID, StageID)
                 if delete:
                     flash('Stage Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Stage! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
                 value = request.form['name']
                 LangID = session['LanguageID']
@@ -1417,11 +1425,11 @@ def super():
                     LangID, StageID, value, session['userid'])
                 if insert:
                     flash('Stage Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Stage! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
         elif table == "Language":
@@ -1431,11 +1439,11 @@ def super():
                 insert = values.insertLang(name, session['userid'])
                 if insert:
                     flash('Language Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem adding the Language! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'edit':
                 LangID = request.form['id']
                 name = request.form[str(LangID)]
@@ -1443,24 +1451,24 @@ def super():
                 update = values.updateLang(LangID, name, masterlang)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem editing the Language! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 LangID = request.form['id']
                 if values.checkLang(LangID):
                     flash(
                         "This Language Can't be deleted", 'warning')
-                    return(redirect(url_for('home')))
+                    return redirect('/super/' + tablename)
                 delete = values.deleteLang(LangID)
                 if delete:
                     flash('Language Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Language! Please try again!', 'warning')
-                return redirect(url_for('home'))
+                return redirect('/super/' + tablename)
             else:
                 pass
         elif table == "Benefit":
@@ -1471,36 +1479,38 @@ def super():
                 update = values.updateBenefit(LangID, BenefitID, value)
                 if update:
                     flash('Edited successfully!', 'success')
-                    return redirect(url_for('home'))
+                    return redirect('/super/' + tablename)
                 flash(
                     'There was editing the Stage! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
                 BenefitID = request.form['id']
-                delete = values.deleteStage(LangID, BenefitID)
+                delete = values.deleteBenefit(LangID, BenefitID)
                 if delete:
-                    flash('Stage Deleted successfully!', 'success')
-                    return redirect(url_for('home'))
+                    flash('Benefit Deleted successfully!', 'success')
+                    return redirect('/super/' + tablename)
                 flash(
-                    'There was problem deleting the Stage! Please try again!', 'warning')
-                return(redirect(url_for('home')))
+                    'There was problem deleting the Benefit! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
                 value = request.form['name']
                 LangID = session['LanguageID']
                 BenefitID = values.getBenefitID(LangID) + 1
-                insert = values.insertStage(
+                insert = values.insertBenefit(
                     LangID, BenefitID, value, session['userid'])
                 if insert:
-                    flash('Stage Added successfully!', 'success')
-                    return redirect(url_for('home'))
+                    flash('Benefit Added successfully!', 'success')
+                    return redirect('/super/' + tablename)
                 flash(
-                    'There was problem adding the Stage! Please try again!',
+                    'There was problem adding the Benefit! Please try again!',
                     'warning')
-                return(redirect(url_for('home')))
+                return redirect('/super/' + tablename)
             else:
                 pass
+        else:
+            pass
 
 
 @app.route('/language/<int:langid>')

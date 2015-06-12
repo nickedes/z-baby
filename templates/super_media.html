@@ -34,7 +34,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/super" method="POST" enctype="multipart/form-data">
+			<form action="/super/Media" method="POST" enctype="multipart/form-data">
 				<input type="hidden" class="form-control" name="table" value="Media">
 				<input type="hidden" class="form-control" name="id" value="{{row[0]}}">
 				<tr>
@@ -72,7 +72,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<form action="/super" method="POST" enctype="multipart/form-data">
+		<form action="/super/Media" method="POST" enctype="multipart/form-data">
 			<input type="hidden" class="form-control" name="table" value="Media">
 			<tr>
 				<td>
@@ -89,7 +89,7 @@
 				</td>
 			</tr>
 		</form>
-		<form action="/super" method="POST">
+		<form action="/super/Media" method="POST">
 			<input type="hidden" class="form-control" name="table" value="Media">
 			<tr>
 				<td>

@@ -33,7 +33,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/super" method="POST">
+			<form action="/super/Stage" method="POST">
 				<input type="hidden" class="form-control" name="table" value="Stage">
 				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
 				<tr>
@@ -77,7 +77,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<form action="/super" method="POST">
+		<form action="/super/Stage" method="POST">
 			<input type="hidden" class="form-control" name="table" value="Stage">
 			<tr>
 				<td>

@@ -30,7 +30,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/super" method="POST">
+			<form action="/super/District" method="POST">
 				<input type="hidden" class="form-control" name="table" value="District">
 				<input type="hidden" class="form-control" name="CountryID" value="{{row[1]}}">
 				<input type="hidden" class="form-control" name="StateID" value="{{row[2]}}">
@@ -60,7 +60,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<form action="/super" method="POST">
+		<form action="/super/District" method="POST">
 			<input type="hidden" class="form-control" name="table" value="District">
 			<tr>
 				<td>
