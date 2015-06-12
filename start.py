@@ -14,6 +14,7 @@ from errors import showerrors
 import values
 from werkzeug import secure_filename
 import pyimgur
+import vimeo
 
 
 app = Flask(__name__)
@@ -487,8 +488,9 @@ def submit():
         image_link = None
         try:
             file = request.files['file']
-            UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
+            UPLOAD_FOLDER = '/home/kwikadi/github'
             ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+            ALLOWED_EXTENSIONS_VIDEO = ser(['mp4'])
             app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
             medias = {}
             if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
@@ -504,35 +506,35 @@ def submit():
                 medias['image'] = image_link
                 print("done upload")
         except:
-            pass
-        IdeaID = values.getLatestIdea() + 1
-        if session['RoleID'] == 1:
-            LoginID = session['userid']
-        elif session['RoleID'] == 2:
-            Username = request.form['teacher']
-            LoginID = values.getLoginID(Username)
-            print(LoginID)
-        insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
-                                   description, resource, support, implement_time, reach, session['userid'], datetime.now())
-        if image_link:
-            MediaID = values.getLatestMedia() + 1
-            example_img = values.insertMedia(
-                MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
-            print("done img")
-        else:
-            example_img = True
+            print("lol sad")
+    IdeaID = values.getLatestIdea() + 1
+    if session['RoleID'] == 1:
+        LoginID = session['userid']
+    elif session['RoleID'] == 2:
+        Username = request.form['teacher']
+        LoginID = values.getLoginID(Username)
+        print(LoginID)
+    insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
+                               description, resource, support, implement_time, reach, session['userid'], datetime.now())
+    if image_link:
         MediaID = values.getLatestMedia() + 1
-        example_text = values.insertMedia(
-            MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
-        print("done exm")
-        ideacatsubcat = values.insertIdeaCatSubCat(
-            IdeaID, category_id, subcategory_id)
-        if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
-            flash('The idea has been submitted successfully!', 'success')
-            return redirect(url_for('home'))
-        flash(
-            'There was an error while submitting! Please try again!', 'danger')
-        return redirect(url_for('submit'))
+        example_img = values.insertMedia(
+            MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
+        print("done img")
+    else:
+        example_img = True
+    MediaID = values.getLatestMedia() + 1
+    example_text = values.insertMedia(
+        MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
+    print("done exm")
+    ideacatsubcat = values.insertIdeaCatSubCat(
+        IdeaID, category_id, subcategory_id)
+    if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
+        flash('The idea has been submitted successfully!', 'success')
+        return redirect(url_for('home'))
+    flash(
+        'There was an error while submitting! Please try again!', 'danger')
+    return redirect(url_for('submit'))
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -540,7 +542,7 @@ def submit():
 def edit():
     if request.method == 'GET':
         if session['RoleID'] == 4:
-            dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu',
+            dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu', 'Label',
                         'Country', 'Block', 'District', 'State', 'Benefit', 'Stage']
         elif session['RoleID'] == 5:
             dropdown = [table[2] for table in tables]
@@ -562,8 +564,8 @@ def edit():
             data = values.gettablevalues(table)
             cols = values.getColumns(table)
             return render_template(table + ".html", topmenu=topmenu,
-                                    languages=languages, topsubmenu=topsubmenu,
-                                    menuarray=menuarray, table=data, header=cols)
+                                   languages=languages, topsubmenu=topsubmenu,
+                                   menuarray=menuarray, table=data, header=cols)
 
 
 @app.route('/table/<tablename>', methods=['GET', 'POST'])
@@ -578,12 +580,42 @@ def table(tablename):
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
             return render_template(filename, topmenu=topmenu,
-                                    languages=languages, topsubmenu=topsubmenu,
-                                    menuarray=menuarray, table=data, header=cols)
-        flash('You do not have the priviledge to access that function!', 'danger')
+                                   languages=languages, topsubmenu=topsubmenu,
+                                   menuarray=menuarray, table=data, header=cols)
+        flash(
+            'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
 
     elif request.method == 'POST':
+        if tablename == "Label":
+            if request.form['submit'] == 'edit':
+                LabelID = request.form['id']
+                value = request.form[str(LabelID)]
+                languageID = session['LanguageID']
+                update = values.updateLabel(LabelID, value, languageID)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect('/table/' + tablename)
+            elif request.form['submit'] == 'translate':
+                if table == "Category":
+                    LabelID = request.form['id']
+                    langid = request.form['language']
+                    value = request.form[str(LabelID)+'translate']
+                    for label in labels:
+                        if label[0] == LabelID:
+                            labelval = label
+                            break
+                    labelval[1] = langid
+                    labelval[5] = value
+                    labelval[6] = session['userid']
+                    labelval[7] = datetime.now()
+                update = values.insertLabel(labelval)
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect('/table/' + tablename)
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return redirect('/table/' + tablename)
         if tablename == "Category":
             if request.form['submit'] == 'edit':
                 CatID = request.form['id']
@@ -664,19 +696,19 @@ def table(tablename):
                     flash('Edited successfully!', 'success')
                     return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                MenuID=request.form['id']
-                SubMenuID=request.form['SubMenuID']
-                langid=request.form['language']
-                value=request.form[str(SubMenuID)+'translate']
+                MenuID = request.form['id']
+                SubMenuID = request.form['SubMenuID']
+                langid = request.form['language']
+                value = request.form[str(SubMenuID)+'translate']
                 for submenu in submenus:
                     if submenu[1] == MenuID and submenu[2] == SubMenuID:
-                        submenuval=submenu
+                        submenuval = submenu
                         break
-                submenuval[0]=langid
-                submenuval[4]=value
-                submenuval[6]=session['userid']
-                submenuval[7]=datetime.now()
-                update=values.insertSubMenu(submenuval)
+                submenuval[0] = langid
+                submenuval[4] = value
+                submenuval[6] = session['userid']
+                submenuval[7] = datetime.now()
+                update = values.insertSubMenu(submenuval)
                 if update:
                     flash('Translated successfully!', 'success')
                     return redirect('/table/' + tablename)
@@ -685,18 +717,18 @@ def table(tablename):
                 return redirect('/table/' + tablename)
         if tablename == "Country":
             if request.form['submit'] == 'edit':
-                LangID=session['LanguageID']
-                CountryID=request.form['id']
-                value=request.form[str(CountryID)]
-                update=values.updateCountry(LangID, CountryID, value)
+                LangID = session['LanguageID']
+                CountryID = request.form['id']
+                value = request.form[str(CountryID)]
+                update = values.updateCountry(LangID, CountryID, value)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                CountryID=request.form['id']
-                langid=request.form['language']
-                value=request.form[str(CountryID)+'translate']
-                update=values.insertCountry(
+                CountryID = request.form['id']
+                langid = request.form['language']
+                value = request.form[str(CountryID)+'translate']
+                update = values.insertCountry(
                     langid, CountryID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
@@ -706,20 +738,20 @@ def table(tablename):
                 return redirect('/table/' + tablename)
         if tablename == "State":
             if request.form['submit'] == 'edit':
-                LangID=session['LanguageID']
-                CountryID=request.form['CountryID']
-                StateID=request.form['StateID']
-                value=request.form[str(StateID)]
-                update=values.updateState(LangID, CountryID, StateID, value)
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                value = request.form[str(StateID)]
+                update = values.updateState(LangID, CountryID, StateID, value)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                CountryID=request.form['id']
-                StateID=request.form['StateID']
-                langid=request.form['language']
-                value=request.form[str(StateID)+'translate']
-                update=values.insertState(
+                CountryID = request.form['id']
+                StateID = request.form['StateID']
+                langid = request.form['language']
+                value = request.form[str(StateID)+'translate']
+                update = values.insertState(
                     langid, CountryID, StateID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
@@ -729,12 +761,12 @@ def table(tablename):
                 return redirect('/table/' + tablename)
         if tablename == "District":
             if request.form['submit'] == 'edit':
-                LangID=session['LanguageID']
-                CountryID=request.form['CountryID']
-                StateID=request.form['StateID']
-                DistrictID=request.form['DistrictID']
-                value=request.form[str(DistrictID)]
-                update=values.updateDistrict(
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                value = request.form[str(DistrictID)]
+                update = values.updateDistrict(
                     LangID, CountryID, StateID, DistrictID, value)
                 if update:
                     flash('Edited successfully!', 'success')
@@ -742,12 +774,12 @@ def table(tablename):
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'translate':
-                CountryID=request.form['id']
-                StateID=request.form['StateID']
-                DistrictID=request.form['DistrictID']
-                langid=request.form['language']
-                value=request.form[str(DistrictID)+'translate']
-                update=values.insertDistrict(
+                CountryID = request.form['id']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                langid = request.form['language']
+                value = request.form[str(DistrictID)+'translate']
+                update = values.insertDistrict(
                     langid, CountryID, StateID, DistrictID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
@@ -757,13 +789,13 @@ def table(tablename):
                 return redirect('/table/' + tablename)
         if tablename == "Block":
             if request.form['submit'] == 'edit':
-                LangID=session['LanguageID']
-                CountryID=request.form['CountryID']
-                StateID=request.form['StateID']
-                DistrictID=request.form['DistrictID']
-                BlockID=request.form['BlockID']
-                value=request.form[str(BlockID)]
-                update=values.updateBlock(
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                BlockID = request.form['BlockID']
+                value = request.form[str(BlockID)]
+                update = values.updateBlock(
                     LangID, CountryID, StateID, DistrictID, BlockID, value)
                 if update:
                     flash('Edited successfully!', 'success')
@@ -771,13 +803,13 @@ def table(tablename):
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'translate':
-                CountryID=request.form['id']
-                StateID=request.form['StateID']
-                DistrictID=request.form['DistrictID']
-                BlockID=request.form['BlockID']
-                langid=request.form['language']
-                value=request.form[str(DistrictID)+'translate']
-                update=values.insertBlock(
+                CountryID = request.form['id']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
+                BlockID = request.form['BlockID']
+                langid = request.form['language']
+                value = request.form[str(DistrictID)+'translate']
+                update = values.insertBlock(
                     langid, CountryID, StateID, DistrictID, BlockID, value, session['userid'])
                 if update:
                     flash('Translated successfully!', 'success')
@@ -788,88 +820,88 @@ def table(tablename):
         return redirect(url_for('edit'))
 
 
-@app.route('/review', methods = ['GET', 'POST'])
+@app.route('/review', methods=['GET', 'POST'])
 @login_required
 def review():
     if request.method == 'GET':
-        teachers=values.teacherUnderOperator(session['userid'])
+        teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
-            idea_details=values.getIdeaInfo(session['userid'])
+            idea_details = values.getIdeaInfo(session['userid'])
         elif session['RoleID'] == 2:
-            idea_details=values.getIdeaUnderOperator(session['userid'])
-        subcatidea={}
-        media={}
+            idea_details = values.getIdeaUnderOperator(session['userid'])
+        subcatidea = {}
+        media = {}
         for idea_single in idea_details:
-            subcatidea[idea_single[0]]=values.getIdeaCatSubCat(
+            subcatidea[idea_single[0]] = values.getIdeaCatSubCat(
                 idea_single[0])
-            media[idea_single[0]]=values.getMedia(idea_single[0])
-        label_dict={}
+            media[idea_single[0]] = values.getMedia(idea_single[0])
+        label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
-                label_dict[label[0]]=label[5]
-        benefits=values.gettablevalues('Benefit')
-        stages=values.gettablevalues('Stage')
-        category=values.gettablevalues('Category')
-        subcat=values.gettablevalues('SubCategory')
-        bene_dict={}
+                label_dict[label[0]] = label[5]
+        benefits = values.gettablevalues('Benefit')
+        stages = values.gettablevalues('Stage')
+        category = values.gettablevalues('Category')
+        subcat = values.gettablevalues('SubCategory')
+        bene_dict = {}
         for ben in benefits:
             if ben[0] == session['LanguageID']:
-                bene_dict[ben[1]]=ben[2]
-        stage_dict={}
+                bene_dict[ben[1]] = ben[2]
+        stage_dict = {}
         for stag in stages:
             if stag[0] == session['LanguageID']:
-                stage_dict[stag[1]]=stag[2]
-        category_dict={}
+                stage_dict[stag[1]] = stag[2]
+        category_dict = {}
         for cat in category:
             if cat[0] == session['LanguageID']:
-                category_dict[cat[1]]=cat[2]
-        subcat_dict={}
+                category_dict[cat[1]] = cat[2]
+        subcat_dict = {}
         for cat in category:
-            sublist=[]
+            sublist = []
             for sub in subcat:
                 if sub[1] == cat[1]:
                     sublist.append([sub[3], sub[2], sub[1]])
-            subcat_dict[cat[1]]=sublist
-        sub_list={}
+            subcat_dict[cat[1]] = sublist
+        sub_list = {}
         for data in subcatidea:
-            sub_list[data]=[]
+            sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
         print(subcatidea)
-        return render_template('review.html', topmenu = topmenu,
-                               topsubmenu = topsubmenu, menuarray = menuarray,
-                               label = label_dict, benefit = bene_dict,
-                               stage = stage_dict, category = category_dict, media = media, teachers = teachers,
-                               subcategory = subcat_dict, ideas = idea_details, subcats = subcatidea,
-                               languages = languages, sublist = sub_list)
+        return render_template('review.html', topmenu=topmenu,
+                               topsubmenu=topsubmenu, menuarray=menuarray,
+                               label=label_dict, benefit=bene_dict,
+                               stage=stage_dict, category=category_dict, media=media, teachers=teachers,
+                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea,
+                               languages=languages, sublist=sub_list)
     else:
-        IdeaID=request.form['idea']
-        title=request.form['31']
-        stage_id=request.form['33']
-        benefit_id=request.form['34']
-        category_id=request.form['36']
-        subcategory_id=request.form.getlist('37'+str(category_id))
-        description=request.form['38']
-        resource=request.form['42']
-        support=request.form['44']
-        implement_time=request.form['46']
-        reach=request.form['47']
-        example=request.form['49']
+        IdeaID = request.form['idea']
+        title = request.form['31']
+        stage_id = request.form['33']
+        benefit_id = request.form['34']
+        category_id = request.form['36']
+        subcategory_id = request.form.getlist('37'+str(category_id))
+        description = request.form['38']
+        resource = request.form['42']
+        support = request.form['44']
+        implement_time = request.form['46']
+        reach = request.form['47']
+        example = request.form['49']
 
-        image_link=None
+        image_link = None
         try:
-            file=request.files['file']
-            UPLOAD_FOLDER='/home/nickedes/zie_uploads'
-            ALLOWED_EXTENSIONS=set(['png', 'jpg', 'jpeg', 'gif'])
-            app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
-            medias={}
+            file = request.files['file']
+            UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+            app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+            medias = {}
             if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
-                filename=secure_filename(file.filename)
-                PATH=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                filename = secure_filename(file.filename)
+                PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(PATH)
-                CLIENT_ID=values.getClient_ID()
-                im=pyimgur.Imgur(CLIENT_ID)
-                uploaded_image=im.upload_image(
+                CLIENT_ID = values.getClient_ID()
+                im = pyimgur.Imgur(CLIENT_ID)
+                uploaded_image = im.upload_image(
                     PATH, title="Uploaded with PyImgur")
                 os.remove(PATH)
                 image_link = uploaded_image.link
