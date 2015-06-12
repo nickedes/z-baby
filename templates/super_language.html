@@ -1,0 +1,43 @@
+{% include 'header.html' %}
+<div class="col-lg-10">
+<table class="table">
+	<thead>
+		<tr>
+			{% for head in header %}
+				<th>  {{head}}  </th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<tr>
+					{% for data in row %}
+						<td>{{data}}</td>
+					{% endfor %}
+					<br>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<table class="table">
+	<thead>
+		<tr>
+			<th>{{ header[2] }}</th>
+			<th>Add</th>
+		</tr>
+	</thead>
+	<tbody>
+		<form action="/super" method="POST">
+			<input type="hidden" class="form-control" name="table" value="Language">
+			<tr>
+				<td>
+				<input type="text" class="form-control" name="name">
+				</td>
+				<td>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
+				</td>
+			</tr>
+		</form>
+	</tbody>
+</table>
+{% include 'footer.html' %}

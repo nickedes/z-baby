@@ -384,6 +384,7 @@ def updateMedia(IdeaID, Mvalue, Mtype, cr_date):
     conn.close()
     return True
 
+
 def updateLabel(LabelID, LabelValue, LanguageID):
     conn = getConnection()
     cursor = conn.cursor()
@@ -839,6 +840,30 @@ def insertStage(LanguageID, StageID, value, CreatedBy):
     try:
         cursor.execute(
             'INSERT INTO dbo.Stage VALUES (%d, %d, %s, %s, %s)', (LanguageID, StageID, value, CreatedBy, CreateDate))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def getLangID():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(LanguageID) FROM dbo.Language ")
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def insertLang(LanguageID, name, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Language VALUES (%d, %s, %s, %s)', (LanguageID, name, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()

@@ -553,7 +553,7 @@ def submit():
 @login_required
 def edit():
     """Table editing for admin and superadmin"""
-    if session['userid'] < 4:
+    if session['RoleID'] < 4:
         flash('Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -980,7 +980,7 @@ def upload_img(upload_file):
 @login_required
 def super():
     """ADD/EDIT/DELETE/VIEW for superadmin"""
-    if session['userid'] != 5:
+    if session['RoleID'] != 5:
         flash('Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'POST':
@@ -1409,6 +1409,21 @@ def super():
                     return redirect(url_for('home'))
                 flash(
                     'There was problem adding the Stage! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
+        elif table == "Language":
+            if request.form['submit'] == 'add':
+                name = request.form['name']
+                LangID = values.getLangID() + 1
+                insert = values.insertLang(
+                    LangID, name, session['userid'])
+                if insert:
+                    flash('Language Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the Language! Please try again!',
                     'warning')
                 return(redirect(url_for('home')))
             else:
