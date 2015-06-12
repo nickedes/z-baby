@@ -744,7 +744,8 @@ def getCatID(LangID):
 def CheckCategory(CategoryID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.SubCategory WHERE CategoryID=%d', CategoryID)
+    cursor.execute(
+        'SELECT * FROM dbo.SubCategory WHERE CategoryID=%d', CategoryID)
     if cursor.fetchall():
         return True
     return False
@@ -753,7 +754,8 @@ def CheckCategory(CategoryID):
 def NoCategory(CategoryID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Category WHERE CategoryID=%d', CategoryID)
+    cursor.execute(
+        'SELECT * FROM dbo.Category WHERE CategoryID=%d', CategoryID)
     if cursor.fetchall() == []:
         return True
     return False
@@ -763,11 +765,12 @@ def getSubCatID(LangID, CategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(SubCategoryID) FROM dbo.SubCategory WHERE LanguageID = %d and CategoryID = %d", (LangID,CategoryID))
+        "SELECT max(SubCategoryID) FROM dbo.SubCategory WHERE LanguageID = %d and CategoryID = %d", (LangID, CategoryID))
     top = cursor.fetchall()
     if not top:
         return 0
     return top[0][0]
+
 
 def deleteCategory(LangID, CategoryID):
     conn = getConnection()
@@ -786,8 +789,56 @@ def deleteSub(LangID, CatID, SubCatID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.SubCategory WHERE CatID=%d and LanguageID=%d and SubCatID=%d',
-            (CatID, LangID, SubCatID))
+            'DELETE FROM dbo.SubCategory WHERE LanguageID=%d  and CategoryID=%d and SubCategoryID=%d',
+            (LangID, CatID, SubCatID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def updateStage(LangID, StageID, StageName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Stage set StageValue = %s WHERE StageID = %d and LanguageID = %d', (StageName, StageID, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def deleteStage(LangID, StageID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.Stage WHERE StageID=%d and LanguageID=%d', (StageID, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def getStageID(LangID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(StageID) FROM dbo.Stage WHERE LanguageID = %d", LangID)
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def insertStage(LanguageID, StageID, value, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Stage VALUES (%d, %d, %s, %s, %s)', (LanguageID, StageID, value, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
