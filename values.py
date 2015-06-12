@@ -857,3 +857,26 @@ def insertLang(name, CreatedBy):
         return False
     conn.commit()
     return True
+
+
+def getLangID():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(LanguageID) FROM dbo.Language ")
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def updateLang(LangID, name, masterlang):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Language set LanguageName = %s,masterlang=%s WHERE LanguageID = %d', (name, masterlang, LangID))
+    except:
+        return False
+    conn.commit()
+    return True

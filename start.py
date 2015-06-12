@@ -274,7 +274,8 @@ def register():
 def create():
     """Dataentry operator method for creating teacher profiles"""
     if session['RoleID'] != 2:
-        flash('Sorry, you are not authorised to access this function', 'danger')
+        flash(
+            'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
@@ -348,7 +349,8 @@ def create():
 def update():
     """Updating profiles for teacher and dataentry operators"""
     if session['RoleID'] > 2:
-        flash('Sorry, you are not authorised to access this function', 'danger')
+        flash(
+            'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
@@ -447,7 +449,8 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 def submit():
     """ Idea submission for teachers and data entry operators"""
     if session['RoleID'] > 2:
-        flash('Sorry, you are not authorised to access this function', 'danger')
+        flash(
+            'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
@@ -554,7 +557,8 @@ def submit():
 def edit():
     """Table editing for admin and superadmin"""
     if session['RoleID'] < 4:
-        flash('Sorry, you are not authorised to access this function', 'danger')
+        flash(
+            'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         if session['RoleID'] == 4:
@@ -588,7 +592,8 @@ def edit():
 @login_required
 def table(tablename):
     if session['RoleID'] < 4:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash(
+            'Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
         if session['RoleID'] > 3:
@@ -844,7 +849,8 @@ def table(tablename):
 def review():
     """Review Ideas/Innovation for teachers and dataentry operators"""
     if session['RoleID'] > 2:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash(
+            'Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
         teachers = values.teacherUnderOperator(session['userid'])
@@ -981,7 +987,8 @@ def upload_img(upload_file):
 def super():
     """ADD/EDIT/DELETE/VIEW for superadmin"""
     if session['RoleID'] != 5:
-        flash('Sorry, you are not authorised to access this function', 'danger')
+        flash(
+            'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'POST':
         table = request.form['table']
@@ -1388,6 +1395,10 @@ def super():
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect(url_for('home'))
+                flash(
+                    'There was editing the Stage! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
             elif request.form['submit'] == 'delete':
                 LangID = session['LanguageID']
                 StageID = request.form['id']
@@ -1424,6 +1435,20 @@ def super():
                     'There was problem adding the Language! Please try again!',
                     'warning')
                 return(redirect(url_for('home')))
+            elif request.form['submit'] == 'edit':
+                LangID = request.form['id']
+                name = request.form[str(LangID)]
+                masterlang = request.form['master']
+                update = values.updateLang(LangID, name, masterlang)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem editing the Language! Please try again!',
+                    'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'delete':
+                pass
             else:
                 pass
 
