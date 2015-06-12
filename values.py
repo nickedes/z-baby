@@ -876,12 +876,10 @@ def updateLang(LangID, name, masterlang):
     try:
         if masterlang == 'True':
             masterlang = 1
-            print(1)
         elif masterlang == 'False':
             masterlang = 0
-            print(0)
         else:
-            print(masterlang)
+            return False
         cursor.execute(
             'UPDATE dbo.Language set LanguageName = %s,MasterLanguage=%d WHERE LanguageID = %d', (name, masterlang, LangID))
     except:
@@ -919,6 +917,54 @@ def deleteLang(LangID):
     cursor = conn.cursor()
     try:
         cursor.execute('DELETE FROM dbo.Language WHERE LanguageID=%d',LangID)
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def updateBenefit(LangID, BenefitID, value):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Benefit set BenefitValue = %s WHERE BenefitID = %d and LanguageID = %d', (value, BenefitID, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def deleteBenefit(LangID, BenefitID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.Benefit WHERE BenefitID=%d and LanguageID=%d', (BenefitID, LangID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def getBenefitID(LangID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(BenefitID) FROM dbo.Benefit WHERE LanguageID = %d", LangID)
+    top = cursor.fetchall()
+    if not top:
+        return 0
+    return top[0][0]
+
+
+def insertBenefit(LanguageID, BenefitID, value, CreatedBy):
+    conn = getConnection()
+    cursor = conn.cursor()
+    CreateDate = datetime.now()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)', (LanguageID, BenefitID, value, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
