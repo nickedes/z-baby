@@ -1304,6 +1304,7 @@ def super():
                     return redirect(url_for('home'))
                 flash(
                     'There was problem deleting the Category! Please try again!', 'warning')
+                return redirect(url_for('home'))
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
                 langid = request.form['language']
@@ -1346,7 +1347,6 @@ def super():
                 LangID = session['LanguageID']
                 CatID = request.form['CatID']
                 SubCatID = request.form['SubCatID']
-                print(LangID, CatID, SubCatID)
                 delete = values.deleteSub(LangID, CatID, SubCatID)
                 if delete:
                     flash('SubCategory Deleted successfully!', 'success')
@@ -1448,7 +1448,18 @@ def super():
                     'warning')
                 return(redirect(url_for('home')))
             elif request.form['submit'] == 'delete':
-                pass
+                LangID = request.form['id']
+                if values.checkLang(LangID):
+                    flash(
+                        "This Language Can't be deleted", 'warning')
+                    return(redirect(url_for('home')))
+                delete = values.deleteLang(LangID)
+                if delete:
+                    flash('Language Deleted successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem deleting the Language! Please try again!', 'warning')
+                return redirect(url_for('home'))
             else:
                 pass
 
