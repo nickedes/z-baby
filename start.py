@@ -612,7 +612,7 @@ def table(tablename):
                     return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
                 CatID = request.form['id']
-                SubCat = request.form['SubCatID']
+                SubCatID = request.form['SubCatID']
                 langid = request.form['language']
                 value = request.form[str(SubCatID)+'translate']
                 update = values.insertSubCat(
@@ -1026,8 +1026,8 @@ def super():
                 return(redirect(url_for('home')))
 
             elif request.form['submit'] == 'add':
-                CountryID = values.getCountryID()+1
                 LangID = session['LanguageID']
+                CountryID = values.getCountryID(LangID)+1
                 name = request.form['name']
                 insert = values.insertCountry(
                     LangID, CountryID, name, session['userid'])
@@ -1086,7 +1086,7 @@ def super():
                     return(redirect(url_for('home')))
                 LangID = session['LanguageID']
                 name = request.form['name']
-                StateID = values.getStateID(CountryID) + 1
+                StateID = values.getStateID(LangID,CountryID) + 1
                 insert = values.insertState(
                     LangID, CountryID, StateID, name, session['userid'])
                 if insert:
@@ -1127,6 +1127,7 @@ def super():
                     'There was problem deleting the District! Please try again!', 'warning')
 
             elif request.form['submit'] == 'add':
+                print("in Dis")
                 CountryID = request.form['CID']
                 if values.NoCountry(CountryID):
                     flash(
@@ -1139,7 +1140,7 @@ def super():
                     return(redirect(url_for('home')))
                 LangID = session['LanguageID']
                 name = request.form['name']
-                DistrictID = values.getDistrictID(CountryID, StateID) + 1
+                DistrictID = values.getDistrictID(LangID, CountryID, StateID) + 1
                 insert = values.insertDistrict(
                     LangID, CountryID, StateID, DistrictID, name, session['userid'])
                 if insert:
@@ -1167,6 +1168,10 @@ def super():
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
+                DistrictID = request.form['DistrictID']
                 BlockID = request.form['BlockID']
                 delete = values.deleteBlock(
                     LangID, CountryID, StateID, DistrictID, BlockID)
@@ -1178,28 +1183,69 @@ def super():
 
             elif request.form['submit'] == 'add':
                 CountryID = request.form['CID']
+                StateID = request.form['SID']
+                DistrictID = request.form['DID']
+                name = request.form['name']
+                LangID = session['LanguageID']
                 if values.NoCountry(CountryID):
                     flash(
-                        'No Such Country exists, for which you are adding State. Please try again!', 'warning')
+                        'No Such Country exists, for which you are adding Block. Please try again!', 'warning')
                     return(redirect(url_for('home')))
-                StateID = request.form['SID']
                 if values.NoState(StateID):
                     flash(
-                        'No Such State exists, for which you are adding District. Please try again!', 'warning')
+                        'No Such State exists, for which you are adding Block. Please try again!', 'warning')
                     return(redirect(url_for('home')))
-                LangID = session['LanguageID']
-                name = request.form['name']
-                DistrictID = values.getDistrictID(CountryID, StateID) + 1
-                insert = values.insertDistrict(
-                    LangID, CountryID, StateID, DistrictID, name, session['userid'])
+                if values.NoDistrict(DistrictID):
+                    flash(
+                        'No Such District exists, for which you are adding Block. Please try again!', 'warning')
+                    return(redirect(url_for('home')))
+                BlockID = values.getBlockID(LangID, CountryID, StateID, DistrictID) + 1
+                insert = values.insertBlock(
+                    LangID, CountryID, StateID, DistrictID, BlockID, name, session['userid'])
                 if insert:
-                    flash('District Added successfully!', 'success')
+                    flash('Block Added successfully!', 'success')
                     return redirect(url_for('home'))
                 flash(
-                    'There was problem adding the District! Please try again!', 'warning')
+                    'There was problem adding the Block! Please try again!', 'warning')
                 return(redirect(url_for('home')))
             else:
                 pass
+
+        elif table == 'Category':
+            if request.form['submit'] == 'edit':
+                CatID = request.form['id']
+                value = request.form[str(CatID)]
+                update = values.updateCat(CatID, value)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect(url_for('home'))
+            elif request.form['submit'] == 'translate':
+                CatID = request.form['id']
+                langid = request.form['language']
+                value = request.form[str(CatID)+'translate']
+                update = values.insertCat(
+                    CatID, langid, value, session['userid'])
+                if update:
+                    flash('Translated successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem saving the translation! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            elif request.form['submit'] == 'add':
+                value=request.form['name']
+                LangID = session['LanguageID']
+                CatID = values.getCatID(LangID) + 1
+                insert = values.insertCat(LangID, CatID, value, session['userid'])
+                if insert:
+                    flash('Category Added successfully!', 'success')
+                    return redirect(url_for('home'))
+                flash(
+                    'There was problem adding the Category! Please try again!', 'warning')
+                return(redirect(url_for('home')))
+            else:
+                pass
+        
+
 
 @app.route('/language/<int:langid>')
 def language(langid):

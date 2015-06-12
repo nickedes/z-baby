@@ -1,5 +1,6 @@
 {% include 'header.html' %}
-
+<br><br>
+<div class="col-lg-10">
 <table class="table">
 	<thead>
 		<tr>
@@ -14,7 +15,6 @@
 					{% for data in row %}
 						<td>{{data}}</td>
 					{% endfor %}
-					<br>
 			</tr>
 		{% endfor %}
 	</tbody>
@@ -23,28 +23,42 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>{{ header[5] }}</th>
+			<th>{{ header[2] }}</th>
 			<th>Save Edit</th>
-			<th>Delete</th>
+			<th>Translation Language</th>
+			<th>Translate</th>
+			<th>Save Translation</th>
 		</tr>
 	</thead>
 	<tbody>
 		{% for row in table %}
 			<form action="/super" method="POST">
-				<input type="hidden" class="form-control" name="table" value="Block">
-				<input type="hidden" class="form-control" name="CountryID" value="{{row[1]}}">
-				<input type="hidden" class="form-control" name="StateID" value="{{row[2]}}">
-				<input type="hidden" class="form-control" name="DistrictID" value="{{row[3]}}">
-				<input type="hidden" class="form-control" name="BlockID" value="{{row[4]}}">
+				<input type="hidden" class="form-control" name="table" value="Category">
+				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
 				<tr>
 					<td>
-					<input type="text" class="form-control" name="{{row[4]}}" value="{{row[5]}}">
+					<input type="text" class="form-control" name="{{row[1]}}" value="{{row[2]}}">
 					</td>
 					<td>
 					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
 					</td>
 					<td>
-					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					<div class="">
+						<select id = "ddl1" name="language" class="form-control">
+						<option>..</option>
+							{% for language in languages %}
+							{% if language[2] != 1 %}
+								<option id="{{ language[0] }}" value="{{ language[0] }}">{{ language[1] }}</option>
+							{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+					</td>
+					<td>
+					<input type="text" class="form-control" name="{{row[1]}}translate">
+					</td>
+					<td>
+					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">SAVE</button>
 					</td>
 				</tr>
 			</form>
@@ -54,26 +68,14 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>{{ header[1] }}</th>
 			<th>{{ header[2] }}</th>
-			<th>{{ header[3] }}</th>
-			<th>{{ header[5] }}</th>
 			<th>Add</th>
 		</tr>
 	</thead>
 	<tbody>
 		<form action="/super" method="POST">
-			<input type="hidden" class="form-control" name="table" value="Block">
+			<input type="hidden" class="form-control" name="table" value="Category">
 			<tr>
-				<td>
-				<input type="text" class="form-control" name="CID">
-				</td>
-				<td>
-				<input type="text" class="form-control" name="SID">
-				</td>
-				<td>
-				<input type="text" class="form-control" name="DID">
-				</td>
 				<td>
 				<input type="text" class="form-control" name="name">
 				</td>
@@ -83,5 +85,4 @@
 			</tr>
 		</form>
 	</tbody>
-</table>
 {% include 'footer.html' %}
