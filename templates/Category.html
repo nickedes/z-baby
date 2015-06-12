@@ -32,7 +32,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/table" method="POST">
+			<form action="/table/Category" method="POST">
 				<input type="hidden" class="form-control" name="table" value="Category">
 				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
 				<tr>

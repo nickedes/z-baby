@@ -31,7 +31,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/table" method="POST">
+			<form action="/table/Country" method="POST">
 				<input type="hidden" class="form-control" name="table" value="Country">
 				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
 				<tr>
@@ -41,6 +41,7 @@
 					<td>
 					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
 					</td>
+					<td>
 					<div class="">
 						<select id = "ddl1" name="language" class="form-control">
 						<option>..</option>
