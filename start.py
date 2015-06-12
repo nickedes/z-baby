@@ -272,6 +272,10 @@ def register():
 @app.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    """Dataentry operator method for creating teacher profiles"""
+    if session['userid'] != 2:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -342,6 +346,10 @@ def create():
 @app.route('/update', methods=['GET', 'POST'])
 @login_required
 def update():
+    """Updating profiles for teacher and dataentry operators"""
+    if session['userid'] > 2:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -437,6 +445,10 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @app.route('/submit', methods=['GET', 'POST'])
 @login_required
 def submit():
+    """ Idea submission for teachers and data entry operators"""
+    if session['userid'] > 2:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
@@ -540,6 +552,10 @@ def submit():
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
+    """Table editing for admin and superadmin"""
+    if session['userid'] < 4:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'GET':
         if session['RoleID'] == 4:
             dropdown = ['Category', 'SubCategory', 'Menu', 'SubMenu', 'Label',
@@ -571,6 +587,9 @@ def edit():
 @app.route('/table/<tablename>', methods=['GET', 'POST'])
 @login_required
 def table(tablename):
+    if session['userid'] < 4:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'GET':
         if session['RoleID'] > 3:
             if session['RoleID'] == 5:
@@ -823,6 +842,10 @@ def table(tablename):
 @app.route('/review', methods=['GET', 'POST'])
 @login_required
 def review():
+    """Review Ideas/Innovation for teachers and dataentry operators"""
+    if session['userid'] > 2:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'GET':
         teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
@@ -956,7 +979,10 @@ def upload_img(upload_file):
 @app.route('/super', methods=['GET', 'POST'])
 @login_required
 def super():
-    # if session['userid'] == 5:
+    """ADD/EDIT/DELETE/VIEW for superadmin"""
+    if session['userid'] != 5:
+        flash('Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     if request.method == 'POST':
         table = request.form['table']
         if table == "Media":
