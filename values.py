@@ -850,10 +850,133 @@ def insertLang(name, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
-    try:
-        cursor.execute(
-            'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
-    except:
-        return False
+
+    labelvals = gettablevalues('Label')
+    menuvals = gettablevalues('Menu')
+    submenuvals = gettablevalues('SubMenu')
+    benefitvals = gettablevalues('Benefit')
+    stagevals = gettablevalues('Stage')
+    blockvals = gettablevalues('Block')
+    districtvals = gettablevalues('District')
+    statevals = gettablevalues('State')
+    countryvals = gettablevalues('Country')
+    categoryvals = gettablevalues('Category')
+    subcategoryvals = gettablevalues('SubCategory')
+
+    finallabel = []
+    finalmenu = []
+    finalsubmenu = []
+    finalbenefit = []
+    finalstage = []
+    finalblock = []
+    finaldistrict = []
+    finalstate = []
+    finalcountry = []
+    finalcategory = []
+    finalsubcategory = []
+
+    for label in labelvals:
+        if label[1] == 1:
+            label[1] = getLangID() + 1
+            label[6] = CreatedBy
+            label[7] = datetime.now()
+            finallabel.append(label)
+
+    for menu in menuvals:
+        if menu[0] == 1:
+            menu[0] = getLangID() + 1
+            menu[6] = CreatedBy
+            menu[7] = datetime.now()
+            finalmenu.append(menu)
+    for submenu in submenuvals:
+        if submenu[0] == 1:
+            submenu[0] = getLangID() + 1
+            submenu[6] = CreatedBy
+            submenu[7] = datetime.now()
+            finalsubmenu.append(submenu)
+    for benefit in benefitvals:
+        if benefit[0] == 1:
+            benefit[0] = getLangID() + 1
+            benefit[3] = CreatedBy
+            benefit[4] = datetime.now()
+            finalbenefit.append(benefit)
+    for stage in stagevals:
+        if stage[0] == 1:
+            stage[0] = getLangID() + 1
+            stage[3] = CreatedBy
+            stage[4] = datetime.now()
+            finalstage.append(stage)
+    for block in blockvals:
+        if block[0] == 1:
+            block[0] = getLangID() + 1
+            block[6] = CreatedBy
+            block[7] = datetime.now()
+            finalblock.append(block)
+    for district in districtvals:
+        if district[0] == 1:
+            district[0] = getLangID() + 1
+            district[6] = CreatedBy
+            district[7] = datetime.now()
+            finaldistrict.append(district)
+    for state in statevals:
+        if state[0] == 1:
+            state[0] = getLangID() + 1
+            state[4] = CreatedBy
+            state[5] = datetime.now()
+            finalstate.append(state)
+    for country in countryvals:
+        if country[0] == 1:
+            country[0] = getLangID() + 1
+            country[3] = CreatedBy
+            country[4] = datetime.now()
+            finalcountry.append(country)
+    for category in categoryvals:
+        if category[0] == 1:
+            category[0] = getLangID() + 1
+            category[3] = CreatedBy
+            category[4] = datetime.now()
+            finalcategory.append(category)
+    for subcategory in subcategoryvals:
+        if subcategory[0] == 1:
+            subcategory[0] = getLangID() + 1
+            subcategory[4] = CreatedBy
+            subcategory[5] = datetime.now()
+            finalsubcategory.append(subcategory)
+
+    cursor.executemany(
+        'INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)', finallabel)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Menu VALUES (%d, %d, %s, %s, %s, %d, %s, %s)', finalmenu)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.SubMenu VALUES (%d, %d, %d, %s, %s, %d, %s, %s)', finalsubmenu)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', finalblock)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', finaldistrict)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.State VALUES (%d, %d, %d, %s, %s, %s)', finalstate)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)', finalcountry)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)', finalbenefit)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Stage VALUES (%d, %d, %s, %s, %s)', finalstage)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', finalcategory)
+    conn.commit()
+    cursor.executemany(
+        'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', finalsubcategory)
+    conn.commit()
+    cursor.execute(
+        'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
     conn.commit()
     return True
