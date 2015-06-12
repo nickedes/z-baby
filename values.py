@@ -252,6 +252,18 @@ def insertSubMenu(submenuvalues):
     return True
 
 
+def insertLabel(labelvalues):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)', labelvalues)
+    except:
+        return False
+    conn.commit()
+    return True
+
+
 def getColumns(tablename):
     conn = getConnection()
     cursor = conn.cursor()
@@ -366,6 +378,18 @@ def updateMedia(IdeaID, Mvalue, Mtype, cr_date):
     try:
         cursor.execute(
             'UPDATE dbo.Media set MediaValue=%s,CreateDate=%s WHERE IdeaID = %d and MediaType = %s', (Mvalue, cr_date, IdeaID, Mtype))
+        conn.commit()
+    except:
+        return False
+    conn.close()
+    return True
+
+def updateLabel(LabelID, LabelValue, LanguageID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Label set LabelValue=%s WHERE LabelID = %d and LanguageID = %d', (LabelValue, LabelID, LanguageID))
         conn.commit()
     except:
         return False
