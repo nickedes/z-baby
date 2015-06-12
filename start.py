@@ -274,7 +274,7 @@ def register():
 def create():
     """Dataentry operator method for creating teacher profiles"""
     if session['userid'] != 2:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
@@ -348,7 +348,7 @@ def create():
 def update():
     """Updating profiles for teacher and dataentry operators"""
     if session['userid'] > 2:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
@@ -447,7 +447,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 def submit():
     """ Idea submission for teachers and data entry operators"""
     if session['userid'] > 2:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         label_dict = {}
@@ -554,7 +554,7 @@ def submit():
 def edit():
     """Table editing for admin and superadmin"""
     if session['userid'] < 4:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
         if session['RoleID'] == 4:
@@ -981,7 +981,7 @@ def upload_img(upload_file):
 def super():
     """ADD/EDIT/DELETE/VIEW for superadmin"""
     if session['userid'] != 5:
-        flash('Sorry, you are not authorised to access this function', 'warning')
+        flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'POST':
         table = request.form['table']
