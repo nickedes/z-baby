@@ -273,7 +273,7 @@ def register():
 @login_required
 def create():
     """Dataentry operator method for creating teacher profiles"""
-    if session['userid'] != 2:
+    if session['RoleID'] != 2:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -347,7 +347,7 @@ def create():
 @login_required
 def update():
     """Updating profiles for teacher and dataentry operators"""
-    if session['userid'] > 2:
+    if session['RoleID'] > 2:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -446,7 +446,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 @login_required
 def submit():
     """ Idea submission for teachers and data entry operators"""
-    if session['userid'] > 2:
+    if session['RoleID'] > 2:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -553,7 +553,7 @@ def submit():
 @login_required
 def edit():
     """Table editing for admin and superadmin"""
-    if session['userid'] < 4:
+    if session['RoleID'] < 4:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -587,7 +587,7 @@ def edit():
 @app.route('/table/<tablename>', methods=['GET', 'POST'])
 @login_required
 def table(tablename):
-    if session['userid'] < 4:
+    if session['RoleID'] < 4:
         flash('Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -843,7 +843,7 @@ def table(tablename):
 @login_required
 def review():
     """Review Ideas/Innovation for teachers and dataentry operators"""
-    if session['userid'] > 2:
+    if session['RoleID'] > 2:
         flash('Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
@@ -980,7 +980,7 @@ def upload_img(upload_file):
 @login_required
 def super():
     """ADD/EDIT/DELETE/VIEW for superadmin"""
-    if session['userid'] != 5:
+    if session['RoleID'] != 5:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'POST':
