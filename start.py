@@ -30,7 +30,6 @@ def lalloo():
     g.topmenu = topmenu
     g.topsubmenu = topsubmenu
     g.menuarray = menuarray
-    print(g.topmenu)
 
 
 def login_required(f):
@@ -87,9 +86,7 @@ def login():
             if label[1] == session['LanguageID'] and label[2] == \
                     session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
-        return render_template('signin.html', languages=languages,
-                               topmenu=topmenu, topsubmenu=topsubmenu,
-                               menuarray=menuarray, label=label_dict)
+        return render_template('signin.html', label=label_dict)
     else:
         if 'signin' in request.form:
             username = request.form['username']
@@ -123,12 +120,7 @@ def home():
         if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
             menulist.append([menu[3], menu[4]])
     inno = values.checkInnovation(session['userid'])
-    return render_template('home.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu,
-                           menuarray=menuarray,
-                           inno=inno, label=label_dict,
-                           menulist=menulist,
-                           languages=languages)
+    return render_template('home.html', inno=inno, label=label_dict, menulist=menulist)
 
 
 @app.route('/about/<pagename>')
@@ -141,17 +133,13 @@ def about(pagename):
         session['userid'] = 0
 
     if pagename == 'ziiei':
-        return render_template('ziiei.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('ziiei.html')
     elif pagename == 'sas':
-        return render_template('sas.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('sas.html')
     elif pagename == 'litchi':
-        return render_template('litchi.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('litchi.html')
     elif pagename == 'upgovt':
-        return render_template('upgovt.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('upgovt.html')
 
 
 @app.route('/ziiei/<pagename>')
@@ -164,20 +152,15 @@ def workflow(pagename):
         session['userid'] = 0
 
     if pagename == 'workflow':
-        return render_template('workflow.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('workflow.html')
     elif pagename == 'apply':
-        return render_template('apply.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('apply.html')
     elif pagename == 'benefits':
-        return render_template('benefits.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('benefits.html')
     elif pagename == 'examples':
-        return render_template('examples.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('examples.html')
     elif pagename == 'terms':
-        return render_template('terms.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('terms.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -190,14 +173,12 @@ def logout():
 
 @app.route('/contact')
 def contact():
-    return render_template('enquiry.html', languages=languages, topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray)
+    return render_template('enquiry.html')
 
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html', languages=languages, topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray)
+    return render_template('faq.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -237,9 +218,7 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, languages=languages,
-                               menuarray=menuarray, country=country, state=state,
+        return render_template('register.html'country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
@@ -307,9 +286,7 @@ def create():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, languages=languages,
-                               menuarray=menuarray, country=country, state=state,
+        return render_template('register.html', country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
@@ -387,12 +364,11 @@ def update():
             details = values.getRegisteration_details(session['userid'])
         elif session['RoleID'] == 2:
             details = values.getReg_underoperator(session['userid'])
-        return render_template('update_register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, teachers=teachers,
-                               menuarray=menuarray, country=country, state=state,
-                               district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict,
-                               languages=languages, details=details)
+        return render_template('update_register.html', teachers=teachers,
+                               country=country, state=state, district=district,
+                               block=block, clist=countrylist, slist=statelist,
+                               dlist=districtdict, label=label_dict,
+                               details=details)
     else:
         teacher_id = None
         if 'teacher_id' in request.form:
@@ -436,10 +412,7 @@ def update():
         flash('Something went wrong! Please try again later.', 'danger')
         return redirect(url_for('home'))
 
-    return render_template('update.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu,
-                           menuarray=menuarray,
-                           languages=languages)
+    return render_template('update.html')
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
@@ -484,9 +457,7 @@ def submit():
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
         teachers = values.teacherUnderOperator(session['userid'])
-        return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               teachers=teachers, languages=languages,
+        return render_template('submit.html', teachers=teachers,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
@@ -572,23 +543,18 @@ def edit():
         column_names = {}
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
-        return render_template('edit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               languages=languages, tables=dropdown)
+        return render_template('edit.html', tables=dropdown)
     else:
         table = request.form['table']
         if session['RoleID'] == 5:
             filename = 'super_' + table.lower() + '.html'
             data = values.gettablevalues(table)
             cols = values.getColumns(table)
-            return render_template(filename, topmenu=topmenu, languages=languages,
-                                   topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            return render_template(filename, table=data, header=cols)
         elif session['RoleID'] == 4:
             data = values.gettablevalues(table)
             cols = values.getColumns(table)
-            return render_template(table + ".html", topmenu=topmenu,
-                                   languages=languages, topsubmenu=topsubmenu,
-                                   menuarray=menuarray, table=data, header=cols)
+            return render_template(table + ".html", table=data, header=cols)
 
 
 @app.route('/table/<tablename>', methods=['GET', 'POST'])
@@ -603,16 +569,15 @@ def table(tablename):
             filename = tablename + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
-            return render_template(filename, topmenu=topmenu,
-                                   languages=languages, topsubmenu=topsubmenu,
-                                   menuarray=menuarray, table=data, header=cols)
+            return render_template(filename, table=data, header=cols)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
 
     elif request.method == 'POST':
-        
-        # First, decide on which language ID to use (since all admin editing requires this)
+
+        # First, decide on which language ID to use (since all admin editing
+        # requires this)
         if request.form['submit'] == 'edit':
             langid = session['LanguageID']
         elif request.form['submit'] == 'translate':
@@ -622,14 +587,15 @@ def table(tablename):
         if tablename == "Label":
             # When the table is clear, pick common elements
             LabelID = request.form['id']
-            # Then, decide value based on whether admin wants to edit or translate
+            # Then, decide value based on whether admin wants to edit or
+            # translate
             if request.form['submit'] == 'edit':
-                value = request.form[str(LabelID)]               
+                value = request.form[str(LabelID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(LabelID)+'translate']
             # Update the values (store result in update for later!)
             update = values.updateLabel(LabelID, value, langid)
-                
+
         if tablename == "Category":
             CatID = request.form['id']
 
@@ -644,13 +610,13 @@ def table(tablename):
             CatID = request.form['CatID']
             SubCatID = request.form['SubCatID']
 
-            if request.form['submit'] == 'edit':  
+            if request.form['submit'] == 'edit':
                 value = request.form[str(SubCatID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(SubCatID)+'translate']
 
             update = values.updateSubCat(langid, CatID, SubCatID, value)
-            
+
         if tablename == "Menu":
             MenuID = request.form['id']
 
@@ -658,7 +624,7 @@ def table(tablename):
                 value = request.form[str(MenuID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(MenuID)+'translate']
-            
+
             update = values.updateMenu(langid, MenuID, value)
 
         if tablename == "SubMenu":
@@ -669,14 +635,14 @@ def table(tablename):
                 value = request.form[str(SubMenuID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(SubMenuID)+'translate']
-                
+
             update = values.updateSubMenu(langid, MenuID, SubMenuID, value)
 
         if tablename == "Country":
             CountryID = request.form['id']
 
             if request.form['submit'] == 'edit':
-                value = request.form[str(CountryID)]                
+                value = request.form[str(CountryID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(CountryID)+'translate']
 
@@ -697,33 +663,35 @@ def table(tablename):
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             DistrictID = request.form['DistrictID']
-            
+
             if request.form['submit'] == 'edit':
                 value = request.form[str(DistrictID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(DistrictID)+'translate']
-                
+
             update = values.updateDistrict(
-                    langid, CountryID, StateID, DistrictID, value)
+                langid, CountryID, StateID, DistrictID, value)
 
         if tablename == "Block":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
             DistrictID = request.form['DistrictID']
             BlockID = request.form['BlockID']
-            
-            if request.form['submit'] == 'edit':    
+
+            if request.form['submit'] == 'edit':
                 value = request.form[str(BlockID)]
             elif request.form['submit'] == 'translate':
                 value = request.form[str(DistrictID)+'translate']
 
             update = values.updateBlock(
-                    langid, CountryID, StateID, DistrictID, BlockID, value)
+                langid, CountryID, StateID, DistrictID, BlockID, value)
         # Check if the update was a success, and display message appropriately
         if update:
             flash('The ' + tablename + 'was successfully edited!', 'success')
-        flash('Sorry, there was an error while editing! Please try again!', 'danger')
+        flash(
+            'Sorry, there was an error while editing! Please try again!', 'danger')
         return redirect('/table/' + tablename)
+
 
 @app.route('/review', methods=['GET', 'POST'])
 @login_required
@@ -778,12 +746,12 @@ def review():
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
         print(subcatidea)
-        return render_template('review.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               label=label_dict, benefit=bene_dict,
-                               stage=stage_dict, category=category_dict, media=media, teachers=teachers,
-                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea,
-                               languages=languages, sublist=sub_list)
+        return render_template('review.html', label=label_dict,
+                               benefit=bene_dict, stage=stage_dict,
+                               category=category_dict, media=media,
+                               teachers=teachers, subcategory=subcat_dict,
+                               ideas=idea_details, subcats=subcatidea,
+                               sublist=sub_list)
     else:
         IdeaID = request.form['idea']
         title = request.form['31']
@@ -839,9 +807,7 @@ def review():
             'There was an error while submitting! Please try again!', 'danger')
         return redirect(url_for('review'))
 
-    return render_template('review.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray,
-                           languages=languages)
+    return render_template('review.html')
 
 
 def upload_img(upload_file):
@@ -876,9 +842,7 @@ def super(tablename):
             filename = 'super_' + tablename.lower() + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
-            return render_template(filename, topmenu=topmenu,
-                                       languages=languages, topsubmenu=topsubmenu,
-                                       menuarray=menuarray, table=data, header=cols)
+            return render_template(filename, table=data, header=cols)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
@@ -1401,7 +1365,8 @@ def super(tablename):
                 FormName = request.form[str(MenuID)]
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
-                update = values.updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID)
+                update = values.updateMenuForm(
+                    LangID, MenuID, PageName, FormName, FormLink, RoleID)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1428,7 +1393,7 @@ def super(tablename):
                 RoleID = request.form['Role']
                 MenuID = values.getMenuID(LangID)+1
                 insert = values.insertMenu(
-                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'],datetime.now()))
+                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'], datetime.now()))
                 if insert:
                     flash('Menu Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1437,7 +1402,6 @@ def super(tablename):
                 return redirect('/super/' + tablename)
         else:
             pass
-
 
 
 @app.route('/language/<int:langid>')
@@ -1460,7 +1424,8 @@ if __name__ == '__main__':
     subcategories = values.gettablevalues('SubCategory')
     topmenu = []
     topsubmenu = []
-    menuarray = [0 for menu in menus if menu[5] == -1 and menu[0] == masterlang]
+    menuarray = [
+        0 for menu in menus if menu[5] == -1 and menu[0] == masterlang]
     for menu in menus:
         if menu[5] == -1 and menu[0] == masterlang:
             topmenu.append([menu[3], menu[4], menu[1]])
@@ -1468,7 +1433,7 @@ if __name__ == '__main__':
             if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == masterlang and menu[0] == masterlang:
                 menuarray[submenu[1]-1] = 1
                 topsubmenu.append([submenu[1], submenu[3], submenu[4]])
-    
+
     country = values.gettablevalues('Country')
     state = values.gettablevalues('State')
     district = values.gettablevalues('District')
