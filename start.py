@@ -1509,8 +1509,49 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             else:
                 pass
+        elif table == "Menu":
+            if request.form['submit'] == 'edit':
+                LangID = session['LanguageID']
+                MenuID = request.form['id']
+                FormName = request.form[str(MenuID)]
+                FormLink = request.form['FormLink']
+                RoleID = request.form['Role']
+                update = values.updateMenuForm(LangID, MenuID, FormName, FormLink, RoleID)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect('/super/' + tablename)
+
+            elif request.form['submit'] == 'delete':
+                LangID = session['LanguageID']
+                MenuID = request.form['id']
+                if values.CheckMenu(MenuID):
+                    flash(
+                        "This Menu Can't be deleted,since it has SubMenus", 'warning')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteMenu(LangID, MenuID)
+                if delete:
+                    flash('Menu Deleted successfully!', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Menu! Please try again!', 'warning')
+
+            elif request.form['submit'] == 'add':
+                LangID = session['LanguageID']
+                name = request.form['name']
+                FormLink = request.form['FormLink']
+                RoleID = request.form['Role']
+                MenuID = values.getMenuID(LangID)+1
+                insert = values.insertMenu(
+                    [LangID, MenuID, name, FormLink, RoleID, session['userid']])
+                if insert:
+                    flash('Menu Added successfully!', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem adding the Menu! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
         else:
             pass
+
 
 
 @app.route('/language/<int:langid>')
