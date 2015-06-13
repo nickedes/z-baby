@@ -652,13 +652,11 @@ def table(tablename):
             MenuID = request.form['id']
 
             if request.form['submit'] == 'edit':
-                langid = session['LanguageID']
                 value = request.form[str(MenuID)]
             elif request.form['submit'] == 'translate':
-                langid = request.form['language']
                 value = request.form[str(MenuID)+'translate']
             
-            update = values.updateMenu(MenuID, value, langid)
+            update = values.updateMenu(langid, MenuID, value)
 
         if tablename == "SubMenu":
             MenuID = request.form['MenuID']
@@ -718,7 +716,7 @@ def table(tablename):
 
             update = values.updateBlock(
                     langid, CountryID, StateID, DistrictID, BlockID, value)
-
+        # Check if the update was a success, and display message appropriately
         if update:
             flash('The ' + tablename + 'was successfully edited!', 'success')
         flash('Sorry, there was an error while editing! Please try again!', 'danger')
@@ -1392,8 +1390,51 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             else:
                 pass
+        elif table == "Menu":
+            if request.form['submit'] == 'edit':
+                LangID = request.form['LangID']
+                MenuID = request.form['id']
+                PageName = request.form['PageName']
+                FormName = request.form[str(MenuID)]
+                FormLink = request.form['FormLink']
+                RoleID = request.form['Role']
+                update = values.updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID)
+                if update:
+                    flash('Edited successfully!', 'success')
+                    return redirect('/super/' + tablename)
+
+            elif request.form['submit'] == 'delete':
+                LangID = request.form['LangID']
+                MenuID = request.form['id']
+                if values.CheckMenu(MenuID):
+                    flash(
+                        "This Menu Can't be deleted,since it has SubMenus", 'warning')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteMenu(LangID, MenuID)
+                if delete:
+                    flash('Menu Deleted successfully!', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Menu! Please try again!', 'warning')
+
+            elif request.form['submit'] == 'add':
+                LangID = session['LanguageID']
+                PageName = request.form['PageName']
+                FormName = request.form['name']
+                FormLink = request.form['FormLink']
+                RoleID = request.form['Role']
+                MenuID = values.getMenuID(LangID)+1
+                insert = values.insertMenu(
+                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'],datetime.now()))
+                if insert:
+                    flash('Menu Added successfully!', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem adding the Menu! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
         else:
             pass
+
 
 
 @app.route('/language/<int:langid>')
