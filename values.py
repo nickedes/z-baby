@@ -1120,12 +1120,12 @@ def insertBenefit(LanguageID, BenefitID, value, CreatedBy):
     return True
 
 
-def updateMenuForm(LangID, MenuID, FormName, FormLink, RoleID):
+def updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Menu set FormName = %s,FormLink=%s,RoleID=%d WHERE MenuID = %d and LanguageID = %d', (FormName, MenuID, LangID))
+            'UPDATE dbo.Menu set PageName=%s,FormName = %s,FormLink=%s,RoleID=%d WHERE MenuID = %d and LanguageID = %d', (PageName, FormName, FormLink, RoleID, MenuID, LangID))
     except:
         return False
     conn.commit()

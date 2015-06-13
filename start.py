@@ -1511,18 +1511,19 @@ def super(tablename):
                 pass
         elif table == "Menu":
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 MenuID = request.form['id']
+                PageName = request.form['PageName']
                 FormName = request.form[str(MenuID)]
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
-                update = values.updateMenuForm(LangID, MenuID, FormName, FormLink, RoleID)
+                update = values.updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 MenuID = request.form['id']
                 if values.CheckMenu(MenuID):
                     flash(
@@ -1537,12 +1538,13 @@ def super(tablename):
 
             elif request.form['submit'] == 'add':
                 LangID = session['LanguageID']
-                name = request.form['name']
+                PageName = request.form['PageName']
+                FormName = request.form['name']
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
                 MenuID = values.getMenuID(LangID)+1
                 insert = values.insertMenu(
-                    [LangID, MenuID, name, FormLink, RoleID, session['userid']])
+                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'],datetime.now()))
                 if insert:
                     flash('Menu Added successfully!', 'success')
                     return redirect('/super/' + tablename)
