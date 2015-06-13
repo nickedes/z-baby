@@ -42,6 +42,7 @@ def lalloo():
     g.topmenu = topmenu
     g.topsubmenu = topsubmenu
     g.menuarray = menuarray
+    g.masterlang = masterlang
 
 
 def login_required(f):

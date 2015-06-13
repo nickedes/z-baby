@@ -12,6 +12,7 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
+			{% if row[1] == g.masterlang %}
 			<form action="/table/Label" method="POST">
 				<input type="hidden" class="form-control" name="table" value="Block">
 				<input type="hidden" class="form-control" name="id" value="{{row[0]}}">
@@ -43,6 +44,7 @@
 					</td>
 				</tr>
 			</form>
+			{% endif %}
 		{% endfor %}
 	</tbody>
 </table>
