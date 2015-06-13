@@ -6,7 +6,8 @@ from flask import (
     url_for,
     redirect,
     request,
-    flash
+    flash,
+    g
 )
 from functools import wraps
 from datetime import datetime
@@ -25,7 +26,11 @@ showerrors(app)
 
 @app.before_request
 def lalloo():
-    pass
+    g.languages = languages
+    g.topmenu = topmenu
+    g.topsubmenu = topsubmenu
+    g.menuarray = menuarray
+    print(g.topmenu)
 
 
 def login_required(f):
@@ -61,9 +66,7 @@ def index():
                 and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
 
-    return render_template('slash.html', languages=languages, topmenu=topmenu,
-                           menubody=menubody, topsubmenu=topsubmenu,
-                           label=label_dict, menuarray=menuarray)
+    return render_template('slash.html', menubody=menubody, label=label_dict)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -1445,6 +1448,11 @@ def language(langid):
 
 if __name__ == '__main__':
     print("Fetching data...")
+    languages = values.gettablevalues('Language')
+    for lang in languages:
+        if lang[2] == 1:
+            masterlang = lang[0]
+            break
     labels = values.gettablevalues('Label')
     menus = values.gettablevalues('Menu')
     submenus = values.gettablevalues('SubMenu')
@@ -1452,24 +1460,19 @@ if __name__ == '__main__':
     subcategories = values.gettablevalues('SubCategory')
     topmenu = []
     topsubmenu = []
-    menuarray = [0 for menu in menus if menu[5] == -1]
+    menuarray = [0 for menu in menus if menu[5] == -1 and menu[0] == masterlang]
     for menu in menus:
-        if menu[5] == -1:
+        if menu[5] == -1 and menu[0] == masterlang:
             topmenu.append([menu[3], menu[4], menu[1]])
         for submenu in submenus:
-            if submenu[5] == -1 and submenu[1] == menu[1]:
+            if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == masterlang and menu[0] == masterlang:
                 menuarray[submenu[1]-1] = 1
                 topsubmenu.append([submenu[1], submenu[3], submenu[4]])
-    languages = values.gettablevalues('Language')
-    for lang in languages:
-        if lang[2] == 1:
-            masterlang = lang[0]
-            break
+    
     country = values.gettablevalues('Country')
     state = values.gettablevalues('State')
     district = values.gettablevalues('District')
     block = values.gettablevalues('Block')
     tables = values.gettablelist()
-    languages = values.gettablevalues('Language')
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)
