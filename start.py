@@ -607,7 +607,9 @@ def table(tablename):
                 value = request.form[str(LabelID)+'translate']
             # Update the values (store result in update for later!)
             update = values.updateLabel(LabelID, value, langid)
-
+            global labels
+            labels = values.gettablevalues('Label')
+    
         if tablename == "Category":
             CatID = request.form['id']
 
@@ -617,7 +619,9 @@ def table(tablename):
                 value = request.form[str(CatID)+'translate']
 
             update = values.updateCat(langid, CatID, value)
-
+            global categories
+            categories = values.gettablevalues('Category')
+    
         if tablename == "SubCategory":
             CatID = request.form['CatID']
             SubCatID = request.form['SubCatID']
@@ -628,6 +632,8 @@ def table(tablename):
                 value = request.form[str(SubCatID)+'translate']
 
             update = values.updateSubCat(langid, CatID, SubCatID, value)
+            global subcategories
+            subcategories = values.gettablevalues('SubCategory')
 
         if tablename == "Menu":
             MenuID = request.form['id']
@@ -638,7 +644,9 @@ def table(tablename):
                 value = request.form[str(MenuID)+'translate']
 
             update = values.updateMenu(langid, MenuID, value)
-
+            global menus
+            menus = values.gettablevalues('Menu')
+    
         if tablename == "SubMenu":
             MenuID = request.form['MenuID']
             SubMenuID = request.form['SubMenuID']
@@ -649,7 +657,9 @@ def table(tablename):
                 value = request.form[str(SubMenuID)+'translate']
 
             update = values.updateSubMenu(langid, MenuID, SubMenuID, value)
-
+            global submenus
+            submenus = values.gettablevalues('SubMenu')
+    
         if tablename == "Country":
             CountryID = request.form['id']
 
@@ -659,7 +669,9 @@ def table(tablename):
                 value = request.form[str(CountryID)+'translate']
 
             update = values.updateCountry(langid, CountryID, value)
-
+            global country
+            country = values.gettablevalues('Country')
+    
         if tablename == "State":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
@@ -670,7 +682,9 @@ def table(tablename):
                 value = request.form[str(StateID)+'translate']
 
             update = values.updateState(langid, CountryID, StateID, value)
-
+            global state
+            state = values.gettablevalues('State')
+    
         if tablename == "District":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
@@ -683,7 +697,9 @@ def table(tablename):
 
             update = values.updateDistrict(
                 langid, CountryID, StateID, DistrictID, value)
-
+            global district
+            district = values.gettablevalues('District')
+    
         if tablename == "Block":
             CountryID = request.form['CountryID']
             StateID = request.form['StateID']
@@ -697,6 +713,8 @@ def table(tablename):
 
             update = values.updateBlock(
                 langid, CountryID, StateID, DistrictID, BlockID, value)
+            global block
+            block = values.gettablevalues('Block')
         # Check if the update was a success, and display message appropriately
         if update:
             flash('The ' + tablename + ' was successfully edited!', 'success')
@@ -757,7 +775,7 @@ def review():
             sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
-        print(subcatidea)
+
         return render_template('review.html', label=label_dict,
                                benefit=bene_dict, stage=stage_dict,
                                category=category_dict, media=media,
