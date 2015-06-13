@@ -579,7 +579,7 @@ def table(tablename):
         # First, decide on which language ID to use (since all admin editing
         # requires this)
         if request.form['submit'] == 'edit':
-            langid = session['LanguageID']
+            langid = request.form['LangID']
         elif request.form['submit'] == 'translate':
             langid = request.form['language']
 
