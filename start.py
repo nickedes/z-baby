@@ -26,6 +26,18 @@ showerrors(app)
 
 @app.before_request
 def lalloo():
+    if 'LanguageID' not in session:
+        session['LanguageID'] = masterlang
+    topmenu = []
+    topsubmenu = []
+    menuarray = [0 for menu in menus if menu[5] == -1 and menu[0] == session['LanguageID']]
+    for menu in menus:
+        if menu[5] == -1 and menu[0] == session['LanguageID']:
+            topmenu.append([menu[3], menu[4], menu[1]])
+        for submenu in submenus:
+            if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == session['LanguageID'] and menu[0] == session['LanguageID']:
+                menuarray[submenu[1]-1] = 1
+                topsubmenu.append([submenu[1], submenu[3], submenu[4]])
     g.languages = languages
     g.topmenu = topmenu
     g.topsubmenu = topsubmenu
@@ -218,7 +230,7 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html'country=country, state=state,
+        return render_template('register.html', country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
@@ -687,7 +699,7 @@ def table(tablename):
                 langid, CountryID, StateID, DistrictID, BlockID, value)
         # Check if the update was a success, and display message appropriately
         if update:
-            flash('The ' + tablename + 'was successfully edited!', 'success')
+            flash('The ' + tablename + ' was successfully edited!', 'success')
         flash(
             'Sorry, there was an error while editing! Please try again!', 'danger')
         return redirect('/table/' + tablename)
@@ -1414,26 +1426,14 @@ if __name__ == '__main__':
     print("Fetching data...")
     languages = values.gettablevalues('Language')
     for lang in languages:
-        if lang[2] == 1:
-            masterlang = lang[0]
-            break
+            if lang[2] == 1:
+                masterlang = lang[0]
+                break
     labels = values.gettablevalues('Label')
     menus = values.gettablevalues('Menu')
     submenus = values.gettablevalues('SubMenu')
     categories = values.gettablevalues('Category')
     subcategories = values.gettablevalues('SubCategory')
-    topmenu = []
-    topsubmenu = []
-    menuarray = [
-        0 for menu in menus if menu[5] == -1 and menu[0] == masterlang]
-    for menu in menus:
-        if menu[5] == -1 and menu[0] == masterlang:
-            topmenu.append([menu[3], menu[4], menu[1]])
-        for submenu in submenus:
-            if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == masterlang and menu[0] == masterlang:
-                menuarray[submenu[1]-1] = 1
-                topsubmenu.append([submenu[1], submenu[3], submenu[4]])
-
     country = values.gettablevalues('Country')
     state = values.gettablevalues('State')
     district = values.gettablevalues('District')
