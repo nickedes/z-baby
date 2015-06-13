@@ -447,12 +447,12 @@ def updateSubCat(LangID, CategoryID, SubCategoryID, CategoryValue):
     return True
 
 
-def updateMenu(MenuID, FormName):
+def updateMenu(LangID, MenuID, FormName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Menu set FormName = %s WHERE MenuID = %d', (FormName, MenuID))
+            'UPDATE dbo.Menu set FormName = %s WHERE MenuID = %d and LanguageID = %d', (FormName, MenuID, LangID))
     except:
         return False
     conn.commit()
@@ -476,7 +476,7 @@ def updateCountry(LangID, CountryID, CountryName):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Country set CountryName = %s WHERE CountryID = %d and LanguageID = %d', (CountryName, CountryID, LanguageID))
+            'UPDATE dbo.Country set CountryName = %s WHERE CountryID = %d and LanguageID = %d', (CountryName, CountryID, LangID))
     except:
         return False
     conn.commit()

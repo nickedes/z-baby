@@ -33,6 +33,7 @@
 		{% for row in table %}
 			<form action="/table/Country" method="POST">
 				<input type="hidden" class="form-control" name="table" value="Country">
+				<input type="hidden" class="form-control" name="LangID" value="{{row[0]}}">
 				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
 				<tr>
 					<td>
