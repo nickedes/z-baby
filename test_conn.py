@@ -745,7 +745,6 @@ print(top[0][0])
 cursor.execute('SELECT * FROM dbo.Language')
 data = cursor.fetchall()
 print(data)
-'''
 LangID = 1
 MenuID = 5
 cursor.execute(
@@ -755,3 +754,43 @@ if not top[0][0]:
     print(top[0][0])
 else:
     print("yes")
+'''
+import values
+'''
+category = values.gettablevalues('Category')
+subcat = values.gettablevalues('SubCategory')
+print(category)
+print(subcat)
+subcat_dict = {}
+for cat in category:
+    sublist = []
+    for sub in subcat:
+        if sub[1] == cat[1]:
+            sublist.append([sub[3], sub[2], sub[1]])
+    subcat_dict[cat[1]] = sublist
+print(subcat_dict)
+
+for sub in subcat:
+    smart_dict[sub[1]] = []
+for sub in subcat:
+    if [sub[3], sub[2]] not in smart_dict[sub[1]]:
+        smart_dict[sub[1]].append([sub[3],sub[2],sub[1]])
+
+print(smart_dict)
+subcatidea = {1:[(1,2,1),(1,2,2)]}
+smart_dict = {}
+subcategory = smart_dict
+subcatidea = {}
+idea_details = values.getIdeaUnderOperator(2)
+print(idea_details)
+for idea_single in idea_details:
+    subcatidea[idea_single[0]] = values.getIdeaCatSubCat(
+        idea_single[0])
+
+print(subcatidea)
+'''
+a = []
+if a:
+    print(None)
+else:
+    print("trolled")    

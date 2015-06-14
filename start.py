@@ -766,12 +766,12 @@ def review():
             if cat[0] == session['LanguageID']:
                 category_dict[cat[1]] = cat[2]
         subcat_dict = {}
-        for cat in category:
-            sublist = []
-            for sub in subcat:
-                if sub[1] == cat[1]:
-                    sublist.append([sub[3], sub[2], sub[1]])
-            subcat_dict[cat[1]] = sublist
+        for sub in subcat:
+            subcat_dict[sub[1]] = []
+        for sub in subcat:
+            if [sub[3], sub[2], sub[1]] not in subcat_dict[sub[1]]:
+                subcat_dict[sub[1]].append([sub[3], sub[2], sub[1]])
+
         sub_list = {}
         for data in subcatidea:
             sub_list[data] = []
@@ -1468,7 +1468,7 @@ def super(tablename):
                 FormName = request.form['name']
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
-                if values.NoMenu(LangID,MenuID):
+                if values.NoMenu(LangID, MenuID):
                     flash(
                         'No Such Menu exists, for which you are adding SubMenu. Please try again!', 'warning')
                     return redirect('/super/' + tablename)
