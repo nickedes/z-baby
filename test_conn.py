@@ -738,8 +738,11 @@ if cursor.fetchall() == []:
     print("empty")
 else:
     print("not empty")
-'''
 CountryID = 2
 cursor.execute("SELECT max(StateID) FROM dbo.State WHERE CountryID = %d", CountryID)
 top = cursor.fetchall()
 print(top[0][0])
+'''
+cursor.execute('SELECT * FROM dbo.Language')
+data = cursor.fetchall()
+print(data)

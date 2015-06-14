@@ -447,6 +447,7 @@ def updateSubCat(LangID, CategoryID, SubCategoryID, CategoryValue):
     return True
 
 
+
 def updateMenu(LangID, MenuID, FormName):
     conn = getConnection()
     cursor = conn.cursor()
@@ -459,12 +460,12 @@ def updateMenu(LangID, MenuID, FormName):
     return True
 
 
-def updateSubMenu(MenuID, SubMenuID, MenuValue):
+def updateSubMenu(LanguageID, MenuID, SubMenuID, MenuValue):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.SubMenu set FormName = %s WHERE MenuID = %d and SubMenuID = %d',
-                       (MenuValue, MenuID, SubMenuID))
+        cursor.execute('UPDATE dbo.SubMenu set FormName = %s WHERE MenuID = %d and SubMenuID = %d and LanguageID = %d',
+                       (MenuValue, MenuID, SubMenuID, LanguageID))
     except:
         return False
     conn.commit()

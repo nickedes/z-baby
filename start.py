@@ -6,7 +6,8 @@ from flask import (
     url_for,
     redirect,
     request,
-    flash
+    flash,
+    g
 )
 from functools import wraps
 from datetime import datetime
@@ -25,7 +26,23 @@ showerrors(app)
 
 @app.before_request
 def lalloo():
-    pass
+    if 'LanguageID' not in session:
+        session['LanguageID'] = masterlang
+    topmenu = []
+    topsubmenu = []
+    menuarray = [0 for menu in menus if menu[5] == -1 and menu[0] == session['LanguageID']]
+    for menu in menus:
+        if menu[5] == -1 and menu[0] == session['LanguageID']:
+            topmenu.append([menu[3], menu[4], menu[1]])
+        for submenu in submenus:
+            if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == session['LanguageID'] and menu[0] == session['LanguageID']:
+                menuarray[submenu[1]-1] = 1
+                topsubmenu.append([submenu[1], submenu[3], submenu[4]])
+    g.languages = languages
+    g.topmenu = topmenu
+    g.topsubmenu = topsubmenu
+    g.menuarray = menuarray
+    g.masterlang = masterlang
 
 
 def login_required(f):
@@ -61,9 +78,7 @@ def index():
                 and menu[2] == '/':
             menubody.append([menu[3], menu[4]])
 
-    return render_template('slash.html', languages=languages, topmenu=topmenu,
-                           menubody=menubody, topsubmenu=topsubmenu,
-                           label=label_dict, menuarray=menuarray)
+    return render_template('slash.html', menubody=menubody, label=label_dict)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -84,9 +99,7 @@ def login():
             if label[1] == session['LanguageID'] and label[2] == \
                     session['RoleID'] and label[3] == '/login':
                 label_dict[label[0]] = label[5]
-        return render_template('signin.html', languages=languages,
-                               topmenu=topmenu, topsubmenu=topsubmenu,
-                               menuarray=menuarray, label=label_dict)
+        return render_template('signin.html', label=label_dict)
     else:
         if 'signin' in request.form:
             username = request.form['username']
@@ -120,12 +133,7 @@ def home():
         if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
             menulist.append([menu[3], menu[4]])
     inno = values.checkInnovation(session['userid'])
-    return render_template('home.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu,
-                           menuarray=menuarray,
-                           inno=inno, label=label_dict,
-                           menulist=menulist,
-                           languages=languages)
+    return render_template('home.html', inno=inno, label=label_dict, menulist=menulist)
 
 
 @app.route('/about/<pagename>')
@@ -138,17 +146,13 @@ def about(pagename):
         session['userid'] = 0
 
     if pagename == 'ziiei':
-        return render_template('ziiei.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('ziiei.html')
     elif pagename == 'sas':
-        return render_template('sas.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('sas.html')
     elif pagename == 'litchi':
-        return render_template('litchi.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('litchi.html')
     elif pagename == 'upgovt':
-        return render_template('upgovt.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('upgovt.html')
 
 
 @app.route('/ziiei/<pagename>')
@@ -161,20 +165,15 @@ def workflow(pagename):
         session['userid'] = 0
 
     if pagename == 'workflow':
-        return render_template('workflow.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('workflow.html')
     elif pagename == 'apply':
-        return render_template('apply.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('apply.html')
     elif pagename == 'benefits':
-        return render_template('benefits.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('benefits.html')
     elif pagename == 'examples':
-        return render_template('examples.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('examples.html')
     elif pagename == 'terms':
-        return render_template('terms.html', languages=languages, topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray)
+        return render_template('terms.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -187,14 +186,12 @@ def logout():
 
 @app.route('/contact')
 def contact():
-    return render_template('enquiry.html', languages=languages, topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray)
+    return render_template('enquiry.html')
 
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html', languages=languages, topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray)
+    return render_template('faq.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -234,9 +231,7 @@ def register():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, languages=languages,
-                               menuarray=menuarray, country=country, state=state,
+        return render_template('register.html', country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
@@ -304,9 +299,7 @@ def create():
                 if single_block[3] == single_district[3]:
                     blocklist.append([single_block[5], single_block[4]])
             districtdict[single_district[3]] = blocklist
-        return render_template('register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, languages=languages,
-                               menuarray=menuarray, country=country, state=state,
+        return render_template('register.html', country=country, state=state,
                                district=district, block=block, clist=countrylist,
                                slist=statelist, dlist=districtdict, label=label_dict)
     else:
@@ -384,12 +377,11 @@ def update():
             details = values.getRegisteration_details(session['userid'])
         elif session['RoleID'] == 2:
             details = values.getReg_underoperator(session['userid'])
-        return render_template('update_register.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, teachers=teachers,
-                               menuarray=menuarray, country=country, state=state,
-                               district=district, block=block, clist=countrylist,
-                               slist=statelist, dlist=districtdict, label=label_dict,
-                               languages=languages, details=details)
+        return render_template('update_register.html', teachers=teachers,
+                               country=country, state=state, district=district,
+                               block=block, clist=countrylist, slist=statelist,
+                               dlist=districtdict, label=label_dict,
+                               details=details)
     else:
         teacher_id = None
         if 'teacher_id' in request.form:
@@ -433,10 +425,7 @@ def update():
         flash('Something went wrong! Please try again later.', 'danger')
         return redirect(url_for('home'))
 
-    return render_template('update.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu,
-                           menuarray=menuarray,
-                           languages=languages)
+    return render_template('update.html')
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
@@ -481,9 +470,7 @@ def submit():
                     sublist.append([sub[3], sub[2], sub[1]])
             subcat_dict[cat[1]] = sublist
         teachers = values.teacherUnderOperator(session['userid'])
-        return render_template('submit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               teachers=teachers, languages=languages,
+        return render_template('submit.html', teachers=teachers,
                                label=label_dict, benefit=bene_dict,
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
@@ -569,23 +556,18 @@ def edit():
         column_names = {}
         for dropdown_single in dropdown:
             column_names[dropdown_single] = values.getColumns(dropdown_single)
-        return render_template('edit.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               languages=languages, tables=dropdown)
+        return render_template('edit.html', tables=dropdown)
     else:
         table = request.form['table']
         if session['RoleID'] == 5:
             filename = 'super_' + table.lower() + '.html'
             data = values.gettablevalues(table)
             cols = values.getColumns(table)
-            return render_template(filename, topmenu=topmenu, languages=languages,
-                                   topsubmenu=topsubmenu, menuarray=menuarray, table=data, header=cols)
+            return render_template(filename, table=data, header=cols)
         elif session['RoleID'] == 4:
             data = values.gettablevalues(table)
             cols = values.getColumns(table)
-            return render_template(table + ".html", topmenu=topmenu,
-                                   languages=languages, topsubmenu=topsubmenu,
-                                   menuarray=menuarray, table=data, header=cols)
+            return render_template(table + ".html", table=data, header=cols)
 
 
 @app.route('/table/<tablename>', methods=['GET', 'POST'])
@@ -600,272 +582,146 @@ def table(tablename):
             filename = tablename + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
-            return render_template(filename, topmenu=topmenu,
-                                   languages=languages, topsubmenu=topsubmenu,
-                                   menuarray=menuarray, table=data, header=cols)
+            return render_template(filename, table=data, header=cols)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
 
     elif request.method == 'POST':
+
+        # First, decide on which language ID to use (since all admin editing
+        # requires this)
+        if request.form['submit'] == 'edit':
+            langid = request.form['LangID']
+        elif request.form['submit'] == 'translate':
+            langid = request.form['language']
+
+        # Then, decide which table it is we're editing
         if tablename == "Label":
+            # When the table is clear, pick common elements
+            LabelID = request.form['id']
+            # Then, decide value based on whether admin wants to edit or
+            # translate
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                LabelID = request.form['id']
                 value = request.form[str(LabelID)]
-                update = values.updateLabel(LangID, LabelID, value, LangID)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                if table == "Category":
-                    LabelID = request.form['id']
-                    langid = request.form['language']
-                    value = request.form[str(LabelID)+'translate']
-                    for label in labels:
-                        if label[0] == LabelID:
-                            labelval = label
-                            break
-                    labelval[1] = langid
-                    labelval[5] = value
-                    labelval[6] = session['userid']
-                    labelval[7] = datetime.now()
-                update = values.insertLabel(labelval)
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+                value = request.form[str(LabelID)+'translate']
+            # Update the values (store result in update for later!)
+            update = values.updateLabel(LabelID, value, langid)
+            global labels
+            labels = values.gettablevalues('Label')
+    
         if tablename == "Category":
+            CatID = request.form['id']
+
             if request.form['submit'] == 'edit':
-                CatID = request.form['id']
-                LangID = request.form['LangID']
                 value = request.form[str(CatID)]
-                update = values.updateCat(LangID, CatID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                if table == "Category":
-                    CatID = request.form['id']
-                    langid = request.form['language']
-                    value = request.form[str(CatID)+'translate']
-                update = values.insertCat(
-                    CatID, langid, value, session['userid'])
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+                value = request.form[str(CatID)+'translate']
+
+            update = values.updateCat(langid, CatID, value)
+            global categories
+            categories = values.gettablevalues('Category')
+    
         if tablename == "SubCategory":
+            CatID = request.form['CatID']
+            SubCatID = request.form['SubCatID']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                CatID = request.form['CatID']
-                SubCatID = request.form['SubCatID']
                 value = request.form[str(SubCatID)]
-                update = values.updateSubCat(LangID ,CatID, SubCatID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                CatID = request.form['id']
-                SubCatID = request.form['SubCatID']
-                langid = request.form['language']
                 value = request.form[str(SubCatID)+'translate']
-                update = values.insertSubCat(
-                    CatID, SubCatID, langid, value, session['userid'])
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+
+            update = values.updateSubCat(langid, CatID, SubCatID, value)
+            global subcategories
+            subcategories = values.gettablevalues('SubCategory')
+
         if tablename == "Menu":
+            MenuID = request.form['id']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                MenuID = request.form['id']
                 value = request.form[str(MenuID)]
-                update = values.updateMenu(LangID, MenuID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                MenuID = request.form['id']
-                langid = request.form['language']
                 value = request.form[str(MenuID)+'translate']
-                for menu in menus:
-                    if menu[1] == MenuID:
-                        menuval = menu
-                        break
-                menuval[0] = langid
-                menuval[3] = value
-                menuval[6] = session['userid']
-                menuval[7] = datetime.now()
-                update = values.insertMenu(menuval)
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+
+            update = values.updateMenu(langid, MenuID, value)
+            global menus
+            menus = values.gettablevalues('Menu')
+    
         if tablename == "SubMenu":
+            MenuID = request.form['MenuID']
+            SubMenuID = request.form['SubMenuID']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                MenuID = request.form['MenuID']
-                SubMenuID = request.form['SubMenuID']
                 value = request.form[str(SubMenuID)]
-                update = values.updateSubMenu(LangID, MenuID, SubMenuID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                MenuID = request.form['id']
-                SubMenuID = request.form['SubMenuID']
-                langid = request.form['language']
                 value = request.form[str(SubMenuID)+'translate']
-                for submenu in submenus:
-                    if submenu[1] == MenuID and submenu[2] == SubMenuID:
-                        submenuval = submenu
-                        break
-                submenuval[0] = langid
-                submenuval[4] = value
-                submenuval[6] = session['userid']
-                submenuval[7] = datetime.now()
-                update = values.insertSubMenu(submenuval)
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+
+            update = values.updateSubMenu(langid, MenuID, SubMenuID, value)
+            global submenus
+            submenus = values.gettablevalues('SubMenu')
+    
         if tablename == "Country":
+            CountryID = request.form['id']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                CountryID = request.form['id']
                 value = request.form[str(CountryID)]
-                update = values.updateCountry(LangID, CountryID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                CountryID = request.form['id']
-                langid = request.form['language']
                 value = request.form[str(CountryID)+'translate']
-                update = values.insertCountry(
-                    langid, CountryID, value, session['userid'])
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+
+            update = values.updateCountry(langid, CountryID, value)
+            global country
+            country = values.gettablevalues('Country')
+    
         if tablename == "State":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                CountryID = request.form['CountryID']
-                StateID = request.form['StateID']
                 value = request.form[str(StateID)]
-                update = values.updateState(LangID, CountryID, StateID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem editing! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                CountryID = request.form['id']
-                StateID = request.form['StateID']
-                langid = request.form['language']
                 value = request.form[str(StateID)+'translate']
-                update = values.insertState(
-                    langid, CountryID, StateID, value, session['userid'])
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+
+            update = values.updateState(langid, CountryID, StateID, value)
+            global state
+            state = values.gettablevalues('State')
+    
         if tablename == "District":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            DistrictID = request.form['DistrictID']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                CountryID = request.form['CountryID']
-                StateID = request.form['StateID']
-                DistrictID = request.form['DistrictID']
                 value = request.form[str(DistrictID)]
-                update = values.updateDistrict(
-                    LangID, CountryID, StateID, DistrictID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was an error while editing! Please try again!', 'danger')
-                return redirect('/table' + tablename)
             elif request.form['submit'] == 'translate':
-                CountryID = request.form['id']
-                StateID = request.form['StateID']
-                DistrictID = request.form['DistrictID']
-                langid = request.form['language']
                 value = request.form[str(DistrictID)+'translate']
-                update = values.insertDistrict(
-                    langid, CountryID, StateID, DistrictID, value, session['userid'])
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
+
+            update = values.updateDistrict(
+                langid, CountryID, StateID, DistrictID, value)
+            global district
+            district = values.gettablevalues('District')
+    
         if tablename == "Block":
+            CountryID = request.form['CountryID']
+            StateID = request.form['StateID']
+            DistrictID = request.form['DistrictID']
+            BlockID = request.form['BlockID']
+
             if request.form['submit'] == 'edit':
-                LangID = request.form['LangID']
-                CountryID = request.form['CountryID']
-                StateID = request.form['StateID']
-                DistrictID = request.form['DistrictID']
-                BlockID = request.form['BlockID']
                 value = request.form[str(BlockID)]
-                update = values.updateBlock(
-                    LangID, CountryID, StateID, DistrictID, BlockID, value)
-                if update:
-                    flash('Edited successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was an error while editing! Please try again!', 'danger')
-                return redirect('/table/' + tablename)
             elif request.form['submit'] == 'translate':
-                CountryID = request.form['id']
-                StateID = request.form['StateID']
-                DistrictID = request.form['DistrictID']
-                BlockID = request.form['BlockID']
-                langid = request.form['language']
                 value = request.form[str(DistrictID)+'translate']
-                update = values.insertBlock(
-                    langid, CountryID, StateID, DistrictID, BlockID, value, session['userid'])
-                if update:
-                    flash('Translated successfully!', 'success')
-                    return redirect('/table/' + tablename)
-                flash(
-                    'There was problem saving the translation! Please try again!', 'warning')
-                return redirect('/table/' + tablename)
-        return redirect(url_for('edit'))
+
+            update = values.updateBlock(
+                langid, CountryID, StateID, DistrictID, BlockID, value)
+            global block
+            block = values.gettablevalues('Block')
+        # Check if the update was a success, and display message appropriately
+        if update:
+            flash('The ' + tablename + ' was successfully edited!', 'success')
+        flash(
+            'Sorry, there was an error while editing! Please try again!', 'danger')
+        return redirect('/table/' + tablename)
 
 
 @app.route('/review', methods=['GET', 'POST'])
@@ -920,13 +776,13 @@ def review():
             sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
-        print(subcatidea)
-        return render_template('review.html', topmenu=topmenu,
-                               topsubmenu=topsubmenu, menuarray=menuarray,
-                               label=label_dict, benefit=bene_dict,
-                               stage=stage_dict, category=category_dict, media=media, teachers=teachers,
-                               subcategory=subcat_dict, ideas=idea_details, subcats=subcatidea,
-                               languages=languages, sublist=sub_list)
+
+        return render_template('review.html', label=label_dict,
+                               benefit=bene_dict, stage=stage_dict,
+                               category=category_dict, media=media,
+                               teachers=teachers, subcategory=subcat_dict,
+                               ideas=idea_details, subcats=subcatidea,
+                               sublist=sub_list)
     else:
         IdeaID = request.form['idea']
         title = request.form['31']
@@ -982,9 +838,7 @@ def review():
             'There was an error while submitting! Please try again!', 'danger')
         return redirect(url_for('review'))
 
-    return render_template('review.html', topmenu=topmenu,
-                           topsubmenu=topsubmenu, menuarray=menuarray,
-                           languages=languages)
+    return render_template('review.html')
 
 
 def upload_img(upload_file):
@@ -1019,9 +873,7 @@ def super(tablename):
             filename = 'super_' + tablename.lower() + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
-            return render_template(filename, topmenu=topmenu,
-                                       languages=languages, topsubmenu=topsubmenu,
-                                       menuarray=menuarray, table=data, header=cols)
+            return render_template(filename, table=data, header=cols)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
@@ -1544,7 +1396,8 @@ def super(tablename):
                 FormName = request.form[str(MenuID)]
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
-                update = values.updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID)
+                update = values.updateMenuForm(
+                    LangID, MenuID, PageName, FormName, FormLink, RoleID)
                 if update:
                     flash('Edited successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1571,7 +1424,7 @@ def super(tablename):
                 RoleID = request.form['Role']
                 MenuID = values.getMenuID(LangID)+1
                 insert = values.insertMenu(
-                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'],datetime.now()))
+                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'], datetime.now()))
                 if insert:
                     flash('Menu Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1624,7 +1477,6 @@ def super(tablename):
             pass
 
 
-
 @app.route('/language/<int:langid>')
 def language(langid):
     session.pop('LanguageID', None)
@@ -1633,31 +1485,20 @@ def language(langid):
 
 if __name__ == '__main__':
     print("Fetching data...")
+    languages = values.gettablevalues('Language')
+    for lang in languages:
+            if lang[2] == 1:
+                masterlang = lang[0]
+                break
     labels = values.gettablevalues('Label')
     menus = values.gettablevalues('Menu')
     submenus = values.gettablevalues('SubMenu')
     categories = values.gettablevalues('Category')
     subcategories = values.gettablevalues('SubCategory')
-    topmenu = []
-    topsubmenu = []
-    menuarray = [0 for menu in menus if menu[5] == -1]
-    for menu in menus:
-        if menu[5] == -1:
-            topmenu.append([menu[3], menu[4], menu[1]])
-        for submenu in submenus:
-            if submenu[5] == -1 and submenu[1] == menu[1]:
-                menuarray[submenu[1]-1] = 1
-                topsubmenu.append([submenu[1], submenu[3], submenu[4]])
-    languages = values.gettablevalues('Language')
-    for lang in languages:
-        if lang[2] == 1:
-            masterlang = lang[0]
-            break
     country = values.gettablevalues('Country')
     state = values.gettablevalues('State')
     district = values.gettablevalues('District')
     block = values.gettablevalues('Block')
     tables = values.gettablelist()
-    languages = values.gettablevalues('Language')
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)
