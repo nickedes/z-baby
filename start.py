@@ -882,7 +882,6 @@ def super(tablename):
         table = request.form['table']
         if table == "Media":
             if request.form['submit'] == 'edit':
-                print(request.form)
                 MediaID = request.form['id']
                 IdeaID = request.form[str(MediaID)]
                 value = request.form[str(IdeaID)]
@@ -947,7 +946,7 @@ def super(tablename):
 
         elif table == 'Country':
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['id']
                 value = request.form[str(CountryID)]
                 update = values.updateCountry(LangID, CountryID, value)
@@ -956,7 +955,7 @@ def super(tablename):
                     return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['id']
                 if values.CheckCountry(CountryID):
                     flash(
@@ -997,7 +996,7 @@ def super(tablename):
 
         elif table == 'State':
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 value = request.form[str(StateID)]
@@ -1007,7 +1006,7 @@ def super(tablename):
                     return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 if values.CheckState(StateID):
@@ -1057,7 +1056,7 @@ def super(tablename):
 
         elif table == 'District':
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 DistrictID = request.form['DistrictID']
@@ -1070,6 +1069,9 @@ def super(tablename):
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'delete':
+                LangID = request.form['LangID']
+                CountryID = request.form['CountryID']
+                StateID = request.form['StateID']
                 DistrictID = request.form['DistrictID']
                 if values.CheckDistrict(DistrictID):
                     flash(
@@ -1112,7 +1114,7 @@ def super(tablename):
 
         elif table == 'Block':
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 DistrictID = request.form['DistrictID']
@@ -1126,7 +1128,7 @@ def super(tablename):
                 flash(
                     'There was an error while editing! Please try again!', 'danger')
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CountryID = request.form['CountryID']
                 StateID = request.form['StateID']
                 DistrictID = request.form['DistrictID']
@@ -1172,7 +1174,7 @@ def super(tablename):
 
         elif table == 'Category':
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CatID = request.form['id']
                 value = request.form[str(CatID)]
                 update = values.updateCat(LangID, CatID, value)
@@ -1180,7 +1182,7 @@ def super(tablename):
                     flash('Edited successfully!', 'success')
                     return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CategoryID = request.form['id']
                 if values.CheckCategory(CategoryID):
                     flash(
@@ -1223,7 +1225,7 @@ def super(tablename):
                 pass
         elif table == "SubCategory":
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CatID = request.form['CatID']
                 SubCatID = request.form['SubCatID']
                 value = request.form[str(SubCatID)]
@@ -1232,7 +1234,7 @@ def super(tablename):
                     flash('Edited successfully!', 'success')
                     return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 CatID = request.form['CatID']
                 SubCatID = request.form['SubCatID']
                 delete = values.deleteSub(LangID, CatID, SubCatID)
@@ -1276,7 +1278,7 @@ def super(tablename):
                 pass
         elif table == 'Stage':
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 StageID = request.form['id']
                 value = request.form[str(StageID)]
                 update = values.updateStage(LangID, StageID, value)
@@ -1288,7 +1290,7 @@ def super(tablename):
                     'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 StageID = request.form['id']
                 delete = values.deleteStage(LangID, StageID)
                 if delete:
@@ -1353,7 +1355,7 @@ def super(tablename):
                 pass
         elif table == "Benefit":
             if request.form['submit'] == 'edit':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 BenefitID = request.form['id']
                 value = request.form[str(BenefitID)]
                 update = values.updateBenefit(LangID, BenefitID, value)
@@ -1365,7 +1367,7 @@ def super(tablename):
                     'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
-                LangID = session['LanguageID']
+                LangID = request.form['LangID']
                 BenefitID = request.form['id']
                 delete = values.deleteBenefit(LangID, BenefitID)
                 if delete:

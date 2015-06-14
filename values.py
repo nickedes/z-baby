@@ -1195,3 +1195,16 @@ def NoMenu(LangID,MenuID):
     if cursor.fetchall() == []:
         return True
     return False
+
+
+def deleteSubMenu(LangID, MenuID, SubMenuID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'DELETE FROM dbo.SubMenu WHERE MenuID=%d and LanguageID=%d and SubMenuID=%d',
+            (MenuID, LangID, SubMenuID))
+    except:
+        return False
+    conn.commit()
+    return True
