@@ -742,7 +742,16 @@ CountryID = 2
 cursor.execute("SELECT max(StateID) FROM dbo.State WHERE CountryID = %d", CountryID)
 top = cursor.fetchall()
 print(top[0][0])
-'''
 cursor.execute('SELECT * FROM dbo.Language')
 data = cursor.fetchall()
 print(data)
+'''
+LangID = 1
+MenuID = 5
+cursor.execute(
+        "SELECT max(SubMenuID) FROM dbo.SubMenu WHERE LanguageID = %d and MenuID = %d", (LangID, MenuID))
+top = cursor.fetchall()
+if not top[0][0]:
+    print(top[0][0])
+else:
+    print("yes")

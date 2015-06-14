@@ -582,7 +582,7 @@ def getCountryID(LangID):
     cursor.execute(
         "SELECT max(CountryID) FROM dbo.Country WHERE LanguageID = %d", LangID)
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -593,7 +593,7 @@ def getStateID(LangID, CountryID):
     cursor.execute(
         "SELECT max(StateID) FROM dbo.State WHERE CountryID = %d and LanguageID = %d", (CountryID, LangID))
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -666,7 +666,7 @@ def getDistrictID(LangID, CountryID, StateID):
     cursor.execute(
         "SELECT max(DistrictID) FROM dbo.District WHERE LanguageID =%d and CountryID = %d and StateID = %d", (LangID, CountryID, StateID))
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -714,7 +714,7 @@ def getBlockID(LangID, CountryID, StateID, DistrictID):
         "SELECT max(BlockID) FROM dbo.Block WHERE LanguageID = %d and CountryID = %d and StateID = %d \
          and DistrictID = %d", (LangID, CountryID, StateID, DistrictID))
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -738,7 +738,7 @@ def getCatID(LangID):
     cursor.execute(
         "SELECT max(CategoryID) FROM dbo.Category WHERE LanguageID = %d", LangID)
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -769,7 +769,7 @@ def getSubCatID(LangID, CategoryID):
     cursor.execute(
         "SELECT max(SubCategoryID) FROM dbo.SubCategory WHERE LanguageID = %d and CategoryID = %d", (LangID, CategoryID))
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -829,7 +829,7 @@ def getStageID(LangID):
     cursor.execute(
         "SELECT max(StageID) FROM dbo.Stage WHERE LanguageID = %d", LangID)
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -1015,7 +1015,7 @@ def getLangID():
     cursor.execute(
         "SELECT max(LanguageID) FROM dbo.Language ")
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -1103,7 +1103,7 @@ def getBenefitID(LangID):
     cursor.execute(
         "SELECT max(BenefitID) FROM dbo.Benefit WHERE LanguageID = %d", LangID)
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
 
@@ -1160,6 +1160,38 @@ def getMenuID(LangID):
     cursor.execute(
         "SELECT max(MenuID) FROM dbo.Menu WHERE LanguageID = %d", LangID)
     top = cursor.fetchall()
-    if not top:
+    if not top[0][0]:
         return 0
     return top[0][0]
+
+
+def updateSubMenuForm(LanguageID, MenuID, SubMenuID, FormName, FormLink, RoleID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.SubMenu set FormName = %s,FormLink=%s,RoleID=%s WHERE MenuID = %d and SubMenuID = %d and LanguageID = %d',
+                       (FormName, FormLink, RoleID, MenuID, SubMenuID, LanguageID))
+    except:
+        return False
+    conn.commit()
+    return True
+
+
+def getSubMenuID(LangID,MenuID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(SubMenuID) FROM dbo.SubMenu WHERE LanguageID = %d and MenuID = %d", (LangID, MenuID))
+    top = cursor.fetchall()
+    if not top[0][0]:
+        return 0
+    return top[0][0]
+
+
+def NoMenu(LangID,MenuID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Menu WHERE MenuID=%d and LanguageID=%d', (MenuID,LangID))
+    if cursor.fetchall() == []:
+        return True
+    return False
