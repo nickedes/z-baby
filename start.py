@@ -1615,6 +1615,7 @@ def super(tablename):
                     'There was problem deleting the Login! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
+                LoginID = values.LoginID()+1
                 Username = request.form['Username']
                 Password = request.form['Password']
                 RoleID = int(request.form['RoleID'])
@@ -1626,7 +1627,8 @@ def super(tablename):
                     RoleName = 'admin'
                 elif RoleID == 5:
                     RoleName = 'superadmin'
-                insert = values.createLogin(Username,Password,RoleID,RoleName)
+                cr_by = session['userid']
+                insert = values.createLogin(LoginID,Username,Password,RoleID,RoleName,cr_by,datetime.now())
                 if insert:
                     flash('Account Added successfully!', 'success')
                 flash(

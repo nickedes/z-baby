@@ -1322,3 +1322,23 @@ def deleteLogin(LoginID):
     conn.commit()
     conn.close()
     return True
+
+
+def LoginID():
+    # Returns the maximum LoginID,the latest one!
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(LoginID) FROM dbo.Login")
+    top = cursor.fetchall()
+    if not top[0][0]:
+        return 0
+    return top[0][0]
+
+
+def createLogin(LoginID,Username,Password,RoleID,RoleName,cr_by,cr_date):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO dbo.Login VALUES (%d,%s,%s,%d,%s,%s,%s)',(LoginID,Username,Password,RoleID,RoleName,cr_by,cr_date))
+    conn.commit()
+    return True
