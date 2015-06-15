@@ -1484,17 +1484,31 @@ def super(tablename):
                 cols = values.getColumns(table)
                 details = []
                 details.append(request.form['LoginID'])
-                for count in range(1,len(cols)):
+                for count in range(1,len(cols)-2):
                     details.append(request.form[str(count)])
-                print(details)
                 updatevals = values.update_register(*details)
-                if updatevals == True:
+                if updatevals:
                     flash('Updated Registration Details.', 'success')
                 flash(
                     'There was problem editing the Registration! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                LoginID = request.form['LoginID']
+                if values.IdeaReg(LoginID):
+                    flash(
+                    'This Registration Cant be deleted since it has ideas!', 'danger')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteReg(LoginID)
+                if delete:
+                    flash('Deleted Registration Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Registration! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
             else:
                 pass
+        elif table == 'Idea':
+            pass
         else:
             pass
 

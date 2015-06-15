@@ -447,7 +447,6 @@ def updateSubCat(LangID, CategoryID, SubCategoryID, CategoryValue):
     return True
 
 
-
 def updateMenu(LangID, MenuID, FormName):
     conn = getConnection()
     cursor = conn.cursor()
@@ -1177,7 +1176,7 @@ def updateSubMenuForm(LanguageID, MenuID, SubMenuID, FormName, FormLink, RoleID)
     return True
 
 
-def getSubMenuID(LangID,MenuID):
+def getSubMenuID(LangID, MenuID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
@@ -1188,10 +1187,11 @@ def getSubMenuID(LangID,MenuID):
     return top[0][0]
 
 
-def NoMenu(LangID,MenuID):
+def NoMenu(LangID, MenuID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Menu WHERE MenuID=%d and LanguageID=%d', (MenuID,LangID))
+    cursor.execute(
+        'SELECT * FROM dbo.Menu WHERE MenuID=%d and LanguageID=%d', (MenuID, LangID))
     if cursor.fetchall() == []:
         return True
     return False
@@ -1208,3 +1208,31 @@ def deleteSubMenu(LangID, MenuID, SubMenuID):
         return False
     conn.commit()
     return True
+
+
+def deleteReg(LoginID):
+    conn_log = getConnection()
+    cursor = conn_log.cursor()
+
+    cursor.execute(
+    'DELETE FROM dbo.Login WHERE LoginID=%d', LoginID)
+
+    conn_reg = getConnection()
+    cursor = conn_reg.cursor()
+    cursor.execute(
+        'DELETE FROM dbo.Registration WHERE LoginID=%d', LoginID)
+    conn_log.commit()
+    conn_reg.commit()
+    conn_log.close()
+    conn_reg.close()
+    return True
+
+
+def IdeaReg(LoginID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+            'SELECT * FROM dbo.Idea WHERE LoginID = %d',LoginID)
+    if cursor.fetchall():
+        return True
+    return False
