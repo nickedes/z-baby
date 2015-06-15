@@ -717,6 +717,30 @@ def table(tablename):
                 langid, CountryID, StateID, DistrictID, BlockID, value)
             global block
             block = values.gettablevalues('Block')
+
+        if tablename == "Benefit":
+            BenefitID = request.form['id']
+
+            if request.form['submit'] == 'edit':
+                value = request.form[str(BenefitID)]
+            elif request.form['submit'] == 'translate':
+                value = request.form[str(BenefitID)+'translate']
+
+            update = values.updateBenefit(langid, BenefitID, value)
+            global benefits
+            benefits = values.gettablevalues('Benefit')
+
+        if tablename == "Stage":
+            StageID = request.form['id']
+
+            if request.form['submit'] == 'edit':
+                value = request.form[str(StageID)]
+            elif request.form['submit'] == 'translate':
+                value = request.form[str(StageID)+'translate']
+
+            update = values.updateStage(langid, StageID, value)
+            global stages
+            stages = values.gettablevalues('Stage')
         # Check if the update was a success, and display message appropriately
         if update:
             flash('The ' + tablename + ' was successfully edited!', 'success')
@@ -729,7 +753,7 @@ def table(tablename):
 @login_required
 def review():
     """Review Ideas/Innovation for teachers and dataentry operators"""
-    if session['RoleID'] > 2:
+    if session['RoleID'] != 1 and session['RoleID'] != 2:
         flash(
             'Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
@@ -749,10 +773,6 @@ def review():
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
-        benefits = values.gettablevalues('Benefit')
-        stages = values.gettablevalues('Stage')
-        category = values.gettablevalues('Category')
-        subcat = values.gettablevalues('SubCategory')
         bene_dict = {}
         for ben in benefits:
             if ben[0] == session['LanguageID']:
@@ -1535,6 +1555,10 @@ if __name__ == '__main__':
     state = values.gettablevalues('State')
     district = values.gettablevalues('District')
     block = values.gettablevalues('Block')
+    benefits = values.gettablevalues('Benefit')
+    stages = values.gettablevalues('Stage')
+    category = values.gettablevalues('Category')
+    subcat = values.gettablevalues('SubCategory')
     tables = values.gettablelist()
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)
