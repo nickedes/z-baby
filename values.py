@@ -1287,3 +1287,12 @@ def deleteICS(IdeaID, CategoryID, SubCategoryID):
     conn.commit()
     conn.close()
     return True
+
+
+def NoLogin(LoginID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM dbo.Registration WHERE LoginID=%d',LoginID)
+    if cursor.fetchall():
+        return True
+    return False

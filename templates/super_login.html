@@ -1,0 +1,55 @@
+{% include 'header.html' %}
+<div class="col-lg-12">
+<table class="table">
+	<thead>
+		<tr>
+			{% for head in header %}
+				<th>{{head}}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<tr>
+					{% for data in row %}
+						<td>{{data}}</td>
+					{% endfor %}
+					<br>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<table class="table">
+	<thead>
+		<tr>
+			{% for head in header %}
+			<th>{{head}}</th>
+			{% endfor %}
+			<th>Save</th>
+			<th>Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for row in table %}
+			<form action="/super/Login" method="POST">
+				<input type="hidden" class="form-control" name="table" value="Login">
+				<input type="hidden" class="form-control" name="LoginID" value="{{row[0]}}">
+				<tr>
+					{% for count in range(row|length) %}
+						{% if count == 0 %}
+							<td><input type="text" class="form-control" name="IdeaID" value="{{row[0]}}" disabled></td>
+						{% else %}
+							<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
+						{% endif %}
+					{% endfor %}
+					<td>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					</td>
+					<td>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					</td>
+				</tr>
+			</form>
+		{% endfor %}
+	</tbody>
+</table>

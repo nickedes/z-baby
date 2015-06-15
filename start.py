@@ -1588,6 +1588,31 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             else:
                 pass
+        elif table == 'Login':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                details.append(request.form['LoginID'])
+                for count in range(len(cols)-2):
+                    details.append(request.form[str(count)])
+                updatevals = values.updateLogin(*details)
+                if updatevals:
+                    flash('Updated Login Details.', 'success')
+                flash(
+                    'There was problem editing the Login Details! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                if values.NoLogin(LoginID):
+                    flash(
+                    'This Login Cant be deleted since it has Registration details!', 'danger')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteLogin(request.form['LoginID'])
+                if delete:
+                    flash('Deleted Login Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Login! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
         else:
             pass
 
