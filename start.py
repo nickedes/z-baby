@@ -1436,7 +1436,6 @@ def super(tablename):
                     'There was problem adding the Menu! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
         elif table == "SubMenu":
-            print(request.form)
             if request.form['submit'] == 'edit':
                 LangID = request.form['LangID']
                 MenuID = request.form['id']
@@ -1480,6 +1479,22 @@ def super(tablename):
                 flash(
                     'There was problem adding the SubMenu! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
+        elif table == 'Registration':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                details.append(request.form['LoginID'])
+                for count in range(1,len(cols)):
+                    details.append(request.form[str(count)])
+                print(details)
+                updatevals = values.update_register(*details)
+                if updatevals == True:
+                    flash('Updated Registration Details.', 'success')
+                flash(
+                    'There was problem editing the Registration! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
         else:
             pass
 
