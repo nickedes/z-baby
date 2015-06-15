@@ -1236,3 +1236,29 @@ def IdeaReg(LoginID):
     if cursor.fetchall():
         return True
     return False
+
+
+def checkIdeaentry(IdeaID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+            'SELECT * FROM dbo.Media WHERE IdeaID = %d',IdeaID)
+    if cursor.fetchall():
+        return True
+    cursor.execute(
+            'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d',IdeaID)
+    if cursor.fetchall():
+        return True
+    return False
+
+
+def deleteIdea(IdeaID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID = %d',IdeaID)
+    except:
+        return False
+    conn.commit()
+    conn.close()
+    return True

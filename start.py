@@ -1536,14 +1536,18 @@ def super(tablename):
                 for count in range(2,len(cols)-2):
                     details.append(request.form[str(count)])
                 print(details)
-                # updatevals = values.updateIdea(*details)
-                # if updatevals:
-                #     flash('Updated Idea Details.', 'success')
+                updatevals = values.updateIdea(*details)
+                if updatevals:
+                    flash('Updated Idea Details.', 'success')
                 flash(
                     'There was problem editing the Idea! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
                 IdeaID = request.form['IdeaID']
+                if values.checkIdeaentry(IdeaID):
+                    flash(
+                    'This Idea cant be deleted!', 'danger')
+                    return redirect('/super/' + tablename)
                 delete = values.deleteIdea(IdeaID)
                 if delete:
                     flash('Deleted Idea Details.', 'success')
