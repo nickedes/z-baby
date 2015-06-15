@@ -53,3 +53,38 @@
 		{% endfor %}
 	</tbody>
 </table>
+<table class="table">
+	<thead>
+		<tr>
+			<th>{{header[1]}}</th>
+			<th>{{header[2]}}</th>
+			<th>{{header[3]}}</th>
+			<th>Add</th>
+		</tr>
+	</thead>
+	<tbody>
+		<form action="/super/Login" method="POST">
+			<input type="hidden" class="form-control" name="table" value="Login">
+			<tr>
+				<td>
+				<input type="text" class="form-control" name="Username">
+				</td>
+				<td>
+				<input type="Password" class="form-control" name="Password">
+				</td>
+				<td>
+					<select id = "ddl1" name="36" class="form-control">
+						<option id="2" value="2">2</option>
+						<option id="3" value="3">3</option>
+						<option id="4" value="4">4</option>
+						<option id="5" value="5">5</option>
+					</select>
+				</td>
+				<td>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
+				</td>
+			</tr>
+		</form>
+	</tbody>
+</table>
+{% include 'footer.html' %}

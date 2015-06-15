@@ -1613,6 +1613,26 @@ def super(tablename):
                 flash(
                     'There was problem deleting the Login! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'add':
+                Username = request.form['Username']
+                Password = request.form['Password']
+                RoleID = int(request.form['RoleID'])
+                if RoleID == 2:
+                    RoleName = 'dataentry'
+                elif RoleID == 3:
+                    RoleName = 'viewer'
+                elif RoleID == 4:
+                    RoleName = 'admin'
+                elif RoleID == 5:
+                    RoleName = 'superadmin'
+                insert = values.createLogin(Username,Password,RoleID,RoleName)
+                if insert:
+                    flash('Account Added successfully!', 'success')
+                flash(
+                    'There was problem adding the Account! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
         else:
             pass
 
