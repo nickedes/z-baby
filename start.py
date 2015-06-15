@@ -540,6 +540,30 @@ def submit():
     return redirect(url_for('submit'))
 
 
+@app.route('/view')
+@login_required
+def view():
+    """View Innovations by RoleID = 3"""
+    if session['RoleID'] != 3:
+        flash('Sorry, you are not authorised to access this function', 'danger')
+        return redirect(url_for('home'))
+    data = []
+    if 'value' not in request.args:
+        data = ideas
+        print(ideas)
+    else:
+        value = request.args.get('value')
+        field = request.args.get('field')
+
+        for idea in ideas:
+            if idea[field].find(value) != -1:
+                data.append(idea)
+    header = values.getColumns('Idea')
+
+
+    return render_template('view.html', header=header, table=data)
+
+
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
@@ -1667,5 +1691,6 @@ if __name__ == '__main__':
     category = values.gettablevalues('Category')
     subcat = values.gettablevalues('SubCategory')
     tables = values.gettablelist()
+    ideas = values.gettablevalues('Idea')
     print("Data fetched successfully!")
     app.run(debug=True, host='0.0.0.0', port=3000)

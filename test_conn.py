@@ -757,7 +757,6 @@ else:
 cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
 print(cursor.fetchall())
 '''
-
 cursor.execute(
     "SELECT DATABASEPROPERTYEX(%s,%s) SQLCollation", ('ziiei', 'Collation'))
 print(cursor.fetchall())
