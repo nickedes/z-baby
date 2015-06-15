@@ -1,4 +1,4 @@
-+{% include 'header.html' %}
+{% include 'header.html' %}
 <script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
 <link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <div class="col-lg-8" style="margin-left:100px">
@@ -97,11 +97,15 @@
 			<div class="checkbox" id="{{subcat}}">
     			<label>
     			{% for data in subcategory[subcat] %}
-    				{% if subcats[idea[0]][0][1] == data[2] and data[1] in sublist[idea[0]] %}
-      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" checked>{{ data[0] }}
-      				{% else %}
-      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
-      				{% endif %}
+    				{% if subcats[idea[0]] %}
+	    				{% if subcats[idea[0]][0][1] == data[2] and data[1] in sublist[idea[0]] %}
+	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" checked>{{ data[0] }}
+	      				{% else %}
+	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
+	      				{% endif %}
+	      			{% else %}
+	      				<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
+	      			{% endif %}
       				<br>
       			{% endfor %}
     			</label>
