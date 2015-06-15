@@ -754,6 +754,10 @@ if not top[0][0]:
     print(top[0][0])
 else:
     print("yes")
-'''
 cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
+print(cursor.fetchall())
+'''
+
+cursor.execute(
+    "SELECT DATABASEPROPERTYEX(%s,%s) SQLCollation", ('ziiei', 'Collation'))
 print(cursor.fetchall())

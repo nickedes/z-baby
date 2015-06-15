@@ -1589,11 +1589,12 @@ def super(tablename):
             else:
                 pass
         elif table == 'Login':
+            print(request.form)
             if request.form['submit'] == 'edit':
                 cols = values.getColumns(table)
                 details = []
                 details.append(request.form['LoginID'])
-                for count in range(len(cols)-2):
+                for count in range(1,len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.updateLogin(*details)
                 if updatevals:
@@ -1602,7 +1603,7 @@ def super(tablename):
                     'There was problem editing the Login Details! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
-                if values.NoLogin(LoginID):
+                if values.NoLogin(request.form['LoginID']):
                     flash(
                     'This Login Cant be deleted since it has Registration details!', 'danger')
                     return redirect('/super/' + tablename)

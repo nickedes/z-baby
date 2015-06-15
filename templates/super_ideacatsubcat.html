@@ -39,7 +39,6 @@
 				<tr>
 					{% for count in range(row|length) %}
 							<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
-						{% endif %}
 					{% endfor %}
 					<td>
 					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>

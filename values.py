@@ -1281,7 +1281,8 @@ def deleteICS(IdeaID, CategoryID, SubCategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d and CategoryID=%d and SubCategoryID=%d',(IdeaID, CategoryID, SubCategoryID))
+        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d and CategoryID=%d and SubCategoryID=%d',
+                       (IdeaID, CategoryID, SubCategoryID))
     except:
         return False
     conn.commit()
@@ -1292,9 +1293,32 @@ def deleteICS(IdeaID, CategoryID, SubCategoryID):
 def NoLogin(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Registration WHERE LoginID=%d',LoginID)
+    cursor.execute('SELECT * FROM dbo.Registration WHERE LoginID=%d', LoginID)
     if cursor.fetchall():
         return True
     return False
 
 
+def updateLogin(LoginID, Username, Password, RoleID, RoleName):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            'UPDATE dbo.Login set Username=%s,Password=%s WHERE LoginID=%d', (Username, Password, LoginID))
+    except:
+        return False
+    conn.commit()
+    conn.close()
+    return True
+
+
+def deleteLogin(LoginID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('DELETE FROM dbo.Login WHERE LoginID=%d', LoginID)
+    except:
+        return False
+    conn.commit()
+    conn.close()
+    return True
