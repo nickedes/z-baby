@@ -19,3 +19,39 @@
 		{% endfor %}
 	</tbody>
 </table>
+<table class="table">
+	<thead>
+		<tr>
+			{% for head in header %}
+			<th>{{head}}</th>
+			{% endfor %}
+			<th>Save</th>
+			<th>Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<form action="/super/Idea" method="POST">
+				<input type="hidden" class="form-control" name="table" value="Idea">
+				<input type="hidden" class="form-control" name="IdeaID" value="{{row[0]}}">
+				<tr>
+					{% for count in range(row|length) %}
+						{% if count == 0 %}
+							<td><input type="text" class="form-control" name="IdeaID" value="{{row[0]}}" disabled></td>
+						{% elif count == 1 %}
+							<td><input type="text" class="form-control" name="LoginID" value="{{row[1]}}" disabled></td>
+						{% else %}
+							<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
+						{% endif %}
+					{% endfor %}
+					<td>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					</td>
+					<td>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					</td>
+				</tr>
+			</form>
+		{% endfor %}
+	</tbody>
+</table>

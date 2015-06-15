@@ -1528,7 +1528,31 @@ def super(tablename):
             else:
                 pass
         elif table == 'Idea':
-            pass
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                print(request.form)
+                details.append(request.form['IdeaID'])
+                for count in range(2,len(cols)-2):
+                    details.append(request.form[str(count)])
+                print(details)
+                # updatevals = values.updateIdea(*details)
+                # if updatevals:
+                #     flash('Updated Idea Details.', 'success')
+                flash(
+                    'There was problem editing the Idea! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                IdeaID = request.form['IdeaID']
+                delete = values.deleteIdea(IdeaID)
+                if delete:
+                    flash('Deleted Idea Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Idea! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
         else:
             pass
 
