@@ -1480,7 +1480,6 @@ def super(tablename):
                     'There was problem adding the Menu! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
         elif table == "SubMenu":
-            print(request.form)
             if request.form['submit'] == 'edit':
                 LangID = request.form['LangID']
                 MenuID = request.form['id']
@@ -1524,6 +1523,64 @@ def super(tablename):
                 flash(
                     'There was problem adding the SubMenu! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
+        elif table == 'Registration':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                details.append(request.form['LoginID'])
+                for count in range(1,len(cols)-2):
+                    details.append(request.form[str(count)])
+                updatevals = values.update_register(*details)
+                if updatevals:
+                    flash('Updated Registration Details.', 'success')
+                flash(
+                    'There was problem editing the Registration! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                LoginID = request.form['LoginID']
+                if values.IdeaReg(LoginID):
+                    flash(
+                    'This Registration Cant be deleted since it has ideas!', 'danger')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteReg(LoginID)
+                if delete:
+                    flash('Deleted Registration Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Registration! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
+        elif table == 'Idea':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                print(request.form)
+                details.append(request.form['IdeaID'])
+                for count in range(2,len(cols)-2):
+                    details.append(request.form[str(count)])
+                print(details)
+                updatevals = values.updateIdea(*details)
+                if updatevals:
+                    flash('Updated Idea Details.', 'success')
+                flash(
+                    'There was problem editing the Idea! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                IdeaID = request.form['IdeaID']
+                if values.checkIdeaentry(IdeaID):
+                    flash(
+                    'This Idea cant be deleted!', 'danger')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteIdea(IdeaID)
+                if delete:
+                    flash('Deleted Idea Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Idea! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
         else:
             pass
 

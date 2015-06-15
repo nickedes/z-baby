@@ -754,8 +754,8 @@ if not top[0][0]:
     print(top[0][0])
 else:
     print("yes")
-'''
 cursor.execute(
     'SELECT * FROM dbo.Login WHERE RoleID = %d', 3)
 data = cursor.fetchall()
 print (data)
+'''
