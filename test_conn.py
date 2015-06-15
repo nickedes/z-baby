@@ -755,3 +755,5 @@ if not top[0][0]:
 else:
     print("yes")
 '''
+cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
+print(cursor.fetchall())

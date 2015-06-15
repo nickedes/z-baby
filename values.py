@@ -1215,7 +1215,7 @@ def deleteReg(LoginID):
     cursor = conn_log.cursor()
 
     cursor.execute(
-    'DELETE FROM dbo.Login WHERE LoginID=%d', LoginID)
+        'DELETE FROM dbo.Login WHERE LoginID=%d', LoginID)
 
     conn_reg = getConnection()
     cursor = conn_reg.cursor()
@@ -1232,7 +1232,7 @@ def IdeaReg(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-            'SELECT * FROM dbo.Idea WHERE LoginID = %d',LoginID)
+        'SELECT * FROM dbo.Idea WHERE LoginID = %d', LoginID)
     if cursor.fetchall():
         return True
     return False
@@ -1242,11 +1242,11 @@ def checkIdeaentry(IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-            'SELECT * FROM dbo.Media WHERE IdeaID = %d',IdeaID)
+        'SELECT * FROM dbo.Media WHERE IdeaID = %d', IdeaID)
     if cursor.fetchall():
         return True
     cursor.execute(
-            'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d',IdeaID)
+        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', IdeaID)
     if cursor.fetchall():
         return True
     return False
@@ -1256,7 +1256,32 @@ def deleteIdea(IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID = %d',IdeaID)
+        cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID = %d', IdeaID)
+    except:
+        return False
+    conn.commit()
+    conn.close()
+    return True
+
+
+def updateICS(prev_IdeaID, prev_CatID, prev_SubCatID, new_IdeaID, new_CatID, new_SubCatID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.IdeaCatSubCat set IdeaID=%d,CategoryID=%d,SubCategoryID=%d WHERE IdeaID=%d and CategoryID=%d and SubCategoryID=%d',
+                       (new_IdeaID, new_CatID, new_SubCatID, prev_IdeaID, prev_CatID, prev_SubCatID))
+    except:
+        return False
+    conn.commit()
+    conn.close()
+    return True
+
+
+def deleteICS(IdeaID, CategoryID, SubCategoryID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d and CategoryID=%d and SubCategoryID=%d',(IdeaID, CategoryID, SubCategoryID))
     except:
         return False
     conn.commit()

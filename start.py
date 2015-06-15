@@ -1557,6 +1557,37 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             else:
                 pass
+        elif table == 'IdeaCatSubCat':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                print(request.form)
+                details.append(request.form['IdeaID'])
+                details.append(request.form['CatID'])
+                details.append(request.form['SubCatID'])
+                for count in range(len(cols)-2):
+                    details.append(request.form[str(count)])
+                print(details)
+                updatevals = values.updateICS(*details)
+                if updatevals:
+                    flash('Updated Idea and Category Details.', 'success')
+                flash(
+                    'There was problem editing the Idea and Category! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                details = []
+                details.append(request.form['IdeaID'])
+                details.append(request.form['CatID'])
+                details.append(request.form['SubCatID'])
+                delete = values.deleteICS(*details)
+                if delete:
+                    flash('Deleted Idea and Category Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Idea! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
         else:
             pass
 
