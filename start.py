@@ -1663,6 +1663,7 @@ def super(tablename):
             if request.form['submit'] == 'edit':
                 details = []
                 details.append(request.form['LabelID'])
+                cols = values.getColumns(table)
                 for count in range(1,len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.updateLabelSA(*details)
@@ -1680,7 +1681,21 @@ def super(tablename):
                     'There was problem deleting the Label! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
-                pass
+                LanguageID = request.form['LanguageID'] 
+                LabelID = values.getLabelID(LanguageID)+1
+                RoleID = request.form['RoleID']
+                PageName = request.form['PageName'] 
+                LabelType = request.form['LabelType']
+                LabelValue = request.form['LabelValue']
+                cr_by = session['userid']
+                cr_date = datetime.now()
+                insert = values.insertLabel((LabelID,LanguageID,RoleID,PageName,LabelType,LabelValue,cr_by,cr_date))
+                if insert:
+                    flash('Added Label.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem Adding a new Label! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
             else:
                 pass
         else:

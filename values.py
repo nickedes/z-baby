@@ -1352,4 +1352,28 @@ def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
         cursor.execute('UPDATE dbo.Label set LanguageID=%d,RoleID=%d,PageName=%s,LabelType=%s,LabelValue=%s',(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue))
     except:
         return False
+    conn.commit()
+    conn.close()
+    return True
+
+def getLabelID(LanguageID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(LabelID) FROM dbo.Label WHERE LanguageID = %d", LanguageID)
+    top = cursor.fetchall()
+    if not top[0][0]:
+        return 0
+    return top[0][0]
+
+
+def deleteLabel(LabelID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('DELETE FROM dbo.Label WHERE LabelID = %d',LabelID)
+    except:
+        return False
+    conn.commit()
+    conn.close()
     return True
