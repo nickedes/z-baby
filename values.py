@@ -255,11 +255,11 @@ def insertSubMenu(submenuvalues):
 def insertLabel(labelvalues):
     conn = getConnection()
     cursor = conn.cursor()
-    try:
-        cursor.execute(
+    # try:
+    cursor.execute(
             'INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)', labelvalues)
-    except:
-        return False
+    # except:
+    #     return False
     conn.commit()
     return True
 
@@ -1367,11 +1367,11 @@ def getLabelID(LanguageID):
     return top[0][0]
 
 
-def deleteLabel(LabelID):
+def deleteLabel(LabelID, LangID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.Label WHERE LabelID = %d',LabelID)
+        cursor.execute('DELETE FROM dbo.Label WHERE LabelID = %d and LanguageID=%d',(LabelID,LangID))
     except:
         return False
     conn.commit()

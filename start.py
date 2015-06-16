@@ -545,7 +545,8 @@ def submit():
 def view():
     """View Innovations by RoleID = 3"""
     if session['RoleID'] != 3:
-        flash('Sorry, you are not authorised to access this function', 'danger')
+        flash(
+            'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     data = []
     if 'value' not in request.args:
@@ -559,7 +560,6 @@ def view():
             if idea[field].find(value) != -1:
                 data.append(idea)
     header = values.getColumns('Idea')
-
 
     return render_template('view.html', header=header, table=data)
 
@@ -1528,7 +1528,7 @@ def super(tablename):
                 cols = values.getColumns(table)
                 details = []
                 details.append(request.form['LoginID'])
-                for count in range(1,len(cols)-2):
+                for count in range(1, len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.update_register(*details)
                 if updatevals:
@@ -1540,7 +1540,7 @@ def super(tablename):
                 LoginID = request.form['LoginID']
                 if values.IdeaReg(LoginID):
                     flash(
-                    'This Registration Cant be deleted since it has ideas!', 'danger')
+                        'This Registration Cant be deleted since it has ideas!', 'danger')
                     return redirect('/super/' + tablename)
                 delete = values.deleteReg(LoginID)
                 if delete:
@@ -1557,7 +1557,7 @@ def super(tablename):
                 details = []
                 print(request.form)
                 details.append(request.form['IdeaID'])
-                for count in range(2,len(cols)-2):
+                for count in range(2, len(cols)-2):
                     details.append(request.form[str(count)])
                 print(details)
                 updatevals = values.updateIdea(*details)
@@ -1570,7 +1570,7 @@ def super(tablename):
                 IdeaID = request.form['IdeaID']
                 if values.checkIdeaentry(IdeaID):
                     flash(
-                    'This Idea cant be deleted!', 'danger')
+                        'This Idea cant be deleted!', 'danger')
                     return redirect('/super/' + tablename)
                 delete = values.deleteIdea(IdeaID)
                 if delete:
@@ -1617,7 +1617,7 @@ def super(tablename):
                 cols = values.getColumns(table)
                 details = []
                 details.append(request.form['LoginID'])
-                for count in range(1,len(cols)-2):
+                for count in range(1, len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.updateLogin(*details)
                 if updatevals:
@@ -1628,7 +1628,7 @@ def super(tablename):
             elif request.form['submit'] == 'delete':
                 if values.NoLogin(request.form['LoginID']):
                     flash(
-                    'This Login Cant be deleted since it has Registration details!', 'danger')
+                        'This Login Cant be deleted since it has Registration details!', 'danger')
                     return redirect('/super/' + tablename)
                 delete = values.deleteLogin(request.form['LoginID'])
                 if delete:
@@ -1651,7 +1651,8 @@ def super(tablename):
                 elif RoleID == 5:
                     RoleName = 'superadmin'
                 cr_by = session['userid']
-                insert = values.createLogin(LoginID,Username,Password,RoleID,RoleName,cr_by,datetime.now())
+                insert = values.createLogin(
+                    LoginID, Username, Password, RoleID, RoleName, cr_by, datetime.now())
                 if insert:
                     flash('Account Added successfully!', 'success')
                 flash(
@@ -1664,7 +1665,7 @@ def super(tablename):
                 details = []
                 details.append(request.form['LabelID'])
                 cols = values.getColumns(table)
-                for count in range(1,len(cols)-2):
+                for count in range(1, len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.updateLabelSA(*details)
                 if updatevals:
@@ -1673,7 +1674,7 @@ def super(tablename):
                     'There was problem editing the Label Details! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'delete':
-                delete = values.deleteLabel(request.form['LabelID'])
+                delete = values.deleteLabel(request.form['LabelID'],request.form['1'])
                 if delete:
                     flash('Deleted Label.', 'success')
                     return redirect('/super/' + tablename)
@@ -1681,15 +1682,16 @@ def super(tablename):
                     'There was problem deleting the Label! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
-                LanguageID = request.form['LanguageID'] 
+                LanguageID = request.form['LanguageID']
                 LabelID = values.getLabelID(LanguageID)+1
                 RoleID = request.form['RoleID']
-                PageName = request.form['PageName'] 
+                PageName = request.form['PageName']
                 LabelType = request.form['LabelType']
                 LabelValue = request.form['LabelValue']
                 cr_by = session['userid']
                 cr_date = datetime.now()
-                insert = values.insertLabel((LabelID,LanguageID,RoleID,PageName,LabelType,LabelValue,cr_by,cr_date))
+                insert = values.insertLabel(
+                    (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, cr_by, cr_date))
                 if insert:
                     flash('Added Label.', 'success')
                     return redirect('/super/' + tablename)
