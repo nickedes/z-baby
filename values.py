@@ -1342,3 +1342,14 @@ def createLogin(LoginID,Username,Password,RoleID,RoleName,cr_by,cr_date):
     cursor.execute('INSERT INTO dbo.Login VALUES (%d,%s,%s,%d,%s,%s,%s)',(LoginID,Username,Password,RoleID,RoleName,cr_by,cr_date))
     conn.commit()
     return True
+
+
+def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
+    # SA - Superadmin
+    conn = getConnection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('UPDATE dbo.Label set LanguageID=%d,RoleID=%d,PageName=%s,LabelType=%s,LabelValue=%s',(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue))
+    except:
+        return False
+    return True

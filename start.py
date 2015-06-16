@@ -1613,7 +1613,6 @@ def super(tablename):
             else:
                 pass
         elif table == 'Login':
-            print(request.form)
             if request.form['submit'] == 'edit':
                 cols = values.getColumns(table)
                 details = []
@@ -1658,6 +1657,30 @@ def super(tablename):
                 flash(
                     'There was problem adding the Account! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
+            else:
+                pass
+        elif table == 'Label':
+            if request.form['submit'] == 'edit':
+                details = []
+                details.append(request.form['LabelID'])
+                for count in range(1,len(cols)-2):
+                    details.append(request.form[str(count)])
+                updatevals = values.updateLabelSA(*details)
+                if updatevals:
+                    flash('Updated Label Details.', 'success')
+                flash(
+                    'There was problem editing the Label Details! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                delete = values.deleteLabel(request.form['LabelID'])
+                if delete:
+                    flash('Deleted Label.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Label! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'add':
+                pass
             else:
                 pass
         else:

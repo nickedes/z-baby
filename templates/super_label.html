@@ -1,5 +1,5 @@
 {% include 'header.html' %}
-<div class="col-lg-12">
+<div class="col-lg-10">
 <table class="table">
 	<thead>
 		<tr>
@@ -22,8 +22,8 @@
 <table class="table">
 	<thead>
 		<tr>
-			{% for head in header %}
-			<th>{{head}}</th>
+			{% for head in range(header|length - 2) %}
+			<th>{{header[head]}}</th>
 			{% endfor %}
 			<th>Save</th>
 			<th>Delete</th>
@@ -31,16 +31,15 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/super/Login" method="POST">
-				<input type="hidden" class="form-control" name="table" value="Login">
-				<input type="hidden" class="form-control" name="LoginID" value="{{row[0]}}">
+			<form action="/super/Label" method="POST">
+				<input type="hidden" class="form-control" name="table" value="Label">
+				<input type="hidden" class="form-control" name="LabelID" value="{{row[0]}}">
 				<tr>
-					{% for count in range(row|length) %}
-						{% if count == 0 %}
-							<td><input type="text" class="form-control" name="IdeaID" value="{{row[0]}}" disabled></td>
-						{% else %}
-							<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
-						{% endif %}
+					<td>
+						<input type="text" class="form-control" name="LabelID" value="{{row[0]}}" disabled>
+					</td>
+					{% for count in range(1,row|length-2) %}
+						<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
 					{% endfor %}
 					<td>
 					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
@@ -49,7 +48,6 @@
 					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
 					</td>
 				</tr>
-			</form>
 		{% endfor %}
 	</tbody>
 </table>
@@ -59,26 +57,29 @@
 			<th>{{header[1]}}</th>
 			<th>{{header[2]}}</th>
 			<th>{{header[3]}}</th>
+			<th>{{header[4]}}</th>
+			<th>{{header[5]}}</th>
 			<th>Add</th>
 		</tr>
 	</thead>
 	<tbody>
-		<form action="/super/Login" method="POST">
-			<input type="hidden" class="form-control" name="table" value="Login">
+		<form action="/super/Label" method="POST">
+			<input type="hidden" class="form-control" name="table" value="Label">
 			<tr>
 				<td>
-				<input type="text" class="form-control" name="Username">
+				<input type="text" class="form-control" name="LanguageID">
 				</td>
 				<td>
-				<input type="Password" class="form-control" name="Password">
+				<input type="text" class="form-control" name="RoleID">
 				</td>
 				<td>
-					<select name="RoleID" class="form-control">
-						<option id="2" value="2">2</option>
-						<option id="3" value="3">3</option>
-						<option id="4" value="4">4</option>
-						<option id="5" value="5">5</option>
-					</select>
+				<input type="text" class="form-control" name="PageName">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="LabelType">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="LabelValue">
 				</td>
 				<td>
 				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
