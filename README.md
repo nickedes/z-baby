@@ -5,6 +5,7 @@ Development has shifted to windows (server reasons), but we think most of the or
 Oh, and we also switched to python 2.7. Only change in the code is the print statements, though, so that's cool.
 
 For setup on windows:
+
 0. clone this repo
 1. venv on python2
 2. pip install flask, pyimgur, pyodbc (and anything else it asks, though I think this is it.)
