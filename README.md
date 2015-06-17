@@ -6,9 +6,9 @@ Oh, and we also switched to python 2.7. Only change in the code is the print sta
 
 For setup on windows:
 
-0. clone this repo
-1. venv on python2
-2. pip install flask, pyimgur, pyodbc (and anything else it asks, though I think this is it.)
+0. Clone the repo: `git clone https://github.com/nickedes/z-baby`
+1. Make a virtualenv `virtualenv --python=python2.7 yourEnv`
+2. Install all dependencies `pip install flask pyimgur pyodbc` (and anything else it asks, though I think this is it.)
 3. ` python start.py `
 
 ALSO, there's no config file (obviously). I would love to give you the config file, but the DB isn't mine :-\
@@ -18,20 +18,20 @@ Original Instructions:
 
 ZIIEI 
 
-Setup :
+For Setup On linux:
 
-1. Install virtualenv by `sudo pip3 install virtualenv`
-2. Make a virtualenv `virtualenv --python=python3.4 yourEnv`
-3. Activate your virtualenv `source yourenv/bin/activate`
+1. Install virtualenv by `sudo pip install virtualenv`
+2. Make a virtualenv `virtualenv --python=python2.7 yourEnv`
+3. Activate your virtualenv `source yourEnv/bin/activate`
 4. Install flask `pip install flask`
 5. sudo apt-get install freetds-dev
 6. pip install pymssql
 7. Clone the repo: `git clone https://github.com/nickedes/z-baby`
 8. `cd z-baby`
-9. Run by `python start.py`
+9. Run by `python start.py` 
 
 Environment :
 
-* Python 3.4
+* Python 2.7
 * Flask
 * [Bootstrap](http://getbootstrap.com/)

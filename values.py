@@ -1389,7 +1389,7 @@ def deleteLabel(LabelID, LangID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Label WHERE LabelID = %d and LanguageID=%d',
+            'DELETE FROM dbo.Label WHERE LabelID = ? and LanguageID=?',
             (LabelID, LangID))
     except:
         return False
