@@ -1,4 +1,19 @@
 # Z-baby
+NOTE:
+
+Development has shifted to windows (server reasons), but we think most of the original instructions should still work. Just replace pymssql with pyodbc, and enjoy the MASSIVE data fetch gains. (We actually changed due to some problems with pymssql's compatibility with hindi on windows, but pyodbc is blazing fast compared to pymssql. Like at least 100x)
+Oh, and we also switched to python 2.7. Only change in the code is the print statements, though, so that's cool.
+
+For setup on windows:
+0. clone this repo
+1. venv on python2
+2. pip install flask, pyimgur, pyodbc (and anything else it asks, though I think this is it.)
+3. ` python start.py `
+
+ALSO, there's no config file (obviously). I would love to give you the config file, but the DB isn't mine :-\
+Basically keep running step 3 and fixing errors till the errors stop popping up. Pretty simple, really.
+
+Original Instructions: 
 
 ZIIEI 
 

@@ -15,7 +15,6 @@ from errors import showerrors
 import values
 from werkzeug import secure_filename
 import pyimgur
-import vimeo
 
 
 app = Flask(__name__)
@@ -106,7 +105,6 @@ def login():
             username = request.form['username']
             logged_in_val = values.checkLogin(
                 request.form['username'], request.form['password'])
-            print(logged_in_val)
             if logged_in_val is None:
                 flash('Incorrect Username or Password!', 'danger')
                 return redirect(url_for('login'))
@@ -507,29 +505,25 @@ def submit():
                 os.remove(PATH)
                 image_link = uploaded_image.link
                 medias['image'] = image_link
-                print("done upload")
         except:
-            print("lol sad")
+            pass
     IdeaID = values.getLatestIdea() + 1
     if session['RoleID'] == 1:
         LoginID = session['userid']
     elif session['RoleID'] == 2:
         Username = request.form['teacher']
         LoginID = values.getLoginID(Username)
-        print(LoginID)
     insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
                                description, resource, support, implement_time, reach, session['userid'], datetime.now())
     if image_link:
         MediaID = values.getLatestMedia() + 1
         example_img = values.insertMedia(
             MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
-        print("done img")
     else:
         example_img = True
     MediaID = values.getLatestMedia() + 1
     example_text = values.insertMedia(
         MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
-    print("done exm")
     ideacatsubcat = values.insertIdeaCatSubCat(
         IdeaID, category_id, subcategory_id)
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
@@ -545,13 +539,11 @@ def submit():
 def view():
     """View Innovations by RoleID = 3"""
     if session['RoleID'] != 3:
-        flash(
-            'Sorry, you are not authorised to access this function', 'danger')
+        flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     data = []
     if 'value' not in request.args:
         data = ideas
-        print(ideas)
     else:
         value = request.args.get('value')
         field = request.args.get('field')
@@ -560,6 +552,7 @@ def view():
             if idea[field].find(value) != -1:
                 data.append(idea)
     header = values.getColumns('Idea')
+
 
     return render_template('view.html', header=header, table=data)
 
@@ -860,7 +853,6 @@ def review():
                 os.remove(PATH)
                 image_link = uploaded_image.link
                 medias['image'] = image_link
-                print("done upload")
         except:
             pass
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
@@ -868,12 +860,10 @@ def review():
         if image_link:
             example_img = values.updateMedia(
                 IdeaID, medias['image'], 'image', datetime.now())
-            print("done img")
         else:
             example_img = True
         example_text = values.updateMedia(
             IdeaID, example, 'text', datetime.now())
-        print("done exm")
         ideacatsubcat = values.updateIdeaCatSubCat(
             IdeaID, category_id, subcategory_id)
         if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
@@ -901,7 +891,6 @@ def upload_img(upload_file):
         uploaded_image = im.upload_image(
             PATH, title="Uploaded with PyImgur")
         os.remove(PATH)
-        print("done upload")
     return uploaded_image.link
 
 
@@ -952,14 +941,12 @@ def super(tablename):
                     flash(
                         'No Such Idea exists, for which you are adding Media. Please try again!', 'warning')
                     return redirect('/super/' + tablename)
-                print("in")
                 image_link = None
                 image_link = upload_img(request.files['file'])
                 if image_link:
                     MediaID = values.getLatestMedia() + 1
                     example_img = values.insertMedia(
                         MediaID, IdeaID, image_link, 'image', session['userid'], datetime.now())
-                    print("done img")
                     if example_img:
                         flash('Media Added successfully!', 'success')
                         return redirect('/super/' + tablename)
@@ -977,7 +964,6 @@ def super(tablename):
                 MediaID = values.getLatestMedia() + 1
                 example_text = values.insertMedia(
                     MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
-                print("done exm")
                 if example_text:
                     flash('Media Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1130,7 +1116,6 @@ def super(tablename):
                     'There was problem deleting the District! Please try again!', 'warning')
 
             elif request.form['submit'] == 'add':
-                print("in Dis")
                 CountryID = request.form['CID']
                 if values.NoCountry(CountryID):
                     flash(
@@ -1528,7 +1513,7 @@ def super(tablename):
                 cols = values.getColumns(table)
                 details = []
                 details.append(request.form['LoginID'])
-                for count in range(1, len(cols)-2):
+                for count in range(1,len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.update_register(*details)
                 if updatevals:
@@ -1540,7 +1525,7 @@ def super(tablename):
                 LoginID = request.form['LoginID']
                 if values.IdeaReg(LoginID):
                     flash(
-                        'This Registration Cant be deleted since it has ideas!', 'danger')
+                    'This Registration Cant be deleted since it has ideas!', 'danger')
                     return redirect('/super/' + tablename)
                 delete = values.deleteReg(LoginID)
                 if delete:
@@ -1555,11 +1540,9 @@ def super(tablename):
             if request.form['submit'] == 'edit':
                 cols = values.getColumns(table)
                 details = []
-                print(request.form)
                 details.append(request.form['IdeaID'])
-                for count in range(2, len(cols)-2):
+                for count in range(2,len(cols)-2):
                     details.append(request.form[str(count)])
-                print(details)
                 updatevals = values.updateIdea(*details)
                 if updatevals:
                     flash('Updated Idea Details.', 'success')
@@ -1570,7 +1553,7 @@ def super(tablename):
                 IdeaID = request.form['IdeaID']
                 if values.checkIdeaentry(IdeaID):
                     flash(
-                        'This Idea cant be deleted!', 'danger')
+                    'This Idea cant be deleted!', 'danger')
                     return redirect('/super/' + tablename)
                 delete = values.deleteIdea(IdeaID)
                 if delete:
@@ -1578,125 +1561,6 @@ def super(tablename):
                     return redirect('/super/' + tablename)
                 flash(
                     'There was problem deleting the Idea! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            else:
-                pass
-        elif table == 'IdeaCatSubCat':
-            if request.form['submit'] == 'edit':
-                cols = values.getColumns(table)
-                details = []
-                print(request.form)
-                details.append(request.form['IdeaID'])
-                details.append(request.form['CatID'])
-                details.append(request.form['SubCatID'])
-                for count in range(len(cols)-2):
-                    details.append(request.form[str(count)])
-                print(details)
-                updatevals = values.updateICS(*details)
-                if updatevals:
-                    flash('Updated Idea and Category Details.', 'success')
-                flash(
-                    'There was problem editing the Idea and Category! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            elif request.form['submit'] == 'delete':
-                details = []
-                details.append(request.form['IdeaID'])
-                details.append(request.form['CatID'])
-                details.append(request.form['SubCatID'])
-                delete = values.deleteICS(*details)
-                if delete:
-                    flash('Deleted Idea and Category Details.', 'success')
-                    return redirect('/super/' + tablename)
-                flash(
-                    'There was problem deleting the Idea! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            else:
-                pass
-        elif table == 'Login':
-            if request.form['submit'] == 'edit':
-                cols = values.getColumns(table)
-                details = []
-                details.append(request.form['LoginID'])
-                for count in range(1, len(cols)-2):
-                    details.append(request.form[str(count)])
-                updatevals = values.updateLogin(*details)
-                if updatevals:
-                    flash('Updated Login Details.', 'success')
-                flash(
-                    'There was problem editing the Login Details! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            elif request.form['submit'] == 'delete':
-                if values.NoLogin(request.form['LoginID']):
-                    flash(
-                        'This Login Cant be deleted since it has Registration details!', 'danger')
-                    return redirect('/super/' + tablename)
-                delete = values.deleteLogin(request.form['LoginID'])
-                if delete:
-                    flash('Deleted Login Details.', 'success')
-                    return redirect('/super/' + tablename)
-                flash(
-                    'There was problem deleting the Login! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            elif request.form['submit'] == 'add':
-                LoginID = values.LoginID()+1
-                Username = request.form['Username']
-                Password = request.form['Password']
-                RoleID = int(request.form['RoleID'])
-                if RoleID == 2:
-                    RoleName = 'dataentry'
-                elif RoleID == 3:
-                    RoleName = 'viewer'
-                elif RoleID == 4:
-                    RoleName = 'admin'
-                elif RoleID == 5:
-                    RoleName = 'superadmin'
-                cr_by = session['userid']
-                insert = values.createLogin(
-                    LoginID, Username, Password, RoleID, RoleName, cr_by, datetime.now())
-                if insert:
-                    flash('Account Added successfully!', 'success')
-                flash(
-                    'There was problem adding the Account! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            else:
-                pass
-        elif table == 'Label':
-            if request.form['submit'] == 'edit':
-                details = []
-                details.append(request.form['LabelID'])
-                cols = values.getColumns(table)
-                for count in range(1, len(cols)-2):
-                    details.append(request.form[str(count)])
-                updatevals = values.updateLabelSA(*details)
-                if updatevals:
-                    flash('Updated Label Details.', 'success')
-                flash(
-                    'There was problem editing the Label Details! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            elif request.form['submit'] == 'delete':
-                delete = values.deleteLabel(request.form['LabelID'],request.form['1'])
-                if delete:
-                    flash('Deleted Label.', 'success')
-                    return redirect('/super/' + tablename)
-                flash(
-                    'There was problem deleting the Label! Please try again!', 'warning')
-                return redirect('/super/' + tablename)
-            elif request.form['submit'] == 'add':
-                LanguageID = request.form['LanguageID']
-                LabelID = values.getLabelID(LanguageID)+1
-                RoleID = request.form['RoleID']
-                PageName = request.form['PageName']
-                LabelType = request.form['LabelType']
-                LabelValue = request.form['LabelValue']
-                cr_by = session['userid']
-                cr_date = datetime.now()
-                insert = values.insertLabel(
-                    (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, cr_by, cr_date))
-                if insert:
-                    flash('Added Label.', 'success')
-                    return redirect('/super/' + tablename)
-                flash(
-                    'There was problem Adding a new Label! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             else:
                 pass
@@ -1711,7 +1575,7 @@ def language(langid):
     return redirect(request.args.get('next') or url_for('index'))
 
 if __name__ == '__main__':
-    print("Fetching data...")
+    print "Fetching data..."
     languages = values.gettablevalues('Language')
     for lang in languages:
         if lang[2] == 1:
@@ -1732,5 +1596,5 @@ if __name__ == '__main__':
     subcat = values.gettablevalues('SubCategory')
     tables = values.gettablelist()
     ideas = values.gettablevalues('Idea')
-    print("Data fetched successfully!")
+    print "Data fetched successfully!"
     app.run(debug=True, host='0.0.0.0', port=3000)
