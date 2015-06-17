@@ -257,7 +257,7 @@ def insertLabel(labelvalues):
     cursor = conn.cursor()
     # try:
     cursor.execute(
-        'INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)', labelvalues)
+        'INSERT INTO dbo.Label VALUES (?, ?, ?, ?, ?, ?, ?, ?)', labelvalues)
     # except:
     #     return False
     conn.commit()
@@ -1362,12 +1362,12 @@ def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
     # SA - Superadmin
     conn = getConnection()
     cursor = conn.cursor()
-    try:
-        cursor.execute('UPDATE dbo.Label set LanguageID=%d,RoleID=%d,PageName\
-            =%s,LabelType=%s,LabelValue=%s', (LabelID, LanguageID, RoleID,
-                                              PageName, LabelType, LabelValue))
-    except:
-        return False
+    # try:
+    cursor.execute('UPDATE dbo.Label set LanguageID=?,RoleID=?,PageName\
+            =?,LabelType=?,LabelValue=? WHERE LabelID=?', (LanguageID, RoleID,
+                                              PageName, LabelType, LabelValue,LabelID))
+    # except:
+    #     return False
     conn.commit()
     conn.close()
     return True
@@ -1377,7 +1377,7 @@ def getLabelID(LanguageID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(LabelID) FROM dbo.Label WHERE LanguageID = %d", LanguageID)
+        "SELECT max(LabelID) FROM dbo.Label WHERE LanguageID = ?", LanguageID)
     top = cursor.fetchall()
     if not top[0][0]:
         return 0

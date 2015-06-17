@@ -1560,7 +1560,7 @@ def super(tablename):
                     flash('Deleted Idea Details.', 'success')
                     return redirect('/super/' + tablename)
                 flash(
-                    'There was problem deleting the Idea! Please try again!', 'warning')2
+                    'There was problem deleting the Idea! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             else:
                 pass
@@ -1682,8 +1682,6 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             else:
                 pass
-        else:
-            pass
         else:
             pass
 
