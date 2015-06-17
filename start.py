@@ -1560,10 +1560,130 @@ def super(tablename):
                     flash('Deleted Idea Details.', 'success')
                     return redirect('/super/' + tablename)
                 flash(
+                    'There was problem deleting the Idea! Please try again!', 'warning')2
+                return redirect('/super/' + tablename)
+            else:
+                pass
+        elif table == 'IdeaCatSubCat':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                details.append(request.form['IdeaID'])
+                details.append(request.form['CatID'])
+                details.append(request.form['SubCatID'])
+                for count in range(len(cols)-2):
+                    details.append(request.form[str(count)])
+                print(details)
+                updatevals = values.updateICS(*details)
+                if updatevals:
+                    flash('Updated Idea and Category Details.', 'success')
+                flash(
+                    'There was problem editing the Idea and Category! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                details = []
+                details.append(request.form['IdeaID'])
+                details.append(request.form['CatID'])
+                details.append(request.form['SubCatID'])
+                delete = values.deleteICS(*details)
+                if delete:
+                    flash('Deleted Idea and Category Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
                     'There was problem deleting the Idea! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             else:
                 pass
+        elif table == 'Login':
+            if request.form['submit'] == 'edit':
+                cols = values.getColumns(table)
+                details = []
+                details.append(request.form['LoginID'])
+                for count in range(1, len(cols)-2):
+                    details.append(request.form[str(count)])
+                updatevals = values.updateLogin(*details)
+                if updatevals:
+                    flash('Updated Login Details.', 'success')
+                flash(
+                    'There was problem editing the Login Details! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                if values.NoLogin(request.form['LoginID']):
+                    flash(
+                        'This Login Cant be deleted since it has Registration details!', 'danger')
+                    return redirect('/super/' + tablename)
+                delete = values.deleteLogin(request.form['LoginID'])
+                if delete:
+                    flash('Deleted Login Details.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Login! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'add':
+                LoginID = values.LoginID()+1
+                Username = request.form['Username']
+                Password = request.form['Password']
+                RoleID = int(request.form['RoleID'])
+                if RoleID == 2:
+                    RoleName = 'dataentry'
+                elif RoleID == 3:
+                    RoleName = 'viewer'
+                elif RoleID == 4:
+                    RoleName = 'admin'
+                elif RoleID == 5:
+                    RoleName = 'superadmin'
+                cr_by = session['userid']
+                insert = values.createLogin(
+                    LoginID, Username, Password, RoleID, RoleName, cr_by, datetime.now())
+                if insert:
+                    flash('Account Added successfully!', 'success')
+                flash(
+                    'There was problem adding the Account! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
+        elif table == 'Label':
+            if request.form['submit'] == 'edit':
+                details = []
+                details.append(request.form['LabelID'])
+                cols = values.getColumns(table)
+                for count in range(1, len(cols)-2):
+                    details.append(request.form[str(count)])
+                updatevals = values.updateLabelSA(*details)
+                if updatevals:
+                    flash('Updated Label Details.', 'success')
+                flash(
+                    'There was problem editing the Label Details! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'delete':
+                delete = values.deleteLabel(request.form['LabelID'],request.form['1'])
+                if delete:
+                    flash('Deleted Label.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem deleting the Label! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            elif request.form['submit'] == 'add':
+                LanguageID = request.form['LanguageID']
+                LabelID = values.getLabelID(LanguageID)+1
+                RoleID = request.form['RoleID']
+                PageName = request.form['PageName']
+                LabelType = request.form['LabelType']
+                LabelValue = request.form['LabelValue']
+                cr_by = session['userid']
+                cr_date = datetime.now()
+                insert = values.insertLabel(
+                    (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, cr_by, cr_date))
+                if insert:
+                    flash('Added Label.', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem Adding a new Label! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
+        else:
+            pass
         else:
             pass
 
