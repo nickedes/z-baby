@@ -362,7 +362,7 @@ def updateIdea(IdeaID, title, stage_id, benefit_id, description, resource, suppo
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Idea set IdeaTitle=%s,StageID=%d,BenefitID=%d,Description=%s,ResourcesRequired=%s,Support=%s,ImplementTime=%d, Reach=%s WHERE IdeaID = %d', (title, stage_id, benefit_id, description, resource, support, implement_time, reach, IdeaID))
+            'UPDATE dbo.Idea set IdeaTitle=?,StageID=?,BenefitID=?,Description=?,ResourcesRequired=?,Support=?,ImplementTime=?, Reach=? WHERE IdeaID = ?', (title, stage_id, benefit_id, description, resource, support, implement_time, reach, IdeaID))
         conn.commit()
     except:
         return False
@@ -375,7 +375,7 @@ def updateMedia(IdeaID, Mvalue, Mtype, cr_date):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Media set MediaValue=%s,CreateDate=%s WHERE IdeaID = %d and MediaType = %s', (Mvalue, cr_date, IdeaID, Mtype))
+            'UPDATE dbo.Media set MediaValue=?,CreateDate=? WHERE IdeaID = ? and MediaType = ?', (Mvalue, cr_date, IdeaID, Mtype))
         conn.commit()
     except:
         return False
@@ -405,7 +405,6 @@ def updateIdeaCatSubCat(idea_id, category_id, subcategory_id, cr_by, cr_date):
     vals = []
     for subcategory in subcategory_id:
         vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
-    print vals
     try:
         cursor.executemany(
             'INSERT INTO dbo.IdeaCatSubCat VALUES (?, ?, ?, ?, ?)', vals)
