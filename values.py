@@ -188,22 +188,18 @@ def insertSubCat(CategoryID, SubCategoryID, LanguageID, SubValue, CreatedBy):
     return True
 
 
-def gettablevalues(tablename,LangID=0):
+def gettablevalues(tablename):
     conn = getConnection()
     cursor = conn.cursor()
-    if LangID:
+    if tablename != 'Registration' and tablename != 'IdeaCatSubCat':
         cursor.execute(
-                'SELECT * FROM dbo.%s ORDER BY %sID WHERE LanguageID = %d' % (tablename, tablename, LangID))
-    else:
-        if tablename != 'Registration' and tablename != 'IdeaCatSubCat':
-            cursor.execute(
-                'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
-        elif tablename == "Registration":
-            cursor.execute(
-                'SELECT * FROM dbo.Registration ORDER BY LoginID')
-        elif tablename == "IdeaCatSubCat":
-            cursor.execute(
-                'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
+            'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
+    elif tablename == "Registration":
+        cursor.execute(
+            'SELECT * FROM dbo.Registration ORDER BY LoginID')
+    elif tablename == "IdeaCatSubCat":
+        cursor.execute(
+            'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
     returnval = cursor.fetchall()
     conn.close()
     return returnval
@@ -429,7 +425,7 @@ def updateIdeaCatSubCat(idea_id, category_id, subcategory_id, cr_by, cr_date):
 def getIdeaUnderOperator(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = %s', str(LoginID))
+    cursor.execute('SELECT * FROM dbo.Idea WHERE CreatedBy = ?', str(LoginID))
     return cursor.fetchall()
 
 

@@ -124,12 +124,13 @@
   	<div class="form-group">
 	    <label for="" class=" control-label">{{ label[40] }}</label>
 	    <h6>{{ label[41] }}</h6>  
-		<div class="">
+		<div class="upload">
 		{% for med in media[idea[0]] %}
 			{% if med[3] == 'image' %}
 				<input type="file" name="file" >{{ med[2] }}
 			{% endif %}
 		{% endfor %}
+			<input type=file name=file>
 		</div>
 		<br><br>
   	</div>

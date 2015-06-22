@@ -483,6 +483,7 @@ def submit():
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
     else:
+        print request.form
         title = request.form['31']
         stage_id = request.form['33']
         benefit_id = request.form['34']
@@ -498,8 +499,8 @@ def submit():
         image_link = None
         try:
             file = request.files['file']
-            UPLOAD_FOLDER = '/home/kwikadi/github'
-            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+            UPLOAD_FOLDER = 'C:/'
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
             ALLOWED_EXTENSIONS_VIDEO = ser(['mp4'])
             app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
             medias = {}
@@ -511,9 +512,10 @@ def submit():
                 im = pyimgur.Imgur(CLIENT_ID)
                 uploaded_image = im.upload_image(
                     PATH, title="Uploaded with PyImgur")
-                os.remove(PATH)
+                # os.remove(PATH)
                 image_link = uploaded_image.link
                 medias['image'] = image_link
+                print medias['image']
         except:
             pass
     IdeaID = values.getLatestIdea() + 1
@@ -831,6 +833,7 @@ def review():
                                ideas=idea_details, subcats=subcatidea,
                                sublist=sub_list)
     else:
+        print request.form
         IdeaID = request.form['idea']
         title = request.form['31']
         stage_id = request.form['33']
@@ -843,12 +846,12 @@ def review():
         implement_time = request.form['46']
         reach = request.form['47']
         example = request.form['49']
-
         image_link = None
+        print "te"
         try:
             file = request.files['file']
-            UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
-            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+            UPLOAD_FOLDER = 'F:\\'
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'PNG'])
             app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
             medias = {}
             if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
@@ -863,6 +866,7 @@ def review():
                 image_link = uploaded_image.link
                 medias['image'] = image_link
         except:
+            print "no file uploads"
             pass
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach)
