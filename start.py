@@ -483,7 +483,7 @@ def submit():
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
     else:
-        print request.form
+        print request.files
         title = request.form['31']
         stage_id = request.form['33']
         benefit_id = request.form['34']
@@ -499,9 +499,9 @@ def submit():
         image_link = None
         try:
             file = request.files['file']
-            UPLOAD_FOLDER = 'C:/'
+            UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
             ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
-            ALLOWED_EXTENSIONS_VIDEO = ser(['mp4'])
+            ALLOWED_EXTENSIONS_VIDEO = set(['mp4'])
             app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
             medias = {}
             if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
@@ -1709,6 +1709,7 @@ def language(langid):
 
 if __name__ == '__main__':
     print "Fetching data..."
+    # print os.path.dirname(os.path.abspath(__file__))
     languages = values.gettablevalues('Language')
     for lang in languages:
         if lang[2] == 1:

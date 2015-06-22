@@ -762,5 +762,5 @@ print(cursor.fetchall())
 
 '''
 
-cursor.execute("SELECT * FROM dbo.Login")
+cursor.execute("SELECT * FROM dbo.Media")
 print cursor.fetchall()
