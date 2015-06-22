@@ -50,7 +50,6 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     password = "dummy"
     cursor.execute(
         'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
-    print empid
     loginid = cursor.fetchall()
         # try:
     conn = getConnection()
@@ -68,15 +67,15 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     return True
 
 
-def insertIdeaCatSubCat(idea_id, category_id, subcategory_id):
+def insertIdeaCatSubCat(idea_id, category_id, subcategory_id,cr_by, cr_date):
     conn = getConnection()
     cursor = conn.cursor()
     vals = []
     for subcategory in subcategory_id:
-        vals.append((idea_id, category_id, subcategory))
+        vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
     try:
         cursor.executemany(
-            'INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
+            'INSERT INTO dbo.IdeaCatSubCat VALUES (?, ?, ?, ?, ?)', vals)
         conn.commit()
     except:
         return False
@@ -298,7 +297,7 @@ def insertIdea(IdeaID, LoginID, title, stage, benefit, desc, resource, support, 
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO dbo.Idea VALUES (%d, %d, %s, %d, %d, %s, %s, %s, %d, %s, %s, %s)', (IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date))
+        'INSERT INTO dbo.Idea VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (IdeaID, LoginID, title, stage, benefit, desc, resource, support, time, reach, cr_by, cr_date))
     conn.commit()
     conn.close()
     return True
@@ -320,7 +319,7 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Media VALUES (%d, %d, %s, %s, %s, %s)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
+            'INSERT INTO dbo.Media VALUES (?, ?, ?, ?, ?, ?)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
     except:
         return False
     conn.commit()
@@ -363,7 +362,7 @@ def getLoginID(Username):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT LoginID FROM dbo.Login WHERE Username=%s', (Username))
+        'SELECT LoginID FROM dbo.Login WHERE Username=?', (Username))
     row = cursor.fetchall()
     return row[0][0]
 

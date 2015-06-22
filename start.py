@@ -468,10 +468,11 @@ def submit():
         subcat_dict = {}
         for cat in category:
             sublist = []
-            for sub in subcat:
-                if sub[1] == cat[1]:
-                    sublist.append([sub[3], sub[2], sub[1]])
-            subcat_dict[cat[1]] = sublist
+            if cat[0] == session['LanguageID']:
+                for sub in subcat:
+                    if sub[1] == cat[1] and sub[0] == session['LanguageID']:
+                        sublist.append([sub[3], sub[2], sub[1]])
+                subcat_dict[cat[1]] = sublist
         teachers = values.teacherUnderOperator(session['userid'])
         return render_template('submit.html', teachers=teachers,
                                label=label_dict, benefit=bene_dict,
@@ -529,7 +530,7 @@ def submit():
     example_text = values.insertMedia(
         MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
     ideacatsubcat = values.insertIdeaCatSubCat(
-        IdeaID, category_id, subcategory_id)
+        IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
         flash('The idea has been submitted successfully!', 'success')
         return redirect(url_for('home'))
