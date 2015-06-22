@@ -96,7 +96,7 @@ def getReg_underoperator(loginid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Registration WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+        'SELECT * FROM dbo.Registration WHERE CreatedBy = ? AND LoginID <> ?', (str(loginid), loginid))
     teachers = cursor.fetchall()
     conn.close()
     return teachers
@@ -339,21 +339,23 @@ def getRegisteration_details(LoginID):
 def update_register(LoginID, name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
                     empid, qual, gender, resi_addr, email, desig, subj, block,
                     dist, state, country):
-    conn = getConnection()
-    cursor = conn.cursor()
+    conn_reg = getConnection()
+    cursor = conn_reg.cursor()
     try:
         cursor.execute('UPDATE dbo.Registration set Name=?, DateOfBirth=?, SchoolName=?, SchoolAddress=?, PhoneNumber=?, AlternateNumber=?, DateOfJoining=?,Awards=?,EmployeeID=?,Qualification=?,Gender=?,ResidentialAddress=?,EmailID=?,Designation=?,Subjects=?,BlockID=?,DistrictID=?,StateID=?,CountryID=? WHERE LoginID = ?', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
                                                                                                                                                                                                                                                                                                                                                          empid, qual, gender, resi_addr, email, desig, subj, block,
-                                                                                                                                                                                                                                                                                                                                                         dist, state, country, LoginID))
-        conn.commit()
+                                                                                                                                                                                                                                                                                                                                                         dist, state, country, int(LoginID)))
         try:
-            cursor.execute(
-                'UPDATE dbo.Login set Username=? WHERE LoginID=?', (empid, LoginID))
+            conn = getConnection()
+            cursor = conn.cursor()
+            cursor.execute('UPDATE dbo.Login set Username=? WHERE LoginID=?', (empid, LoginID))
             conn.commit()
+            conn_reg.commit()
         except:
             return False
     except:
         return False
+    conn_reg.close()
     conn.close()
     return True
 

@@ -356,25 +356,28 @@ def update():
         countrylist = {}
         for single_country in country:
             statelist = []
-            for single_state in state:
-                if single_state[1] == single_country[1]:
-                    statelist.append([single_state[3], single_state[2]])
-            countrylist[single_country[1]] = statelist
+            if single_country[0] == session['LanguageID']:
+                for single_state in state:
+                    if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
+                        statelist.append([single_state[3], single_state[2]])
+                countrylist[single_country[1]] = statelist
         statelist = {}
         for single_state in state:
             districtlist = []
-            for single_district in district:
-                if single_district[2] == single_state[2]:
-                    districtlist.append(
-                        [single_district[4], single_district[3]])
-            statelist[single_state[2]] = districtlist
+            if single_state[0] == session['LanguageID']:
+                for single_district in district:
+                    if single_district[2] == single_state[2] and single_district[0] == session['LanguageID']:
+                        districtlist.append(
+                            [single_district[4], single_district[3]])
+                statelist[single_state[2]] = districtlist
         districtdict = {}
         for single_district in district:
             blocklist = []
-            for single_block in block:
-                if single_block[3] == single_district[3]:
-                    blocklist.append([single_block[5], single_block[4]])
-            districtdict[single_district[3]] = blocklist
+            if single_district[0] == session['LanguageID']:
+                for single_block in block:
+                    if single_block[3] == single_district[3]:
+                        blocklist.append([single_block[5], single_block[4]])
+                districtdict[single_district[3]] = blocklist
         teachers = values.teacherUnderOperator(session['userid'])
         if session['RoleID'] == 1:
             details = values.getRegisteration_details(session['userid'])
@@ -387,6 +390,7 @@ def update():
                                details=details)
     else:
         teacher_id = None
+        print request.form
         if 'teacher_id' in request.form:
             teacher_id = request.form['teacher_id']
         name = request.form['10']
