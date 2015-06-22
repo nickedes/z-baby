@@ -126,7 +126,9 @@
       <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
         <option>..</option>
         {% for data in country %}
-          <option value="{{ data[1] }}" >{{ data[2] }}</option>
+          {% if data[0] == session['LanguageID'] %}
+            <option value="{{ data[1] }}" >{{ data[2] }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>

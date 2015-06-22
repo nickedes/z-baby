@@ -182,18 +182,22 @@ def insertSubCat(CategoryID, SubCategoryID, LanguageID, SubValue, CreatedBy):
     return True
 
 
-def gettablevalues(tablename):
+def gettablevalues(tablename,LangID=0):
     conn = getConnection()
     cursor = conn.cursor()
-    if tablename != 'Registration' and tablename != 'IdeaCatSubCat':
+    if LangID:
         cursor.execute(
-            'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
-    elif tablename == "Registration":
-        cursor.execute(
-            'SELECT * FROM dbo.Registration ORDER BY LoginID')
-    elif tablename == "IdeaCatSubCat":
-        cursor.execute(
-            'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
+                'SELECT * FROM dbo.%s ORDER BY %sID WHERE LanguageID = %d' % (tablename, tablename, LangID))
+    else:
+        if tablename != 'Registration' and tablename != 'IdeaCatSubCat':
+            cursor.execute(
+                'SELECT * FROM dbo.%s ORDER BY %sID' % (tablename, tablename))
+        elif tablename == "Registration":
+            cursor.execute(
+                'SELECT * FROM dbo.Registration ORDER BY LoginID')
+        elif tablename == "IdeaCatSubCat":
+            cursor.execute(
+                'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
     returnval = cursor.fetchall()
     conn.close()
     return returnval
@@ -388,7 +392,7 @@ def updateLabel(LabelID, LabelValue, LanguageID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Label set LabelValue=%s WHERE LabelID = %d and LanguageID = %d', (LabelValue, LabelID, LanguageID))
+            'UPDATE dbo.Label set LabelValue=? WHERE LabelID = ? and LanguageID = ?', (LabelValue, LabelID, LanguageID))
         conn.commit()
     except:
         return False
@@ -426,7 +430,7 @@ def updateCat(LangID, CategoryID, CategoryValue):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Category set CategoryValue = %s WHERE CategoryID = %d and LanguageID = %d', (CategoryValue, CategoryID, LangID))
+            'UPDATE dbo.Category set CategoryValue = ? WHERE CategoryID = ? and LanguageID = ?', (CategoryValue, CategoryID, LangID))
     except:
         return False
     conn.commit()
