@@ -497,27 +497,27 @@ def submit():
         reach = request.form['47']
         example = request.form['49']
         image_link = None
-        try:
-            file = request.files['file']
-            UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
-            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
-            ALLOWED_EXTENSIONS_VIDEO = set(['mp4'])
-            app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-            medias = {}
-            if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
-                filename = secure_filename(file.filename)
-                PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(PATH)
-                CLIENT_ID = values.getClient_ID()
-                im = pyimgur.Imgur(CLIENT_ID)
-                uploaded_image = im.upload_image(
-                    PATH, title="Uploaded with PyImgur")
-                # os.remove(PATH)
-                image_link = uploaded_image.link
-                medias['image'] = image_link
-                print medias['image']
-        except:
-            pass
+        # try:
+        file = request.files['file']
+        UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
+        ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
+        ALLOWED_EXTENSIONS_VIDEO = set(['mp4'])
+        app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+        medias = {}
+        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
+            filename = secure_filename(file.filename)
+            PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(PATH)
+            CLIENT_ID = values.getClient_ID()
+            im = pyimgur.Imgur(CLIENT_ID)
+            uploaded_image = im.upload_image(
+                PATH, title="Uploaded with PyImgur")
+            os.remove(PATH)
+            image_link = uploaded_image.link
+            medias['image'] = image_link
+            print "img upload"
+        # except:
+        #     pass
     IdeaID = values.getLatestIdea() + 1
     if session['RoleID'] == 1:
         LoginID = session['userid']
@@ -530,6 +530,7 @@ def submit():
         MediaID = values.getLatestMedia() + 1
         example_img = values.insertMedia(
             MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
+        print "img upload nd db"
     else:
         example_img = True
     MediaID = values.getLatestMedia() + 1

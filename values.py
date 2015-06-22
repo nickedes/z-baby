@@ -313,11 +313,11 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     # MediaID, IdeaID, 'image', medias['image'], LoginID, datetime.now()
     conn = getConnection()
     cursor = conn.cursor()
-    try:
-        cursor.execute(
+    # try:
+    cursor.execute(
             'INSERT INTO dbo.Media VALUES (?, ?, ?, ?, ?, ?)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
-    except:
-        return False
+    # except:
+    #     return False
     conn.commit()
     conn.close()
     return True
