@@ -334,7 +334,7 @@ def create():
                                          session['userid'], datetime.now())
         if insertvals:
             flash(
-                'Please sign in using your Employee ID as Username and OTP as Password.', 'info')
+                'A new teacher profile created.', 'info')
             return redirect(url_for('login'))
         flash('Something went wrong! Please try again later!', 'danger')
         return redirect(url_for('index'))

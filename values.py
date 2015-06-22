@@ -40,29 +40,31 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
                  dist, state, country, cr_by, cr_date):
     conn_reg = getConnection()
     cursor = conn_reg.cursor()
-    try:
-        vals = (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date)
-        cursor.execute(
-            'INSERT INTO dbo.Registration VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', vals)
-        conn_reg.commit()
-        # todo: Password Logic
-        password = "dummy"
-        cursor.execute(
-            'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = %s', empid)
-        loginid = cursor.fetchall()
-        try:
-            conn = getConnection()
-            cursor = conn.cursor()
-            cursor.execute(
-                'INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
-            conn_reg.commit()
-            conn.commit()
-            conn_reg.close()
-            conn.close()
-        except:
-            return False
-    except:
-        return False
+    # try:
+    vals = (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date)
+    cursor.execute(
+        'INSERT INTO dbo.Registration VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', vals)
+
+
+    # todo: Password Logic
+    password = "dummy"
+    cursor.execute(
+        'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
+    print empid
+    loginid = cursor.fetchall()
+        # try:
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
+    conn_reg.commit()
+    conn.commit()
+    conn_reg.close()
+    conn.close()
+    #     except:
+    #         return False
+    # except:
+    #     return False
     return True
 
 
