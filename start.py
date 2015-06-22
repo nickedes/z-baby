@@ -878,8 +878,8 @@ def review():
 
 def upload_img(upload_file):
     file = upload_file
-    UPLOAD_FOLDER = '/home/nickedes/zie_uploads'
-    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+    UPLOAD_FOLDER = r'F:\\'
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
         filename = secure_filename(file.filename)
@@ -887,7 +887,9 @@ def upload_img(upload_file):
             app.config['UPLOAD_FOLDER'], filename)
         file.save(PATH)
         CLIENT_ID = values.getClient_ID()
+        print CLIENT_ID
         im = pyimgur.Imgur(CLIENT_ID)
+        print im
         uploaded_image = im.upload_image(
             PATH, title="Uploaded with PyImgur")
         os.remove(PATH)

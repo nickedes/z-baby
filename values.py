@@ -19,12 +19,10 @@ def getConnection():
 
 
 def getClient_ID():
-    CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+    config = ConfigParser.RawConfigParser()
+    config.read('config.ini')
 
-    config = ConfigParser()
-    config.read(os.path.join(CURRENT_DIR, 'config.ini'))
-
-    CLIENT_ID = config["Imgur"]["CLIENT_ID"]
+    CLIENT_ID = config.get('Imgur','CLIENT_ID')
     return CLIENT_ID
 
 
@@ -82,7 +80,7 @@ def teacherUnderOperator(loginid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Login WHERE CreatedBy = %s AND LoginID <> %d', (str(loginid), loginid))
+        'SELECT * FROM dbo.Login WHERE CreatedBy = ? AND LoginID <> ?', (str(loginid), loginid))
     teachers = cursor.fetchall()
     conn.close()
     return teachers
@@ -323,7 +321,7 @@ def getRegisteration_details(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT * FROM dbo.Registration where LoginID = %d", LoginID)
+        "SELECT * FROM dbo.Registration where LoginID = ?", LoginID)
     row = cursor.fetchall()
     return row
 
@@ -534,7 +532,7 @@ def SupdateMedia(MediaID, IdeaID, value, Mtype):
 def NoIdea(IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Idea WHERE IdeaID=%d', IdeaID)
+    cursor.execute('SELECT * FROM dbo.Idea WHERE IdeaID=?', IdeaID)
     if cursor.fetchall() == []:
         return True
     return False

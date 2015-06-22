@@ -756,7 +756,10 @@ else:
     print("yes")
 cursor.execute("SELECT * FROM dbo.IdeaCatSubCat")
 print(cursor.fetchall())
-'''
 cursor.execute(
     "SELECT DATABASEPROPERTYEX(%s,%s) SQLCollation", ('ziiei', 'Collation'))
 print(cursor.fetchall())
+
+'''
+import pyimgur
+CLIENT_ID = d040b134e8b6db1
