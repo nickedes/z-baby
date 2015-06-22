@@ -117,7 +117,7 @@ def getIdeaCatSubCat(ideaid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', (ideaid))
+        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = ?', (ideaid))
     CatSubCats = cursor.fetchall()
     conn.close()
     return CatSubCats
@@ -127,7 +127,7 @@ def getMedia(ideaid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Media WHERE IdeaID = %d', (ideaid))
+        'SELECT * FROM dbo.Media WHERE IdeaID = ?', (ideaid))
     media = cursor.fetchall()
     conn.close()
     return media
@@ -137,7 +137,7 @@ def getIdeaInfo(loginid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Idea WHERE LoginID = %d', (loginid))
+        'SELECT * FROM dbo.Idea WHERE LoginID = ?', (loginid))
     ideas = cursor.fetchall()
     conn.close()
     return ideas
@@ -332,13 +332,13 @@ def update_register(LoginID, name, dob, sch_name, sch_addr, ph, alt_ph, doj, awa
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.Registration set Name=%s, DateOfBirth=%s, SchoolName=%s, SchoolAddress=%s, PhoneNumber=%d, AlternateNumber=%d, DateOfJoining=%s,Awards=%s,EmployeeID=%s,Qualification=%s,Gender=%s,ResidentialAddress=%s,EmailID=%s,Designation=%s,Subjects=%s,BlockID=%d,DistrictID=%d,StateID=%d,CountryID=%d WHERE LoginID = %d', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
+        cursor.execute('UPDATE dbo.Registration set Name=?, DateOfBirth=?, SchoolName=?, SchoolAddress=?, PhoneNumber=?, AlternateNumber=?, DateOfJoining=?,Awards=?,EmployeeID=?,Qualification=?,Gender=?,ResidentialAddress=?,EmailID=?,Designation=?,Subjects=?,BlockID=?,DistrictID=?,StateID=?,CountryID=? WHERE LoginID = ?', (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
                                                                                                                                                                                                                                                                                                                                                          empid, qual, gender, resi_addr, email, desig, subj, block,
                                                                                                                                                                                                                                                                                                                                                          dist, state, country, LoginID))
         conn.commit()
         try:
             cursor.execute(
-                'UPDATE dbo.Login set Username=%s WHERE LoginID=%d', (empid, LoginID))
+                'UPDATE dbo.Login set Username=? WHERE LoginID=?', (empid, LoginID))
             conn.commit()
         except:
             return False
@@ -396,18 +396,19 @@ def updateLabel(LabelID, LabelValue, LanguageID):
     return True
 
 
-def updateIdeaCatSubCat(idea_id, category_id, subcategory_id):
+def updateIdeaCatSubCat(idea_id, category_id, subcategory_id, cr_by, cr_date):
     # Todo: Improve
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d', (idea_id))
+    cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=?', (idea_id))
     conn.commit()
     vals = []
     for subcategory in subcategory_id:
-        vals.append((idea_id, category_id, subcategory))
+        vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
+    print vals
     try:
         cursor.executemany(
-            'INSERT INTO dbo.IdeaCatSubCat VALUES (%d, %d, %d)', vals)
+            'INSERT INTO dbo.IdeaCatSubCat VALUES (?, ?, ?, ?, ?)', vals)
         conn.commit()
     except:
         return False

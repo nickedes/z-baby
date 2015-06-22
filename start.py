@@ -865,7 +865,7 @@ def review():
         example_text = values.updateMedia(
             IdeaID, example, 'text', datetime.now())
         ideacatsubcat = values.updateIdeaCatSubCat(
-            IdeaID, category_id, subcategory_id)
+            IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
         if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
             flash('The idea has been submitted successfully!', 'success')
             return redirect(url_for('home'))

@@ -1,20 +1,20 @@
 import os
 import datetime
-import pymssql
-from configparser import ConfigParser
+import pyodbc
+import ConfigParser
 from datetime import datetime
 
-CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+config = ConfigParser.RawConfigParser()
+config.read('config.ini')
 
-config = ConfigParser()
-config.read(os.path.join(CURRENT_DIR, 'config.ini'))
+server = config.get('Database', 'server')
+user = config.get('Database', 'user')
+password = config.get('Database', 'password')
 
-server = config["Database"]["server"]
-user = config["Database"]["user"]
-password = config["Database"]["password"]
+connection_string = 'DRIVER={SQL Server};SERVER=%s;DATABASE=ziiei;UID=%s;PWD=%s' % (server, user, password)
 
-conn = pymssql.connect(server, user, password, "ziiei")
-cursor = conn.cursor()
+cnxn = pyodbc.connect(connection_string)
+cursor = cnxn.cursor()
 '''
 <li><a href="/workflow">Workflow with timelines</a></li>
                     <li><a href="/apply">How to apply</a></li>
@@ -386,7 +386,7 @@ cursor.executemany(
         (1, 2,"Create more supportive environment for girl child education" ,'nickedes',str(datetime.now())),
         (1, 3,"Facilitate inclusive education for children with special needs" ,'nickedes',str(datetime.now())),
         (1, 4,"Create an enquiry-led self-learning environment in the classroom/school" ,'nickedes',str(datetime.now())),
-        (1, 5,"Increase the involvement of students’ parents in Education" ,'nickedes',str(datetime.now())),
+        (1, 5,"Increase the involvement of students parents in Education" ,'nickedes',str(datetime.now())),
         (1, 6,"Improve the rate of student enrolment in schools " ,'nickedes',str(datetime.now())),
         (1, 7,"Reduce the rate of student drop-out from schools" ,'nickedes',str(datetime.now())),
         (1, 8,"Enhancement of deeper human values in the students, staff, school or community" ,'nickedes',str(datetime.now())),
@@ -761,5 +761,6 @@ cursor.execute(
 print(cursor.fetchall())
 
 '''
-import pyimgur
-CLIENT_ID = d040b134e8b6db1
+
+cursor.execute("SELECT * FROM dbo.Login")
+print cursor.fetchall()
