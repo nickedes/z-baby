@@ -167,7 +167,7 @@ def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
+            'INSERT INTO dbo.Category VALUES (?, ?, ?, ?, ?)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -181,7 +181,7 @@ def insertSubCat(CategoryID, SubCategoryID, LanguageID, SubValue, CreatedBy):
     # SubCategory (LanguageID, CategoryID, SubCategoryID, SubCategoryValue, CreatedBy, CreateDate)
     try:
         cursor.execute(
-            'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', (LanguageID, CategoryID, SubCategoryID, SubValue, CreatedBy, CreateDate))
+            'INSERT INTO dbo.SubCategory VALUES (?, ?, ?, ?, ?, ?)', (LanguageID, CategoryID, SubCategoryID, SubValue, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -208,11 +208,11 @@ def gettablevalues(tablename):
 def insertMenu(menuvalues):
     conn = getConnection()
     cursor = conn.cursor()
-    try:
-        cursor.execute(
-            'INSERT INTO dbo.Menu VALUES (%d, %d, %s, %s, %s, %d, %s, %s)', menuvalues)
-    except:
-        return False
+    # try:
+    cursor.execute(
+            'INSERT INTO dbo.Menu VALUES (?, ?, ?, ?, ?, ?, ?, ?)', menuvalues)
+    # except:
+    #     return False
     conn.commit()
     return True
 
@@ -223,7 +223,7 @@ def insertCountry(LanguageID, CountryID, CountryName, CreatedBy):
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)', (LanguageID, CountryID, CountryName, CreatedBy, CreateDate))
+            'INSERT INTO dbo.Country VALUES (?, ?, ?, ?, ?)', (LanguageID, CountryID, CountryName, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -237,7 +237,7 @@ def insertState(LanguageID, CountryID, StateID, StateName, CreatedBy):
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.State VALUES (%d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, StateName, CreatedBy, CreateDate))
+            'INSERT INTO dbo.State VALUES (?, ?, ?, ?, ?, ?)', (LanguageID, CountryID, StateID, StateName, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -249,7 +249,7 @@ def insertSubMenu(submenuvalues):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'INSERT INTO dbo.SubMenu VALUES (%d, %d, %d, %s, %s, %d, %s, %s)', submenuvalues)
+            'INSERT INTO dbo.SubMenu VALUES (?, ?, ?, ?, ?, ?, ?, ?)', submenuvalues)
     except:
         return False
     conn.commit()
@@ -529,7 +529,7 @@ def SupdateMedia(MediaID, IdeaID, value, Mtype):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.Media set IdeaID = %d, MediaValue = %s, MediaType = %s WHERE MediaID = %d',
+        cursor.execute('UPDATE dbo.Media set IdeaID = ?, MediaValue = ?, MediaType = ? WHERE MediaID = ?',
                        (IdeaID, value, Mtype, MediaID))
     except:
         return False
@@ -551,7 +551,7 @@ def deleteMedia(MediaID, IdeaID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Media WHERE MediaID=%d and IdeaID=%d', (MediaID, IdeaID))
+            'DELETE FROM dbo.Media WHERE MediaID=? and IdeaID=?', (MediaID, IdeaID))
     except:
         return False
     conn.commit()
@@ -563,7 +563,7 @@ def CheckCountry(CountryID):
     # If yes then NO DELETION!
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.State WHERE CountryID=%d', CountryID)
+    cursor.execute('SELECT * FROM dbo.State WHERE CountryID=?', CountryID)
     if cursor.fetchall():
         return True
     return False
@@ -574,7 +574,7 @@ def deleteCountry(LangID, CountryID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Country WHERE CountryID=%d and LanguageID=%d', (CountryID, LangID))
+            'DELETE FROM dbo.Country WHERE CountryID=? and LanguageID=?', (CountryID, LangID))
     except:
         return False
     conn.commit()
@@ -585,7 +585,7 @@ def getCountryID(LangID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(CountryID) FROM dbo.Country WHERE LanguageID = %d", LangID)
+        "SELECT max(CountryID) FROM dbo.Country WHERE LanguageID = ?", LangID)
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -596,7 +596,7 @@ def getStateID(LangID, CountryID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(StateID) FROM dbo.State WHERE CountryID = %d and LanguageID = %d", (CountryID, LangID))
+        "SELECT max(StateID) FROM dbo.State WHERE CountryID = ? and LanguageID = ?", (CountryID, LangID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -606,7 +606,7 @@ def getStateID(LangID, CountryID):
 def CheckState(StateID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.District WHERE StateID=%d', StateID)
+    cursor.execute('SELECT * FROM dbo.District WHERE StateID=?', StateID)
     if cursor.fetchall():
         return True
     return False
@@ -617,7 +617,7 @@ def deleteState(LangID, CountryID, StateID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.State WHERE CountryID=%d and LanguageID=%d and StateID=%d',
+            'DELETE FROM dbo.State WHERE CountryID=? and LanguageID=? and StateID=?',
             (CountryID, LangID, StateID))
     except:
         return False
@@ -628,7 +628,7 @@ def deleteState(LangID, CountryID, StateID):
 def CheckDistrict(DistrictID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Block WHERE DistrictID=%d', DistrictID)
+    cursor.execute('SELECT * FROM dbo.Block WHERE DistrictID=?', DistrictID)
     if cursor.fetchall():
         return True
     return False
@@ -639,7 +639,7 @@ def deleteDistrict(LangID, CountryID, StateID, DistrictID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.District WHERE CountryID=%d and LanguageID=%d and StateID=%d and DistrictID=%d',
+            'DELETE FROM dbo.District WHERE CountryID=? and LanguageID=? and StateID=? and DistrictID=?',
             (CountryID, LangID, StateID, DistrictID))
     except:
         return False
@@ -650,7 +650,7 @@ def deleteDistrict(LangID, CountryID, StateID, DistrictID):
 def NoCountry(CountryID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Country WHERE CountryID=%d', CountryID)
+    cursor.execute('SELECT * FROM dbo.Country WHERE CountryID=?', CountryID)
     if cursor.fetchall() == []:
         return True
     return False
@@ -659,7 +659,7 @@ def NoCountry(CountryID):
 def NoState(StateID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.State WHERE StateID=%d', StateID)
+    cursor.execute('SELECT * FROM dbo.State WHERE StateID=?', StateID)
     if cursor.fetchall() == []:
         return True
     return False
@@ -669,7 +669,7 @@ def getDistrictID(LangID, CountryID, StateID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(DistrictID) FROM dbo.District WHERE LanguageID =%d and CountryID = %d and StateID = %d", (LangID, CountryID, StateID))
+        "SELECT max(DistrictID) FROM dbo.District WHERE LanguageID =? and CountryID = ? and StateID = ?", (LangID, CountryID, StateID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -680,7 +680,7 @@ def NoDistrict(DistrictID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.District WHERE DistrictID=%d', DistrictID)
+        'SELECT * FROM dbo.District WHERE DistrictID=?', DistrictID)
     if cursor.fetchall() == []:
         return True
     return False
@@ -692,7 +692,7 @@ def insertDistrict(LanguageID, CountryID, StateID, DistrictID, DistrictName, Cre
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictID, DistrictName, CreatedBy, CreateDate))
+            'INSERT INTO dbo.District VALUES (?, ?, ?, ?, ?, ?, ?)', (LanguageID, CountryID, StateID, DistrictID, DistrictName, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -704,7 +704,7 @@ def deleteBlock(LangID, CountryID, StateID, DistrictID, BlockID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Block WHERE CountryID=%d and LanguageID=%d and StateID=%d and DistrictID=%d and BlockID=%d',
+            'DELETE FROM dbo.Block WHERE CountryID=? and LanguageID=? and StateID=? and DistrictID=? and BlockID=?',
             (CountryID, LangID, StateID, DistrictID, BlockID))
     except:
         return False
@@ -716,8 +716,8 @@ def getBlockID(LangID, CountryID, StateID, DistrictID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(BlockID) FROM dbo.Block WHERE LanguageID = %d and CountryID = %d and StateID = %d \
-         and DistrictID = %d", (LangID, CountryID, StateID, DistrictID))
+        "SELECT max(BlockID) FROM dbo.Block WHERE LanguageID = ? and CountryID = ? and StateID = ? \
+         and DistrictID = ?", (LangID, CountryID, StateID, DistrictID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -730,7 +730,7 @@ def insertBlock(LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, 
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', (LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy, CreateDate))
+            'INSERT INTO dbo.Block VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (LanguageID, CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -741,7 +741,7 @@ def getCatID(LangID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(CategoryID) FROM dbo.Category WHERE LanguageID = %d", LangID)
+        "SELECT max(CategoryID) FROM dbo.Category WHERE LanguageID = ?", LangID)
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -752,7 +752,7 @@ def CheckCategory(CategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.SubCategory WHERE CategoryID=%d', CategoryID)
+        'SELECT * FROM dbo.SubCategory WHERE CategoryID=?', CategoryID)
     if cursor.fetchall():
         return True
     return False
@@ -762,7 +762,7 @@ def NoCategory(CategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Category WHERE CategoryID=%d', CategoryID)
+        'SELECT * FROM dbo.Category WHERE CategoryID=?', CategoryID)
     if cursor.fetchall() == []:
         return True
     return False
@@ -772,7 +772,7 @@ def getSubCatID(LangID, CategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(SubCategoryID) FROM dbo.SubCategory WHERE LanguageID = %d and CategoryID = %d", (LangID, CategoryID))
+        "SELECT max(SubCategoryID) FROM dbo.SubCategory WHERE LanguageID = ? and CategoryID = ?", (LangID, CategoryID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -784,7 +784,7 @@ def deleteCategory(LangID, CategoryID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Category WHERE CategoryID=%d and LanguageID=%d', (CategoryID, LangID))
+            'DELETE FROM dbo.Category WHERE CategoryID=? and LanguageID=?', (CategoryID, LangID))
     except:
         return False
     conn.commit()
@@ -796,7 +796,7 @@ def deleteSub(LangID, CatID, SubCatID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.SubCategory WHERE LanguageID=%d  and CategoryID=%d and SubCategoryID=%d',
+            'DELETE FROM dbo.SubCategory WHERE LanguageID=?  and CategoryID=? and SubCategoryID=?',
             (LangID, CatID, SubCatID))
     except:
         return False
@@ -821,7 +821,7 @@ def deleteStage(LangID, StageID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Stage WHERE StageID=%d and LanguageID=%d', (StageID, LangID))
+            'DELETE FROM dbo.Stage WHERE StageID=? and LanguageID=?', (StageID, LangID))
     except:
         return False
     conn.commit()
@@ -832,7 +832,7 @@ def getStageID(LangID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(StageID) FROM dbo.Stage WHERE LanguageID = %d", LangID)
+        "SELECT max(StageID) FROM dbo.Stage WHERE LanguageID = ?", LangID)
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -845,7 +845,7 @@ def insertStage(LanguageID, StageID, value, CreatedBy):
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Stage VALUES (%d, %d, %s, %s, %s)', (LanguageID, StageID, value, CreatedBy, CreateDate))
+            'INSERT INTO dbo.Stage VALUES (?, ?, ?, ?, ?)', (LanguageID, StageID, value, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -883,7 +883,7 @@ def insertLang(name, CreatedBy):
     CreateDate = datetime.now()
 
     cursor.execute(
-        'INSERT INTO dbo.Language VALUES (%s, %d, %s, %s)', (name, 0, CreatedBy, CreateDate))
+        'INSERT INTO dbo.Language VALUES (?, ?, ?, ?)', (name, 0, CreatedBy, CreateDate))
     conn.commit()
 
     lang_id = getLangID()
@@ -979,37 +979,37 @@ def insertLang(name, CreatedBy):
             finalsubcategory.append(subcategorytuple)
 
     cursor.executemany(
-        'INSERT INTO dbo.Label VALUES (%d, %d, %d, %s, %s, %s, %s, %s)', finallabel)
+        'INSERT INTO dbo.Label VALUES (?, ?, ?, ?, ?, ?, ?, ?)', finallabel)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Menu VALUES (%d, %d, %s, %s, %s, %d, %s, %s)', finalmenu)
+        'INSERT INTO dbo.Menu VALUES (?, ?, ?, ?, ?, ?, ?, ?)', finalmenu)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.SubMenu VALUES (%d, %d, %d, %s, %s, %d, %s, %s)', finalsubmenu)
+        'INSERT INTO dbo.SubMenu VALUES (?, ?, ?, ?, ?, ?, ?, ?)', finalsubmenu)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Country VALUES (%d, %d, %s, %s, %s)', finalcountry)
+        'INSERT INTO dbo.Country VALUES (?, ?, ?, ?, ?)', finalcountry)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.State VALUES (%d, %d, %d, %s, %s, %s)', finalstate)
+        'INSERT INTO dbo.State VALUES (?, ?, ?, ?, ?, ?)', finalstate)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.District VALUES (%d, %d, %d, %d, %s, %s, %s)', finaldistrict)
+        'INSERT INTO dbo.District VALUES (?, ?, ?, ?, ?, ?, ?)', finaldistrict)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Block VALUES (%d, %d, %d, %d, %d, %s, %s, %s)', finalblock)
+        'INSERT INTO dbo.Block VALUES (?, ?, ?, ?, ?, ?, ?, ?)', finalblock)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)', finalbenefit)
+        'INSERT INTO dbo.Benefit VALUES (?, ?, ?, ?, ?)', finalbenefit)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Stage VALUES (%d, %d, %s, %s, %s)', finalstage)
+        'INSERT INTO dbo.Stage VALUES (?, ?, ?, ?, ?)', finalstage)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.Category VALUES (%d, %d, %s, %s, %s)', finalcategory)
+        'INSERT INTO dbo.Category VALUES (?, ?, ?, ?, ?)', finalcategory)
     conn.commit()
     cursor.executemany(
-        'INSERT INTO dbo.SubCategory VALUES (%d, %d, %d, %s, %s, %s)', finalsubcategory)
+        'INSERT INTO dbo.SubCategory VALUES (?, ?, ?, ?, ?, ?)', finalsubcategory)
     conn.commit()
     return True
 
@@ -1036,7 +1036,7 @@ def updateLang(LangID, name, masterlang):
         else:
             return False
         cursor.execute(
-            'UPDATE dbo.Language set LanguageName = %s,MasterLanguage=%d WHERE LanguageID = %d', (name, masterlang, LangID))
+            'UPDATE dbo.Language set LanguageName = ?,MasterLanguage=? WHERE LanguageID = ?', (name, masterlang, LangID))
     except:
         return False
     conn.commit()
@@ -1046,22 +1046,22 @@ def updateLang(LangID, name, masterlang):
 def checkLang(LangID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Menu WHERE LanguageID=%d', LangID)
+    cursor.execute('SELECT * FROM dbo.Menu WHERE LanguageID=?', LangID)
     if cursor.fetchall():
         return True
-    cursor.execute('SELECT * FROM dbo.Benefit WHERE LanguageID=%d', LangID)
+    cursor.execute('SELECT * FROM dbo.Benefit WHERE LanguageID=?', LangID)
     if cursor.fetchall():
         return True
-    cursor.execute('SELECT * FROM dbo.Stage WHERE LanguageID=%d', LangID)
+    cursor.execute('SELECT * FROM dbo.Stage WHERE LanguageID=?', LangID)
     if cursor.fetchall():
         return True
-    cursor.execute('SELECT * FROM dbo.Category WHERE LanguageID=%d', LangID)
+    cursor.execute('SELECT * FROM dbo.Category WHERE LanguageID=?', LangID)
     if cursor.fetchall():
         return True
-    cursor.execute('SELECT * FROM dbo.Country WHERE LanguageID=%d', LangID)
+    cursor.execute('SELECT * FROM dbo.Country WHERE LanguageID=?', LangID)
     if cursor.fetchall():
         return True
-    cursor.execute('SELECT * FROM dbo.Label WHERE LanguageID=%d', LangID)
+    cursor.execute('SELECT * FROM dbo.Label WHERE LanguageID=?', LangID)
     if cursor.fetchall():
         return True
     return False
@@ -1071,7 +1071,7 @@ def deleteLang(LangID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.Language WHERE LanguageID=%d', LangID)
+        cursor.execute('DELETE FROM dbo.Language WHERE LanguageID=?', LangID)
     except:
         return False
     conn.commit()
@@ -1095,7 +1095,7 @@ def deleteBenefit(LangID, BenefitID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Benefit WHERE BenefitID=%d and LanguageID=%d', (BenefitID, LangID))
+            'DELETE FROM dbo.Benefit WHERE BenefitID=? and LanguageID=?', (BenefitID, LangID))
     except:
         return False
     conn.commit()
@@ -1106,7 +1106,7 @@ def getBenefitID(LangID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(BenefitID) FROM dbo.Benefit WHERE LanguageID = %d", LangID)
+        "SELECT max(BenefitID) FROM dbo.Benefit WHERE LanguageID = ?", LangID)
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -1119,7 +1119,7 @@ def insertBenefit(LanguageID, BenefitID, value, CreatedBy):
     CreateDate = datetime.now()
     try:
         cursor.execute(
-            'INSERT INTO dbo.Benefit VALUES (%d, %d, %s, %s, %s)', (LanguageID, BenefitID, value, CreatedBy, CreateDate))
+            'INSERT INTO dbo.Benefit VALUES (?, ?, ?, ?, ?)', (LanguageID, BenefitID, value, CreatedBy, CreateDate))
     except:
         return False
     conn.commit()
@@ -1131,8 +1131,7 @@ def updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Menu set PageName=%s,FormName = %s,FormLink=%s,RoleID\
-            =%d WHERE MenuID = %d and LanguageID = %d', (PageName, FormName,
+            'UPDATE dbo.Menu set PageName=?,FormName = ?,FormLink=?,RoleID=? WHERE MenuID = ? and LanguageID = ?', (PageName, FormName,
                                                          FormLink, RoleID, 
                                                          MenuID, LangID))
     except:
@@ -1144,7 +1143,7 @@ def updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID):
 def CheckMenu(MenuID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.SubMenu WHERE MenuID=%d', MenuID)
+    cursor.execute('SELECT * FROM dbo.SubMenu WHERE MenuID=?', MenuID)
     if cursor.fetchall():
         return True
     return False
@@ -1155,7 +1154,7 @@ def deleteMenu(LangID, MenuID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.Menu WHERE MenuID=%d and LanguageID=%d', (MenuID,
+            'DELETE FROM dbo.Menu WHERE MenuID=? and LanguageID=?', (MenuID,
                                                                        LangID))
     except:
         return False
@@ -1167,7 +1166,7 @@ def getMenuID(LangID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(MenuID) FROM dbo.Menu WHERE LanguageID = %d", LangID)
+        "SELECT max(MenuID) FROM dbo.Menu WHERE LanguageID = ?", LangID)
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -1178,13 +1177,11 @@ def updateSubMenuForm(LanguageID, MenuID, SubMenuID, FormName, FormLink,
                       RoleID):
     conn = getConnection()
     cursor = conn.cursor()
-    try:
-        cursor.execute('UPDATE dbo.SubMenu set FormName = %s,FormLink=%s,Role\
-            ID=%s WHERE MenuID = %d and SubMenuID = %d and LanguageID = %d',
-                       (FormName, FormLink, RoleID, MenuID, SubMenuID,
-                        LanguageID))
-    except:
-        return False
+    # try:
+    cursor.execute('UPDATE dbo.SubMenu set FormName = ?,FormLink=?,RoleID=? WHERE MenuID = ? and SubMenuID = ? and LanguageID = ?',
+                   (FormName, FormLink, RoleID, MenuID, SubMenuID, LanguageID))
+    # except:
+    #     return False
     conn.commit()
     return True
 
@@ -1193,8 +1190,7 @@ def getSubMenuID(LangID, MenuID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(SubMenuID) FROM dbo.SubMenu WHERE LanguageID = %d and Men\
-        uID = %d", (LangID, MenuID))
+        "SELECT max(SubMenuID) FROM dbo.SubMenu WHERE LanguageID = ? and MenuID = ?", (LangID, MenuID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -1205,7 +1201,7 @@ def NoMenu(LangID, MenuID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Menu WHERE MenuID=%d and LanguageID=%d', (MenuID,
+        'SELECT * FROM dbo.Menu WHERE MenuID=? and LanguageID=?', (MenuID,
                                                                      LangID))
     if cursor.fetchall() == []:
         return True
@@ -1217,8 +1213,7 @@ def deleteSubMenu(LangID, MenuID, SubMenuID):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'DELETE FROM dbo.SubMenu WHERE MenuID=%d and LanguageID=%d and Su\
-            bMenuID=%d', (MenuID, LangID, SubMenuID))
+            'DELETE FROM dbo.SubMenu WHERE MenuID=? and LanguageID=? and SubMenuID=?', (MenuID, LangID, SubMenuID))
     except:
         return False
     conn.commit()
@@ -1257,11 +1252,11 @@ def checkIdeaentry(IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Media WHERE IdeaID = %d', IdeaID)
+        'SELECT * FROM dbo.Media WHERE IdeaID = ?', IdeaID)
     if cursor.fetchall():
         return True
     cursor.execute(
-        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = %d', IdeaID)
+        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = ?', IdeaID)
     if cursor.fetchall():
         return True
     return False
@@ -1271,7 +1266,7 @@ def deleteIdea(IdeaID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID = %d', IdeaID)
+        cursor.execute('DELETE FROM dbo.Idea WHERE IdeaID = ?', IdeaID)
     except:
         return False
     conn.commit()
@@ -1283,9 +1278,9 @@ def updateICS(prev_IdeaID, prev_CatID, prev_SubCatID, new_IdeaID, new_CatID, new
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.IdeaCatSubCat set IdeaID=%d,CategoryID=%d,\
-            SubCategoryID=%d WHERE IdeaID=%d and CategoryID=%d and SubCategor\
-            yID=%d', (new_IdeaID, new_CatID, new_SubCatID, prev_IdeaID,
+        cursor.execute('UPDATE dbo.IdeaCatSubCat set IdeaID=?,CategoryID=?,\
+            SubCategoryID=? WHERE IdeaID=? and CategoryID=? and SubCategor\
+            yID=?', (new_IdeaID, new_CatID, new_SubCatID, prev_IdeaID,
                       prev_CatID, prev_SubCatID))
     except:
         return False
@@ -1298,8 +1293,8 @@ def deleteICS(IdeaID, CategoryID, SubCategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=%d and Cat\
-            egoryID=%d and SubCategoryID=%d',
+        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=? and Cat\
+            egoryID=? and SubCategoryID=?',
                        (IdeaID, CategoryID, SubCategoryID))
     except:
         return False
@@ -1311,7 +1306,7 @@ def deleteICS(IdeaID, CategoryID, SubCategoryID):
 def NoLogin(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dbo.Registration WHERE LoginID=%d', LoginID)
+    cursor.execute('SELECT * FROM dbo.Registration WHERE LoginID=?', LoginID)
     if cursor.fetchall():
         return True
     return False
@@ -1322,7 +1317,7 @@ def updateLogin(LoginID, Username, Password, RoleID, RoleName):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Login set Username=%s,Password=%s WHERE LoginID=%d',
+            'UPDATE dbo.Login set Username=?,Password=? WHERE LoginID=?',
             (Username, Password, LoginID))
     except:
         return False
@@ -1335,7 +1330,7 @@ def deleteLogin(LoginID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.Login WHERE LoginID=%d', LoginID)
+        cursor.execute('DELETE FROM dbo.Login WHERE LoginID=?', LoginID)
     except:
         return False
     conn.commit()
@@ -1358,7 +1353,7 @@ def LoginID():
 def createLogin(LoginID, Username, Password, RoleID, RoleName, cr_by, cr_date):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO dbo.Login VALUES (%d,%s,%s,%d,%s,%s,%s)',
+    cursor.execute('INSERT INTO dbo.Login VALUES (?,?,?,?,?,?,?)',
                    (LoginID, Username, Password, RoleID, RoleName, cr_by, cr_date))
     conn.commit()
     return True
@@ -1369,9 +1364,9 @@ def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
     conn = getConnection()
     cursor = conn.cursor()
     # try:
-    cursor.execute('UPDATE dbo.Label set LanguageID=?,RoleID=?,PageName\
-            =?,LabelType=?,LabelValue=? WHERE LabelID=?', (LanguageID, RoleID,
-                                              PageName, LabelType, LabelValue,LabelID))
+    print LabelID
+    cursor.execute('UPDATE dbo.Label set LanguageID=?,RoleID=?,PageName=?,LabelType=?,LabelValue=? WHERE LabelID=?', (LanguageID, RoleID,
+                                              PageName, LabelType, LabelValue,int(LabelID)))
     # except:
     #     return False
     conn.commit()

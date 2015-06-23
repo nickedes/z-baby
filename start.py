@@ -895,7 +895,7 @@ def review():
 
 def upload_img(upload_file):
     file = upload_file
-    UPLOAD_FOLDER = r'F:\\'
+    UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
@@ -1168,7 +1168,7 @@ def super(tablename):
                 DistrictID = request.form['DistrictID']
                 BlockID = request.form['BlockID']
                 value = request.form[str(BlockID)]
-                update = values.updateDistrict(
+                update = values.updateBlock(
                     LangID, CountryID, StateID, DistrictID, BlockID, value)
                 if update:
                     flash('Block Edited successfully!', 'success')

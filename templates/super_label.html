@@ -33,10 +33,11 @@
 		{% for row in table %}
 			<form action="/super/Label" method="POST">
 				<input type="hidden" class="form-control" name="table" value="Label">
+				{{row}}
 				<input type="hidden" class="form-control" name="LabelID" value="{{row[0]}}">
 				<tr>
 					<td>
-						<input type="text" class="form-control" name="LabelID" value="{{row[0]}}" disabled>
+						<input type="text" class="form-control" value="{{row[0]}}" disabled>
 					</td>
 					{% for count in range(1,row|length-2) %}
 						<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
@@ -48,6 +49,7 @@
 					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
 					</td>
 				</tr>
+			</form>
 		{% endfor %}
 	</tbody>
 </table>
