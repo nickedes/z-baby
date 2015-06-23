@@ -445,7 +445,7 @@ def updateSubCat(LangID, CategoryID, SubCategoryID, CategoryValue):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.SubCategory set SubCategoryValue = %s WHERE CategoryID = %d and SubCategoryID = %d and LanguageID = %d',
+        cursor.execute('UPDATE dbo.SubCategory set SubCategoryValue = ? WHERE CategoryID = ? and SubCategoryID = ? and LanguageID = ?',
                        (CategoryValue, CategoryID, SubCategoryID, LangID))
     except:
         return False
@@ -458,7 +458,7 @@ def updateMenu(LangID, MenuID, FormName):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Menu set FormName = %s WHERE MenuID = %d and LanguageID = %d', (FormName, MenuID, LangID))
+            'UPDATE dbo.Menu set FormName = ? WHERE MenuID = ? and LanguageID = ?', (FormName, MenuID, LangID))
     except:
         return False
     conn.commit()
@@ -468,11 +468,11 @@ def updateMenu(LangID, MenuID, FormName):
 def updateSubMenu(LanguageID, MenuID, SubMenuID, MenuValue):
     conn = getConnection()
     cursor = conn.cursor()
-    try:
-        cursor.execute('UPDATE dbo.SubMenu set FormName = %s WHERE MenuID = %d and SubMenuID = %d and LanguageID = %d',
+    # try:
+    cursor.execute('UPDATE dbo.SubMenu set FormName = ? WHERE MenuID = ? and SubMenuID = ? and LanguageID = ?',
                        (MenuValue, MenuID, SubMenuID, LanguageID))
-    except:
-        return False
+    # except:
+    #     return False
     conn.commit()
     return True
 
@@ -482,7 +482,7 @@ def updateCountry(LangID, CountryID, CountryName):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Country set CountryName = %s WHERE CountryID = %d and LanguageID = %d', (CountryName, CountryID, LangID))
+            'UPDATE dbo.Country set CountryName = ? WHERE CountryID = ? and LanguageID = ?', (CountryName, CountryID, LangID))
     except:
         return False
     conn.commit()
@@ -493,7 +493,7 @@ def updateState(LangID, CountryID, StateID, StateName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.State set StateName = %s WHERE LanguageID = %d and CountryID = %d and StateID = %d',
+        cursor.execute('UPDATE dbo.State set StateName = ? WHERE LanguageID = ? and CountryID = ? and StateID = ?',
                        (StateName, LangID, CountryID, StateID))
     except:
         return False
@@ -505,7 +505,7 @@ def updateDistrict(LangID, CountryID, StateID, DistrictID, DistrictName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.District set DistrictName = %s WHERE LanguageID = %d and CountryID = %d and StateID = %d and DistrictID = %d',
+        cursor.execute('UPDATE dbo.District set DistrictName = ? WHERE LanguageID = ? and CountryID = ? and StateID = ? and DistrictID = ?',
                        (DistrictName, LangID, CountryID, StateID, DistrictID))
     except:
         return False
@@ -517,7 +517,7 @@ def updateBlock(LangID, CountryID, StateID, DistrictID, BlockID, DistrictName):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.Block set BlockName = %s WHERE LanguageID = %d and CountryID = %d and StateID = %d and DistrictID = %d and BlockID =%d',
+        cursor.execute('UPDATE dbo.Block set BlockName = ? WHERE LanguageID = ? and CountryID = ? and StateID = ? and DistrictID = ? and BlockID =?',
                        (DistrictName, LangID, CountryID, StateID, DistrictID, BlockID))
     except:
         return False
@@ -809,7 +809,7 @@ def updateStage(LangID, StageID, StageName):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Stage set StageValue = %s WHERE StageID = %d and LanguageID = %d', (StageName, StageID, LangID))
+            'UPDATE dbo.Stage set StageValue = ? WHERE StageID = ? and LanguageID = ?', (StageName, StageID, LangID))
     except:
         return False
     conn.commit()
@@ -1083,7 +1083,7 @@ def updateBenefit(LangID, BenefitID, value):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Benefit set BenefitValue = %s WHERE BenefitID = %d and LanguageID = %d', (value, BenefitID, LangID))
+            'UPDATE dbo.Benefit set BenefitValue = ? WHERE BenefitID = ? and LanguageID = ?', (value, BenefitID, LangID))
     except:
         return False
     conn.commit()
