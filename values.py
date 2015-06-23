@@ -1278,9 +1278,7 @@ def updateICS(prev_IdeaID, prev_CatID, prev_SubCatID, new_IdeaID, new_CatID, new
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('UPDATE dbo.IdeaCatSubCat set IdeaID=?,CategoryID=?,\
-            SubCategoryID=? WHERE IdeaID=? and CategoryID=? and SubCategor\
-            yID=?', (new_IdeaID, new_CatID, new_SubCatID, prev_IdeaID,
+        cursor.execute('UPDATE dbo.IdeaCatSubCat set IdeaID=?,CategoryID=?,SubCategoryID=? WHERE IdeaID=? and CategoryID=? and SubCategoryID=?', (new_IdeaID, new_CatID, new_SubCatID, prev_IdeaID,
                       prev_CatID, prev_SubCatID))
     except:
         return False
@@ -1293,8 +1291,7 @@ def deleteICS(IdeaID, CategoryID, SubCategoryID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
-        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=? and Cat\
-            egoryID=? and SubCategoryID=?',
+        cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=? and CategoryID=? and SubCategoryID=?',
                        (IdeaID, CategoryID, SubCategoryID))
     except:
         return False

@@ -1592,7 +1592,7 @@ def super(tablename):
                 details.append(request.form['SubCatID'])
                 for count in range(len(cols)-2):
                     details.append(request.form[str(count)])
-                print(details)
+                print details
                 updatevals = values.updateICS(*details)
                 if updatevals:
                     flash('Updated Idea and Category Details.', 'success')
