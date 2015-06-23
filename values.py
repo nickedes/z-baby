@@ -378,12 +378,12 @@ def updateIdea(IdeaID, title, stage_id, benefit_id, description, resource, suppo
     return True
 
 
-def updateMedia(IdeaID, Mvalue, Mtype, cr_date):
+def updateMedia(IdeaID, Mvalue, Mtype, cr_date, MediaID):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'UPDATE dbo.Media set MediaValue=?,CreateDate=? WHERE IdeaID = ? and MediaType = ?', (Mvalue, cr_date, IdeaID, Mtype))
+            'UPDATE dbo.Media set MediaValue=?,CreateDate=? WHERE MediaID = ? and IdeaID = ? and MediaType = ?', (Mvalue, cr_date, MediaID, IdeaID, Mtype))
         conn.commit()
     except:
         return False

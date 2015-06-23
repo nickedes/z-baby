@@ -127,10 +127,11 @@
 		<div class="upload">
 		{% for med in media[idea[0]] %}
 			{% if med[3] == 'image' %}
+				<input type="hidden" name="MediaID_img" value="{{ med[0] }}">
 				<input type="file" name="file" >{{ med[2] }}
 			{% endif %}
 		{% endfor %}
-			<input type=file name=file>
+			<input type="file" name="file">
 		</div>
 		<br><br>
   	</div>
@@ -171,6 +172,7 @@
 		<div class="">
 	    {% for med in media[idea[0]] %}  
 			{% if med[3] == 'text' %}
+				<input type="hidden" name="MediaID_ex" value="{{ med[0] }}">
 				<textarea class="form-control" name="49" >{{ med[2] }}</textarea>
 			{% endif %}
 	    {% endfor %}

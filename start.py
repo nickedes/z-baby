@@ -515,9 +515,7 @@ def submit():
             os.remove(PATH)
             image_link = uploaded_image.link
             medias['image'] = image_link
-            print "img upload"
-        # except:
-        #     pass
+
     IdeaID = values.getLatestIdea() + 1
     if session['RoleID'] == 1:
         LoginID = session['userid']
@@ -530,7 +528,6 @@ def submit():
         MediaID = values.getLatestMedia() + 1
         example_img = values.insertMedia(
             MediaID, IdeaID, medias['image'], 'image', session['userid'], datetime.now())
-        print "img upload nd db"
     else:
         example_img = True
     MediaID = values.getLatestMedia() + 1
@@ -848,11 +845,11 @@ def review():
         reach = request.form['47']
         example = request.form['49']
         image_link = None
-        print "te"
         try:
             file = request.files['file']
-            UPLOAD_FOLDER = 'F:\\'
-            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'PNG'])
+            UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
+            ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
+            ALLOWED_EXTENSIONS_VIDEO = set(['mp4'])
             app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
             medias = {}
             if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
@@ -867,17 +864,23 @@ def review():
                 image_link = uploaded_image.link
                 medias['image'] = image_link
         except:
-            print "no file uploads"
             pass
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach)
         if image_link:
-            example_img = values.updateMedia(
-                IdeaID, medias['image'], 'image', datetime.now())
+            if 'MediaID_img' in request.form:
+                MediaID = request.form['MediaID_img']
+                example_img = values.updateMedia(
+                IdeaID, medias['image'], 'image', datetime.now(),MediaID)
+            else:
+                MediaID = values.getLatestMedia() + 1
+                example_img = values.insertMedia(
+                        MediaID, IdeaID, image_link, 'image', session['userid'], datetime.now())
         else:
             example_img = True
+        MediaID = request.form['MediaID_ex']
         example_text = values.updateMedia(
-            IdeaID, example, 'text', datetime.now())
+            IdeaID, example, 'text', datetime.now(), MediaID)
         ideacatsubcat = values.updateIdeaCatSubCat(
             IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
         if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
