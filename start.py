@@ -930,7 +930,7 @@ def super(tablename):
     if request.method == 'GET':
         label_dict = {}
         for label in labels:
-            if label[1] == session['LanguageID'] and label[2] == 4:
+            if label[1] == session['LanguageID'] and label[2] == 5:
                 label_dict[label[0]] = label[5]
         if session['RoleID'] == 5:
             filename = 'super_' + tablename.lower() + '.html'

@@ -28,8 +28,8 @@
 			<th>{{ header[1] }}</th>
 			<th>{{ header[2] }}</th>
 			<th>{{ header[3] }}</th>
-			<th>Save Edit</th>
-			<th>Delete</th>
+			<th>{{ label[72] }}</th>
+			<th>{{ label[70] }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -51,10 +51,10 @@
 					<input type="text" class="form-control" name="MediaType" value="{{row[3]}}">
 					</td>
 					<td>
-					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">{{ label[54] }}</button>
 					</td>
 					<td>
-					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">{{ label[56] }}</button>
 					</td>
 				</tr>
 			</form>
@@ -68,7 +68,7 @@
 			<th>{{ header[1] }}</th>
 			<th>{{ header[2] }}</th>
 			<th>{{ header[3] }}</th>
-			<th>Add</th>
+			<th>{{ label[71] }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -85,7 +85,7 @@
 				<input type="text" class="form-control" value="image" disabled>
 				</td>
 				<td>
-				<button type="submit" name="submit" value="image" class="btn btn-custom btn-primary">Image</button>
+				<button type="submit" name="submit" value="image" class="btn btn-custom btn-primary">{{ label[76] }}</button>
 				</td>
 			</tr>
 		</form>
@@ -102,7 +102,7 @@
 				<input type="text" class="form-control" value="text" disabled>
 				</td>
 				<td>
-				<button type="submit" name="submit" value="text" class="btn btn-custom btn-primary">Example</button>
+				<button type="submit" name="submit" value="text" class="btn btn-custom btn-primary">{{ label[77] }}</button>
 				</td>
 			</tr>
 		</form>

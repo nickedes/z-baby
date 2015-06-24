@@ -25,8 +25,8 @@
 			{% for head in range(header|length - 2) %}
 			<th>{{header[head]}}</th>
 			{% endfor %}
-			<th>Save</th>
-			<th>Delete</th>
+			<th>{{ label[72] }}</th>
+			<th>{{ label[70] }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -42,10 +42,10 @@
 						<td><input type="text" class="form-control" name="{{count}}" value="{{row[count]}}"></td>
 					{% endfor %}
 					<td>
-					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">{{ label[54] }}</button>
 					</td>
 					<td>
-					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">{{ label[56] }}</button>
 					</td>
 				</tr>
 			</form>
@@ -59,7 +59,7 @@
 			<th>{{header[3]}}</th>
 			<th>{{header[4]}}</th>
 			<th>{{header[5]}}</th>
-			<th>Add</th>
+			<th>{{ label[71] }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -79,7 +79,7 @@
 				<input type="text" class="form-control" name="LabelValue">
 				</td>
 				<td>
-				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">{{ label[55] }}</button>
 				</td>
 			</tr>
 		</form>
