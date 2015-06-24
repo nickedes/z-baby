@@ -24,11 +24,11 @@
 	<thead>
 		<tr>
 			<th>{{ header[2] }}</th>
-			<th>Save Edit</th>
-			<th>Delete</th>
-			<th>Translation Language</th>
-			<th>Translate</th>
-			<th>Save Translation</th>
+			<th>{{ label[72] }}</th>
+			<th>{{ label[70] }}</th>
+			<th>{{ label[73] }}</th>
+			<th>{{ label[74] }}</th>
+			<th>{{ label[75] }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -42,10 +42,10 @@
 					<input type="text" class="form-control" name="{{row[1]}}" value="{{row[2]}}">
 					</td>
 					<td>
-					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">{{ label[54] }}</button>
 					</td>
 					<td>
-					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">{{ label[56] }}</button>
 					</td>
 					<td>
 					<div class="">
@@ -63,7 +63,7 @@
 					<input type="text" class="form-control" name="{{row[1]}}translate">
 					</td>
 					<td>
-					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">{{ label[54] }}</button>
 					</td>
 				</tr>
 			</form>
@@ -85,7 +85,7 @@
 				<input type="text" class="form-control" name="name">
 				</td>
 				<td>
-				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">{{ label[55] }}</button>
 				</td>
 			</tr>
 		</form>

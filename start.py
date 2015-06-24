@@ -586,19 +586,16 @@ def edit():
         return render_template('edit.html', tables=dropdown)
     else:
         table = request.form['table']
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID']:
+                label_dict[label[0]] = label[5]
+        data = values.gettablevalues(table)
+        cols = values.getColumns(table)
         if session['RoleID'] == 5:
             filename = 'super_' + table.lower() + '.html'
-            data = values.gettablevalues(table)
-            cols = values.getColumns(table)
-            return render_template(filename, table=data, header=cols)
+            return render_template(filename, table=data, header=cols,label=label_dict)
         elif session['RoleID'] == 4:
-            label_dict = {}
-            for label in labels:
-                if label[1] == session['LanguageID'] and label[2] == 4:
-                    label_dict[label[0]] = label[5]
-            print label_dict   
-            data = values.gettablevalues(table)
-            cols = values.getColumns(table)
             return render_template(table + ".html", table=data, header=cols,label=label_dict)
 
 
@@ -615,7 +612,6 @@ def table(tablename):
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == 4:
                 label_dict[label[0]] = label[5]
-        print label_dict
         if session['RoleID'] == 4:
             filename = tablename + '.html'
             data = values.gettablevalues(tablename)
@@ -932,11 +928,15 @@ def super(tablename):
             'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == 4:
+                label_dict[label[0]] = label[5]
         if session['RoleID'] == 5:
             filename = 'super_' + tablename.lower() + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
-            return render_template(filename, table=data, header=cols)
+            return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))

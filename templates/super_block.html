@@ -24,8 +24,8 @@
 	<thead>
 		<tr>
 			<th>{{ header[5] }}</th>
-			<th>Save Edit</th>
-			<th>Delete</th>
+			<th>{{ label[72] }}</th>
+			<th>{{ label[70] }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -42,10 +42,10 @@
 					<input type="text" class="form-control" name="{{row[4]}}" value="{{row[5]}}">
 					</td>
 					<td>
-					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">{{ label[54] }}</button>
 					</td>
 					<td>
-					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">DELETE</button>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">{{ label[56] }}</button>
 					</td>
 				</tr>
 			</form>
@@ -79,7 +79,7 @@
 				<input type="text" class="form-control" name="name">
 				</td>
 				<td>
-				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">Add</button>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">{{ label[55] }}</button>
 				</td>
 			</tr>
 		</form>
