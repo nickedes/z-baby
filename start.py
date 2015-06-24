@@ -1041,11 +1041,9 @@ def super(tablename):
                 return redirect('/super/' + tablename)
 
             elif request.form['submit'] == 'add':
-                LangID = session['LanguageID']
-                CountryID = values.getCountryID(LangID)+1
+                CountryID = values.getCountryID()+1
                 name = request.form['name']
-                insert = values.insertCountry(
-                    LangID, CountryID, name, session['userid'])
+                insert = values.insertCountry(CountryID, name, session['userid'])
                 if insert:
                     flash('Country Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1099,11 +1097,9 @@ def super(tablename):
                     flash(
                         'No Such Country exists, for which you are adding State. Please try again!', 'warning')
                     return redirect('/super/' + tablename)
-                LangID = session['LanguageID']
                 name = request.form['name']
-                StateID = values.getStateID(LangID, CountryID) + 1
-                insert = values.insertState(
-                    LangID, CountryID, StateID, name, session['userid'])
+                StateID = values.getStateID(CountryID) + 1
+                insert = values.insertState(CountryID, StateID, name, session['userid'])
                 if insert:
                     flash('State Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1155,12 +1151,10 @@ def super(tablename):
                     flash(
                         'No Such State exists, for which you are adding District. Please try again!', 'warning')
                     return redirect('/super/' + tablename)
-                LangID = session['LanguageID']
                 name = request.form['name']
-                DistrictID = values.getDistrictID(
-                    LangID, CountryID, StateID) + 1
+                DistrictID = values.getDistrictID(CountryID, StateID) + 1
                 insert = values.insertDistrict(
-                    LangID, CountryID, StateID, DistrictID, name, session['userid'])
+                    CountryID, StateID, DistrictID, name, session['userid'])
                 if insert:
                     flash('District Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1204,7 +1198,6 @@ def super(tablename):
                 StateID = request.form['SID']
                 DistrictID = request.form['DID']
                 name = request.form['name']
-                LangID = session['LanguageID']
                 if values.NoCountry(CountryID):
                     flash(
                         'No Such Country exists, for which you are adding Block. Please try again!', 'warning')
@@ -1218,9 +1211,9 @@ def super(tablename):
                         'No Such District exists, for which you are adding Block. Please try again!', 'warning')
                     return redirect('/super/' + tablename)
                 BlockID = values.getBlockID(
-                    LangID, CountryID, StateID, DistrictID) + 1
+                    CountryID, StateID, DistrictID) + 1
                 insert = values.insertBlock(
-                    LangID, CountryID, StateID, DistrictID, BlockID, name, session['userid'])
+                    CountryID, StateID, DistrictID, BlockID, name, session['userid'])
                 if insert:
                     flash('Block Added successfully!', 'success')
                     return redirect('/super/' + tablename)

@@ -762,5 +762,9 @@ print(cursor.fetchall())
 
 '''
 
-cursor.execute("SELECT * FROM dbo.Media")
-print cursor.fetchall()
+cursor.execute("SELECT * FROM dbo.Language")
+langs = cursor.fetchall()
+LangIDs = []
+for data in langs:
+    LangIDs.append(data[0])
+print LangIDs
