@@ -25,7 +25,7 @@
 		<tr>
 			<th>  {{ header[3] }}  </th>
 			<th>{{ label[62] }}</th>
-			<th>Translation Language</th>
+			<th>{{ label[65] }}</th>
 			<th>{{ label[63] }}</th>
 			<th>{{ label[64] }}</th>
 		</tr>
@@ -44,7 +44,7 @@
 					<input type="text" class="form-control" name="{{row[3]}}" value="{{row[4]}}">
 					</td>
 					<td>
-					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">{{ label[60] }}</button>
 					</td>
 					<td>
 					<div class="">
@@ -62,7 +62,7 @@
 					<input type="text" class="form-control" name="{{row[3]}}translate">
 					</td>
 					<td>
-					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">SAVE</button>
+					<button type="submit" name="submit" value="translate" class="btn btn-custom btn-primary">{{ label[60] }}</button>
 					</td>
 				</tr>
 			</form>
