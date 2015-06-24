@@ -1690,7 +1690,7 @@ def super(tablename):
                 LabelValue = request.form['LabelValue']
                 cr_by = session['userid']
                 cr_date = datetime.now()
-                LangIDs = values.LangIDs()
+                LangIDs = values.getLangIDs()
                 for LanguageID in LangIDs:
                     insert = values.insertLabel(
                         (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, cr_by, cr_date))
