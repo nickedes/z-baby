@@ -161,30 +161,34 @@ def checkInnovation(userid):
     return True
 
 
-def insertCat(CategoryID, LanguageID, CategoryValue, CreatedBy):
+def insertCat(CategoryID, CategoryValue, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
+    LangIDs = getLangIDs()
     try:
-        cursor.execute(
-            'INSERT INTO dbo.Category VALUES (?, ?, ?, ?, ?)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
+        for LanguageID in LangIDs:
+            cursor.execute(
+                'INSERT INTO dbo.Category VALUES (?, ?, ?, ?, ?)', (LanguageID, CategoryID, CategoryValue, CreatedBy, CreateDate))
+            conn.commit()
     except:
         return False
-    conn.commit()
     return True
 
 
-def insertSubCat(CategoryID, SubCategoryID, LanguageID, SubValue, CreatedBy):
+def insertSubCat(CategoryID, SubCategoryID, SubValue, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
+    LangIDs = getLangIDs()
     # SubCategory (LanguageID, CategoryID, SubCategoryID, SubCategoryValue, CreatedBy, CreateDate)
     try:
-        cursor.execute(
-            'INSERT INTO dbo.SubCategory VALUES (?, ?, ?, ?, ?, ?)', (LanguageID, CategoryID, SubCategoryID, SubValue, CreatedBy, CreateDate))
+        for LanguageID in LangIDs:
+            cursor.execute(
+                'INSERT INTO dbo.SubCategory VALUES (?, ?, ?, ?, ?, ?)', (LanguageID, CategoryID, SubCategoryID, SubValue, CreatedBy, CreateDate))
+            conn.commit()
     except:
         return False
-    conn.commit()
     return True
 
 
@@ -745,11 +749,10 @@ def insertBlock(CountryID, StateID, DistrictID, BlockID, BlockName, CreatedBy):
     return True
 
 
-def getCatID(LangID):
+def getCatID():
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT max(CategoryID) FROM dbo.Category WHERE LanguageID = ?", LangID)
+    cursor.execute("SELECT max(CategoryID) FROM dbo.Category")
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -836,11 +839,11 @@ def deleteStage(LangID, StageID):
     return True
 
 
-def getStageID(LangID):
+def getStageID():
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(StageID) FROM dbo.Stage WHERE LanguageID = ?", LangID)
+        "SELECT max(StageID) FROM dbo.Stage")
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -851,12 +854,14 @@ def insertStage(LanguageID, StageID, value, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
+    LangIDs = getLangIDs()
     try:
-        cursor.execute(
-            'INSERT INTO dbo.Stage VALUES (?, ?, ?, ?, ?)', (LanguageID, StageID, value, CreatedBy, CreateDate))
+        for LanguageID in LangIDs:
+            cursor.execute(
+                'INSERT INTO dbo.Stage VALUES (?, ?, ?, ?, ?)', (LanguageID, StageID, value, CreatedBy, CreateDate))
+            conn.commit()
     except:
         return False
-    conn.commit()
     return True
 
 
@@ -1110,11 +1115,11 @@ def deleteBenefit(LangID, BenefitID):
     return True
 
 
-def getBenefitID(LangID):
+def getBenefitID():
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(BenefitID) FROM dbo.Benefit WHERE LanguageID = ?", LangID)
+        "SELECT max(BenefitID) FROM dbo.Benefit")
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -1125,12 +1130,14 @@ def insertBenefit(LanguageID, BenefitID, value, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
+    LangIDs = getLangIDs()
     try:
-        cursor.execute(
-            'INSERT INTO dbo.Benefit VALUES (?, ?, ?, ?, ?)', (LanguageID, BenefitID, value, CreatedBy, CreateDate))
+        for LanguageID in LangIDs:
+            cursor.execute(
+                'INSERT INTO dbo.Benefit VALUES (?, ?, ?, ?, ?)', (LanguageID, BenefitID, value, CreatedBy, CreateDate))
+            conn.commit()
     except:
         return False
-    conn.commit()
     return True
 
 
@@ -1379,11 +1386,11 @@ def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
     return True
 
 
-def getLabelID(LanguageID):
+def getLabelID():
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(LabelID) FROM dbo.Label WHERE LanguageID = ?", LanguageID)
+        "SELECT max(LabelID) FROM dbo.Label")
     top = cursor.fetchall()
     if not top[0][0]:
         return 0

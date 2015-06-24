@@ -1261,10 +1261,8 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
                 value = request.form['name']
-                LangID = session['LanguageID']
-                CatID = values.getCatID(LangID) + 1
-                insert = values.insertCat(
-                    CatID, LangID, value, session['userid'])
+                CatID = values.getCatID() + 1
+                insert = values.insertCat(CatID, value, session['userid'])
                 if insert:
                     flash('Category Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1316,9 +1314,9 @@ def super(tablename):
                     return redirect('/super/' + tablename)
                 LangID = session['LanguageID']
                 name = request.form['name']
-                SubCategoryID = values.getSubCatID(LangID, CategoryID) + 1
+                SubCategoryID = values.getSubCatID(CategoryID) + 1
                 insert = values.insertSubCat(
-                    CategoryID, SubCategoryID, LangID, name, session['userid'])
+                    CategoryID, SubCategoryID, name, session['userid'])
                 if insert:
                     flash('SubCategory Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1352,10 +1350,8 @@ def super(tablename):
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
                 value = request.form['name']
-                LangID = session['LanguageID']
-                StageID = values.getStageID(LangID) + 1
-                insert = values.insertStage(
-                    LangID, StageID, value, session['userid'])
+                StageID = values.getStageID() + 1
+                insert = values.insertStage(StageID, value, session['userid'])
                 if insert:
                     flash('Stage Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1430,9 +1426,8 @@ def super(tablename):
             elif request.form['submit'] == 'add':
                 value = request.form['name']
                 LangID = session['LanguageID']
-                BenefitID = values.getBenefitID(LangID) + 1
-                insert = values.insertBenefit(
-                    LangID, BenefitID, value, session['userid'])
+                BenefitID = values.getBenefitID() + 1
+                insert = values.insertBenefit(BenefitID, value, session['userid'])
                 if insert:
                     flash('Benefit Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1472,14 +1467,15 @@ def super(tablename):
                     'There was problem deleting the Menu! Please try again!', 'warning')
 
             elif request.form['submit'] == 'add':
-                LangID = session['LanguageID']
                 PageName = request.form['PageName']
                 FormName = request.form['name']
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
-                MenuID = values.getMenuID(LangID)+1
-                insert = values.insertMenu(
-                    (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'], datetime.now()))
+                MenuID = values.getMenuID()+1
+                LangIDs = values.getLangIDs()
+                for LangID in LangIDs:
+                    insert = values.insertMenu(
+                        (LangID, MenuID, PageName, FormName, FormLink, RoleID, session['userid'], datetime.now()))
                 if insert:
                     flash('Menu Added successfully!', 'success')
                     return redirect('/super/' + tablename)
@@ -1513,7 +1509,7 @@ def super(tablename):
                     'There was problem deleting the SubMenu! Please try again!', 'warning')
 
             elif request.form['submit'] == 'add':
-                LangID = session['LanguageID']
+                LangIDs = values.getLangIDs()
                 MenuID = request.form['id']
                 FormName = request.form['name']
                 FormLink = request.form['FormLink']
@@ -1522,9 +1518,10 @@ def super(tablename):
                     flash(
                         'No Such Menu exists, for which you are adding SubMenu. Please try again!', 'warning')
                     return redirect('/super/' + tablename)
-                SubMenuID = values.getSubMenuID(LangID, MenuID)+1
-                insert = values.insertSubMenu(
-                    (LangID, MenuID, SubMenuID, FormName, FormLink, RoleID, session['userid'], datetime.now()))
+                SubMenuID = values.getSubMenuID(MenuID)+1
+                for LangID in LangIDs:
+                    insert = values.insertSubMenu(
+                        (LangID, MenuID, SubMenuID, FormName, FormLink, RoleID, session['userid'], datetime.now()))
                 if insert:
                     flash('SubMenu Added successfully!', 'success')
                 flash(
@@ -1686,16 +1683,17 @@ def super(tablename):
                     'There was problem deleting the Label! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
             elif request.form['submit'] == 'add':
-                LanguageID = request.form['LanguageID']
-                LabelID = values.getLabelID(LanguageID)+1
+                LabelID = values.getLabelID()+1
                 RoleID = request.form['RoleID']
                 PageName = request.form['PageName']
                 LabelType = request.form['LabelType']
                 LabelValue = request.form['LabelValue']
                 cr_by = session['userid']
                 cr_date = datetime.now()
-                insert = values.insertLabel(
-                    (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, cr_by, cr_date))
+                LangIDs = values.LangIDs()
+                for LanguageID in LangIDs:
+                    insert = values.insertLabel(
+                        (LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue, cr_by, cr_date))
                 if insert:
                     flash('Added Label.', 'success')
                     return redirect('/super/' + tablename)
