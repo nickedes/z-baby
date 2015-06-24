@@ -592,9 +592,14 @@ def edit():
             cols = values.getColumns(table)
             return render_template(filename, table=data, header=cols)
         elif session['RoleID'] == 4:
+            label_dict = {}
+            for label in labels:
+                if label[1] == session['LanguageID'] and label[2] == 4:
+                    label_dict[label[0]] = label[5]
+            print label_dict   
             data = values.gettablevalues(table)
             cols = values.getColumns(table)
-            return render_template(table + ".html", table=data, header=cols)
+            return render_template(table + ".html", table=data, header=cols,label=label_dict)
 
 
 @app.route('/table/<tablename>', methods=['GET', 'POST'])
@@ -605,11 +610,17 @@ def table(tablename):
             'Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
     if request.method == 'GET':
+        global labels
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == 4:
+                label_dict[label[0]] = label[5]
+        print label_dict
         if session['RoleID'] == 4:
             filename = tablename + '.html'
             data = values.gettablevalues(tablename)
             cols = values.getColumns(tablename)
-            return render_template(filename, table=data, header=cols)
+            return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
@@ -635,7 +646,6 @@ def table(tablename):
                 value = request.form[str(LabelID)+'translate']
             # Update the values (store result in update for later!)
             update = values.updateLabel(LabelID, value, langid)
-            global labels
             labels = values.gettablevalues('Label')
 
         if tablename == "Category":
