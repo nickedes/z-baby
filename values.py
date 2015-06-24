@@ -1377,8 +1377,8 @@ def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
     cursor = conn.cursor()
     # try:
     print LabelID
-    cursor.execute('UPDATE dbo.Label set LanguageID=?,RoleID=?,PageName=?,LabelType=?,LabelValue=? WHERE LabelID=?', (LanguageID, RoleID,
-                                              PageName, LabelType, LabelValue,int(LabelID)))
+    cursor.execute('UPDATE dbo.Label set RoleID=?,PageName=?,LabelType=?,LabelValue=? WHERE LabelID=? and LanguageID=?', (RoleID,
+                                              PageName, LabelType, LabelValue,int(LabelID), int(LanguageID)))
     # except:
     #     return False
     conn.commit()
