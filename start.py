@@ -550,19 +550,8 @@ def view():
     if session['RoleID'] != 3:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
-    data = []
-    if 'value' not in request.args:
-        data = ideas
-    else:
-        value = request.args.get('value')
-        field = request.args.get('field')
-
-        for idea in ideas:
-            if idea[field].find(value) != -1:
-                data.append(idea)
+    data = values.gettablevalues('Idea')
     header = values.getColumns('Idea')
-
-
     return render_template('view.html', header=header, table=data)
 
 
@@ -1734,6 +1723,5 @@ if __name__ == '__main__':
     category = values.gettablevalues('Category')
     subcat = values.gettablevalues('SubCategory')
     tables = values.gettablelist()
-    ideas = values.gettablevalues('Idea')
     print "Data fetched successfully!"
     app.run(debug=True, host='0.0.0.0', port=3000)

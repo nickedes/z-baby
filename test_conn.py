@@ -771,8 +771,12 @@ print LangIDs
 cursor.execute("CREATE TRIGGER loged ON dbo.Label AFTER UPDATE AS ")
 
 cursor.execute("INSERT INTO  dbo.History(?,?,) VALUES('Label','LabelValue','UPDATE',old.LabelValue,new.LabelValue,'1',datetime.now()")
-'''
 sql = "CREATE TRIGGER loged ON dbo.Label AFTER UPDATE AS begin INSERT INTO  dbo.History(?,?,?,?,?,?,?) VALUES('Label','LabelValue','UPDATE',old.LabelValue,new.LabelValue,'1',datetime.now()) end"
 cursor.execute(sql)
 conn.commit()
 # print values.getColumns('History')
+cursor.execute("INSERT INTO  dbo.History(?,?,?,?,?,?,?) VALUES ('Label','LabelValue','UPDATE','test','tested','1',datetime.now())")
+conn.commit()
+cursor.execute("SELECT * FROM dbo.History")
+print cursor.fetchall()
+'''
