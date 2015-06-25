@@ -3,6 +3,7 @@ import datetime
 import pyodbc
 import ConfigParser
 from datetime import datetime
+import values
 
 config = ConfigParser.RawConfigParser()
 config.read('config.ini')
@@ -760,11 +761,18 @@ cursor.execute(
     "SELECT DATABASEPROPERTYEX(%s,%s) SQLCollation", ('ziiei', 'Collation'))
 print(cursor.fetchall())
 
-'''
-
 cursor.execute("SELECT * FROM dbo.Language")
 langs = cursor.fetchall()
 LangIDs = []
 for data in langs:
     LangIDs.append(data[0])
 print LangIDs
+
+cursor.execute("CREATE TRIGGER loged ON dbo.Label AFTER UPDATE AS ")
+
+cursor.execute("INSERT INTO  dbo.History(?,?,) VALUES('Label','LabelValue','UPDATE',old.LabelValue,new.LabelValue,'1',datetime.now()")
+'''
+sql = "CREATE TRIGGER loged ON dbo.Label AFTER UPDATE AS begin INSERT INTO  dbo.History(?,?,?,?,?,?,?) VALUES('Label','LabelValue','UPDATE',old.LabelValue,new.LabelValue,'1',datetime.now()) end"
+cursor.execute(sql)
+conn.commit()
+# print values.getColumns('History')
