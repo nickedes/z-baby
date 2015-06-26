@@ -81,6 +81,13 @@ def index():
     return render_template('slash.html', menubody=menubody, label=label_dict)
 
 
+@app.route('/search',methods=['POST'])
+def search():
+    print request.form
+    # TODO: Search db for this search value!
+    return "<b>" +  request.form['searchit'] + "</b>"
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
