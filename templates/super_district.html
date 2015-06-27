@@ -65,10 +65,19 @@
 			<input type="hidden" class="form-control" name="table" value="District">
 			<tr>
 				<td>
-				<input type="text" class="form-control" name="CID">
+				<select id = "dd1" name="CID" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
+					<option>..</option>
+					{% for data in country %}
+					  {% if data[0] == session['LanguageID'] %}
+					    <option value="{{ data[1] }}" >{{ data[2] }}</option>
+					  {% endif %}
+					{% endfor %}
+				</select>
 				</td>
 				<td>
-				<input type="text" class="form-control" name="SID">
+				<select id = "ddl2" name="SID" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
+					<option>..</option>
+				</select>
 				</td>
 				<td>
 				<input type="text" class="form-control" name="name">
@@ -80,4 +89,48 @@
 		</form>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+  function configureDropDownLists(ddl1,ddl2) {
+    var value = ddl1.value;
+    var country = '{{ clist }}'
+    // todo: variables shit! :P
+    y = country.split(":")
+    ddl2.options.length = 1;
+    if(y[0][1] == value)
+    {
+      l = y[1].split(",")
+      for (i=0;i<l.length-1;i+=2)
+      {
+        dist = l[i].split("&")[1].split(";")[1];
+        dist_val = l[i+1][1]
+        createOption(ddl2,dist,dist_val);
+      }
+    }
+    else
+    {      
+      for(j=1;j<y.length-1;j++)
+      {
+        if (y[j][y[j].length - 1] == value )
+        {
+          l = y[j+1].split(",")
+          for (i=0;i<l.length-1;i+=2)
+          {
+            dist = l[i].split("&")[1].split(";")[1];
+            dist_val = l[i+1][1]
+            createOption(ddl2,dist,dist_val);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  function createOption(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.options.add(opt);
+  }
+</script>
 {% include 'footer.html' %}

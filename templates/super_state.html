@@ -84,7 +84,14 @@
 			<input type="hidden" class="form-control" name="table" value="State">
 			<tr>
 				<td>
-				<input type="text" class="form-control" name="CID">
+				<select id = "dd1" name="CID" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
+					<option>..</option>
+					{% for data in country %}
+					  {% if data[0] == session['LanguageID'] %}
+					    <option value="{{ data[1] }}" >{{ data[2] }}</option>
+					  {% endif %}
+					{% endfor %}
+				</select>
 				</td>
 				<td>
 				<input type="text" class="form-control" name="name">

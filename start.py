@@ -592,7 +592,8 @@ def edit():
         data = values.gettablevalues(table)
         cols = values.getColumns(table)
         if session['RoleID'] == 5:
-            if table == 'Block':
+            filename = 'super_' + table.lower() + '.html'
+            if table == 'Block' or table== 'District':
                 countrylist = {}
                 for single_country in country:
                     statelist = []
@@ -601,21 +602,25 @@ def edit():
                             if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
                                 statelist.append([single_state[3], single_state[2]])
                         countrylist[single_country[1]] = statelist
-                statelist = {}
-                for single_state in state:
-                    districtlist = []
-                    if single_state[0] == session['LanguageID']:
-                        for single_district in district:
-                            if single_district[2] == single_state[2] and single_district[0] == session['LanguageID']:
-                                districtlist.append(
-                                    [single_district[4], single_district[3]])
-                        statelist[single_state[2]] = districtlist
-                filename = 'super_' + table.lower() + '.html'
-                return render_template(filename, table=data, country=country, state=state,
-                                   district=district, block=block, clist=countrylist,
-                                   slist=statelist,header=cols, label=label_dict)
+                if tablename == 'District':
+                    return render_template(filename, table=data, country=country,clist=countrylist,
+                                            header=cols, label=label_dict)
+                else:
+                    statelist = {}
+                    for single_state in state:
+                        districtlist = []
+                        if single_state[0] == session['LanguageID']:
+                            for single_district in district:
+                                if single_district[2] == single_state[2] and single_district[0] == session['LanguageID']:
+                                    districtlist.append(
+                                        [single_district[4], single_district[3]])
+                            statelist[single_state[2]] = districtlist
+                    return render_template(filename, table=data, country=country, state=state,
+                                       district=district, block=block, clist=countrylist,
+                                       slist=statelist,header=cols, label=label_dict)
+            elif table == 'State':
+                return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             else:
-                filename = 'super_' + table.lower() + '.html'
                 return render_template(filename, table=data, header=cols, label=label_dict)
         elif session['RoleID'] == 4:
             return render_template(table + ".html", table=data, header=cols,label=label_dict)
@@ -955,7 +960,8 @@ def super(tablename):
             if label[1] == session['LanguageID'] and label[2] == 5:
                 label_dict[label[0]] = label[5]
         if session['RoleID'] == 5:
-            if tablename == 'Block':
+            filename = 'super_' + tablename.lower() + '.html'
+            if tablename == 'Block' or tablename == 'District':
                 countrylist = {}
                 for single_country in country:
                     statelist = []
@@ -964,20 +970,24 @@ def super(tablename):
                             if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
                                 statelist.append([single_state[3], single_state[2]])
                         countrylist[single_country[1]] = statelist
-                statelist = {}
-                for single_state in state:
-                    districtlist = []
-                    if single_state[0] == session['LanguageID']:
-                        for single_district in district:
-                            if single_district[2] == single_state[2] and single_district[0] == session['LanguageID']:
-                                districtlist.append(
-                                    [single_district[4], single_district[3]])
-                        statelist[single_state[2]] = districtlist
-                filename = 'super_' + table.lower() + '.html'
-                return render_template(filename, table=data, country=country,clist=countrylist,
-                                   slist=statelist,header=cols, label=label_dict)
+                if tablename == 'District':
+                    return render_template(filename, table=data, country=country,clist=countrylist,
+                                            header=cols, label=label_dict)
+                else:
+                    statelist = {}
+                    for single_state in state:
+                        districtlist = []
+                        if single_state[0] == session['LanguageID']:
+                            for single_district in district:
+                                if single_district[2] == single_state[2] and single_district[0] == session['LanguageID']:
+                                    districtlist.append(
+                                        [single_district[4], single_district[3]])
+                            statelist[single_state[2]] = districtlist
+                    return render_template(filename, table=data, country=country,clist=countrylist,
+                                       slist=statelist,header=cols, label=label_dict)
+            elif tablename == 'State':
+                return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             else:
-                filename = 'super_' + tablename.lower() + '.html'
                 data = values.gettablevalues(tablename)
                 cols = values.getColumns(tablename)
                 return render_template(filename, table=data, header=cols,label=label_dict)
