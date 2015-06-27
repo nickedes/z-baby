@@ -610,18 +610,10 @@ def edit():
                                 districtlist.append(
                                     [single_district[4], single_district[3]])
                         statelist[single_state[2]] = districtlist
-                districtdict = {}
-                for single_district in district:
-                    blocklist = []
-                    if single_district[0] == session['LanguageID']:
-                        for single_block in block:
-                            if single_block[3] == single_district[3]:
-                                blocklist.append([single_block[5], single_block[4]])
-                        districtdict[single_district[3]] = blocklist
                 filename = 'super_' + table.lower() + '.html'
                 return render_template(filename, table=data, country=country, state=state,
                                    district=district, block=block, clist=countrylist,
-                                   slist=statelist, dlist=districtdict,header=cols, label=label_dict)
+                                   slist=statelist,header=cols, label=label_dict)
             else:
                 filename = 'super_' + table.lower() + '.html'
                 return render_template(filename, table=data, header=cols, label=label_dict)
@@ -963,10 +955,32 @@ def super(tablename):
             if label[1] == session['LanguageID'] and label[2] == 5:
                 label_dict[label[0]] = label[5]
         if session['RoleID'] == 5:
-            filename = 'super_' + tablename.lower() + '.html'
-            data = values.gettablevalues(tablename)
-            cols = values.getColumns(tablename)
-            return render_template(filename, table=data, header=cols,label=label_dict)
+            if tablename == 'Block':
+                countrylist = {}
+                for single_country in country:
+                    statelist = []
+                    if single_country[0] == session['LanguageID']:
+                        for single_state in state:
+                            if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
+                                statelist.append([single_state[3], single_state[2]])
+                        countrylist[single_country[1]] = statelist
+                statelist = {}
+                for single_state in state:
+                    districtlist = []
+                    if single_state[0] == session['LanguageID']:
+                        for single_district in district:
+                            if single_district[2] == single_state[2] and single_district[0] == session['LanguageID']:
+                                districtlist.append(
+                                    [single_district[4], single_district[3]])
+                        statelist[single_state[2]] = districtlist
+                filename = 'super_' + table.lower() + '.html'
+                return render_template(filename, table=data, country=country,clist=countrylist,
+                                   slist=statelist,header=cols, label=label_dict)
+            else:
+                filename = 'super_' + tablename.lower() + '.html'
+                data = values.gettablevalues(tablename)
+                cols = values.getColumns(tablename)
+                return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
@@ -1224,6 +1238,8 @@ def super(tablename):
                     'There was problem deleting the Block! Please try again!', 'warning')
 
             elif request.form['submit'] == 'add':
+                print request.form
+
                 CountryID = request.form['CID']
                 StateID = request.form['SID']
                 DistrictID = request.form['DID']
