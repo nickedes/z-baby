@@ -602,7 +602,7 @@ def edit():
                             if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
                                 statelist.append([single_state[3], single_state[2]])
                         countrylist[single_country[1]] = statelist
-                if tablename == 'District':
+                if table == 'District':
                     return render_template(filename, table=data, country=country,clist=countrylist,
                                             header=cols, label=label_dict)
                 else:
