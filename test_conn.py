@@ -780,5 +780,6 @@ cursor.execute("INSERT INTO dbo.History VALUES (?,?,?,?,?,?,?)",  ('Label','Labe
 cursor.execute("DELETE FROM dbo.History where HistoryID < 4")
 '''
 # cnxn.commit()
-cursor.execute("Select * FROM dbo.History")
-print cursor.fetchall()
+cursor.execute('SELECT * FROM dbo.Login')
+row = cursor.fetchall()
+print row

@@ -1,0 +1,16 @@
+{% include 'header.html' %}
+
+<h3>{{label[78][1]}}</h3>
+{{text}}
+{% if text %}
+	{% for data in text %}
+		{% if  data.values()[0][1] == session['RoleID'] %}
+		<a href="{{data.values()[0][0]}}">{{data.keys()[0]}}<br>
+		{% endif %}
+	{%endfor%}
+{% else %}
+	<div align="center">	
+		<h4>Nothing found!</h4>
+	</div>
+{% endif %}
+{% include 'footer.html' %}
