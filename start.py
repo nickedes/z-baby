@@ -82,19 +82,24 @@ def index():
 
 
 @app.route('/search',methods=['POST'])
+@login_required
 def search():
     print request.form
     # TODO: Search db for this search value!
     conn = values.getConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT PageName FROM dbo.Label WHERE LabelValue like ?",'%'+request.form['searchit']+'%')
+    cursor.execute("SELECT PageName,LabelValue,RoleID FROM dbo.Label WHERE LabelValue like ?",'%'+request.form['search_query']+'%')
     searched = cursor.fetchall()
-    print searched
-    text = ''
+    text = []
     for data in searched:
-        text += data[0]
+        if {data[1]:[data[0],data[2]]} not in text:
+            text.append({data[1]:[data[0],data[2]]})
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[3] == '/search':
+            label_dict[label[0]] = [label[4], label[5]]
     conn.close()
-    return "<b>" + searched + "</b>"
+    return render_template('search.html', text=text, label=label_dict)
 
 
 @app.route('/login', methods=['GET', 'POST'])
