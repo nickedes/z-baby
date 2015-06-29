@@ -84,8 +84,6 @@ def index():
 @app.route('/search',methods=['POST'])
 @login_required
 def search():
-    print request.form
-    # TODO: Search db for this search value!
     conn = values.getConnection()
     cursor = conn.cursor()
     cursor.execute("SELECT PageName,LabelValue,RoleID FROM dbo.Label WHERE LabelValue like ?",'%'+request.form['search_query']+'%')
@@ -97,24 +95,19 @@ def search():
     super_table = {}
     for data in text:
         if '/super/' in data.values()[0][0]:
-            names = data.values()[0][0].split('/')[2]
-            print names
-            c = names.split(',')
-            print c
-            names = names.split(',')
+            names = data.values()[0][0].split('/')[2].split(',')
             found = data.keys()[0]
             super_table[found] = []
             super_table[found].append(names[0][1:])
             for i in range(1,len(names)-1):
                 super_table[found].append(names[i])
-    print super_table
     label_dict = {}
     for label in labels:
         if label[1] == session['LanguageID'] and label[3] == '/search':
             label_dict[label[0]] = [label[4], label[5]]
     conn.close()
     print text
-    return render_template('search.html', text=text, label=label_dict,table=super_table)
+    return render_template('search.html', text=text, label=label_dict,super=super_table)
 
 
 @app.route('/login', methods=['GET', 'POST'])
