@@ -94,12 +94,27 @@ def search():
     for data in searched:
         if {data[1]:[data[0],data[2]]} not in text:
             text.append({data[1]:[data[0],data[2]]})
+    super_table = {}
+    for data in text:
+        if '/super/' in data.values()[0][0]:
+            names = data.values()[0][0].split('/')[2]
+            print names
+            c = names.split(',')
+            print c
+            names = names.split(',')
+            found = data.keys()[0]
+            super_table[found] = []
+            super_table[found].append(names[0][1:])
+            for i in range(1,len(names)-1):
+                super_table[found].append(names[i])
+    print super_table
     label_dict = {}
     for label in labels:
         if label[1] == session['LanguageID'] and label[3] == '/search':
             label_dict[label[0]] = [label[4], label[5]]
     conn.close()
-    return render_template('search.html', text=text, label=label_dict)
+    print text
+    return render_template('search.html', text=text, label=label_dict,table=super_table)
 
 
 @app.route('/login', methods=['GET', 'POST'])

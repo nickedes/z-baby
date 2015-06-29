@@ -1,12 +1,8 @@
 {% include 'header.html' %}
-
 <h3>{{label[78][1]}}</h3>
-{{text}}
 {% if text %}
 	{% for data in text %}
-		{% if  data.values()[0][1] == session['RoleID'] %}
-		<a href="{{data.values()[0][0]}}">{{data.keys()[0]}}<br>
-		{% endif %}
+			<a href="{{data.values()[0][0]}}">{{data.keys()[0]}}<br>
 	{%endfor%}
 {% else %}
 	<div align="center">	
