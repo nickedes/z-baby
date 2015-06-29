@@ -10,6 +10,13 @@
 					<li><a href="/super/{{name}}">{{name}}</a></li>
 				{% endfor %}
 			</ul>
+		{% elif '/table/' in data.values()[0][0] %}
+			{{ data.keys()[0] }}
+			<ul>
+				{% for name in admin[data.keys()[0]] %}
+					<li><a href="/table/{{name}}">{{name}}</a></li>
+				{% endfor %}
+			</ul>
 		{% else %}
 			<a href="{{data.values()[0][0]}}">{{data.keys()[0]}}</a><br>
 		{% endif %}
