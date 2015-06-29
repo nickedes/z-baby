@@ -85,7 +85,16 @@ def index():
 def search():
     print request.form
     # TODO: Search db for this search value!
-    return "<b>" +  request.form['searchit'] + "</b>"
+    conn = values.getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT PageName FROM dbo.Label WHERE LabelValue like ?",'%'+request.form['searchit']+'%')
+    searched = cursor.fetchall()
+    print searched
+    text = ''
+    for data in searched:
+        text += data[0]
+    conn.close()
+    return "<b>" + searched + "</b>"
 
 
 @app.route('/login', methods=['GET', 'POST'])
