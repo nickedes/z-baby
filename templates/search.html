@@ -1,24 +1,32 @@
 {% include 'header.html' %}
 <h3>{{label[78][1]}}</h3>
 {% if text %}
-	<div align="center">	
+	<div align="">	
 	{% for data in text %}
-		{% if '/super/' in data.values()[0][0] %}
-			{{ data.keys()[0] }}
-			<ul>
-				{% for name in super[data.keys()[0]] %}
-					<li><a href="/super/{{name}}">{{name}}</a></li>
-				{% endfor %}
-			</ul>
-		{% elif '/table/' in data.values()[0][0] %}
-			{{ data.keys()[0] }}
-			<ul>
-				{% for name in admin[data.keys()[0]] %}
-					<li><a href="/table/{{name}}">{{name}}</a></li>
-				{% endfor %}
-			</ul>
-		{% else %}
+		{% if session['RoleID'] == 5 %}
+			{% if '/super/' in data.values()[0][0] %}
+				{{ data.keys()[0] }}
+				<ul>
+					{% for name in super[data.keys()[0]] %}
+						<li><a href="/super/{{name}}">{{name}}</a></li>
+					{% endfor %}
+				</ul>
+		{% endif %}
+		{% elif session['RoleID'] == 4 %}
+			{% if '/table/' in data.values()[0][0] %}
+				{{ data.keys()[0] }}
+				<ul>
+					{% for name in admin[data.keys()[0]] %}
+						<li><a href="/table/{{name}}">{{name}}</a></li>
+					{% endfor %}
+				</ul>
+		{% endif %}
+		{% elif session['RoleID'] == 1 or session['RoleID'] == 2 %}
 			<a href="{{data.values()[0][0]}}">{{data.keys()[0]}}</a><br>
+		{% else %}
+			<div align="center">	
+				<h4>Nothing found!</h4>
+			</div>
 		{% endif %}
 	{%endfor%}
 	</div>

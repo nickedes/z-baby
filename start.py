@@ -114,7 +114,7 @@ def search():
         if label[1] == session['LanguageID'] and label[3] == '/search':
             label_dict[label[0]] = [label[4], label[5]]
     conn.close()
-    return render_template('search.html', text=text, label=label_dict,super=super_table,admin=admin_table)
+    return render_template('search.html', text=text, label=label_dict,super=super_table,admin=admin_table,query=request.form['search_query'])
 
 
 @app.route('/login', methods=['GET', 'POST'])
