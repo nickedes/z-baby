@@ -1,7 +1,6 @@
 {% include 'header.html' %}
 <h3>{{label[78][1]}}</h3>
-{% if text %}
-	<div align="">	
+{% if text %}	
 	{% for data in text %}
 		{% if session['RoleID'] == 5 %}
 			{% if '/super/' in data.values()[0][0] %}
@@ -29,7 +28,6 @@
 			</div>
 		{% endif %}
 	{%endfor%}
-	</div>
 {% else %}
 	<div align="center">	
 		<h4>Nothing found!</h4>
