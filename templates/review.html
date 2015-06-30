@@ -97,15 +97,7 @@
 			<div class="checkbox" id="{{subcat}}">
     			<label>
     			{% for data in subcategory[subcat] %}
-    				{% if subcats[idea[0]] %}
-	    				{% if subcats[idea[0]][0][1] == data[2] and data[1] in sublist[idea[0]] %}
-	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" checked>{{ data[0] }}
-	      				{% else %}
-	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
-	      				{% endif %}
-	      			{% else %}
-	      				<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
-	      			{% endif %}
+	      			<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
       				<br>
       			{% endfor %}
     			</label>
