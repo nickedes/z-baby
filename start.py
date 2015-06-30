@@ -95,20 +95,22 @@ def search():
     super_table = {}
     admin_table = {}
     for data in text:
-        if '/super/' in data.values()[0][0]:
-            names = data.values()[0][0].split('/')[2].split(',')
-            found = data.keys()[0]
-            super_table[found] = []
-            super_table[found].append(names[0][1:])
-            for i in range(1,len(names)-1):
-                super_table[found].append(names[i])
-        if '/table/' in data.values()[0][0]:
-            names = data.values()[0][0].split('/')[2].split(',')
-            found = data.keys()[0]
-            admin_table[found] = []
-            admin_table[found].append(names[0][1:])
-            for i in range(1,len(names)-1):
-                admin_table[found].append(names[i])
+        if session['RoleID'] == 5:
+            if '/super/' in data.values()[0][0]:
+                names = data.values()[0][0].split('/')[2].split(',')
+                found = data.keys()[0]
+                super_table[found] = []
+                super_table[found].append(names[0][1:])
+                for i in range(1,len(names)-1):
+                    super_table[found].append(names[i])
+        elif session['RoleID'] == 4:
+            if '/table/' in data.values()[0][0]:
+                names = data.values()[0][0].split('/')[2].split(',')
+                found = data.keys()[0]
+                admin_table[found] = []
+                admin_table[found].append(names[0][1:])
+                for i in range(1,len(names)-1):
+                    admin_table[found].append(names[i])
     label_dict = {}
     for label in labels:
         if label[1] == session['LanguageID'] and label[3] == '/search':
