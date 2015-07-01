@@ -66,7 +66,6 @@
         <br>
           <div id="main">
           <form id="searchform" method="post" action='/search'>
-          <label>Enter</label>
           <input type="text" name="search_query" id="search_query" placeholder="What You Are Looking For?" size="40"/>
           <input type="submit" value="Search" id="button_find" />
           </form>
@@ -88,13 +87,13 @@
                 </ul>
               {% endif %}
             {% endfor %}
-                <li class="dropdown">
+                <!-- <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Languages<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     {% for language in g.languages %}
                     <li><a href="/language/{{language[0]}}?next={{request.path}}">{{ language[1] }}</a></li>
                     {% endfor %}
-                </ul>
+                </ul> -->
             {% if session['RoleID'] > 0 %}
             <li>
               <form class="navbar-form navbar-right" method="post" action="{{url_for('logout')}}">

@@ -1177,11 +1177,11 @@ def deleteMenu(LangID, MenuID):
     return True
 
 
-def getMenuID(LangID):
+def getMenuID():
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(MenuID) FROM dbo.Menu WHERE LanguageID = ?", LangID)
+        "SELECT max(MenuID) FROM dbo.Menu")
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
