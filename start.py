@@ -180,16 +180,31 @@ def about(pagename):
         session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
-
+    label_dict = {}
     if pagename == 'overview':
-        return render_template('overview.html')
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/overview':
+                label_dict[label[0]] = label[5]
+        return render_template('overview.html',label=label_dict)
     elif pagename == 'why':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/why':
+                label_dict[label[0]] = label[5]
         return render_template('why_educators.html')
     elif pagename == 'school':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/school':
+                label_dict[label[0]] = label[5]
         return render_template('what_for_school.html')
     elif pagename == 'transform':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/overview':
+                label_dict[label[0]] = label[5]
         return render_template('state_wide_transform.html')
     elif pagename == 'press':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/overview':
+                label_dict[label[0]] = label[5]
         return render_template('press_announcement.html')
 
 
