@@ -190,22 +190,22 @@ def about(pagename):
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/ziiei/why':
                 label_dict[label[0]] = label[5]
-        return render_template('why_educators.html')
+        return render_template('why_educators.html',label=label_dict)
     elif pagename == 'school':
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/ziiei/school':
                 label_dict[label[0]] = label[5]
-        return render_template('what_for_school.html')
+        return render_template('what_for_school.html',label=label_dict)
     elif pagename == 'transform':
         for label in labels:
-            if label[1] == session['LanguageID'] and label[3] == '/ziiei/overview':
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/transform':
                 label_dict[label[0]] = label[5]
-        return render_template('state_wide_transform.html')
+        return render_template('state_wide_transform.html',label=label_dict)
     elif pagename == 'press':
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/ziiei/overview':
                 label_dict[label[0]] = label[5]
-        return render_template('press_announcement.html')
+        return render_template('press_announcement.html',label=label_dict)
 
 
 # @app.route('/ziiei/<pagename>')
