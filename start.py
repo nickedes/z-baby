@@ -1573,7 +1573,7 @@ def super(tablename):
                 LangID = request.form['LangID']
                 MenuID = request.form['id']
                 SubMenuID = request.form[str(MenuID)]
-                FormName = request.form[str(SubMenuID)]
+                FormName = request.form['FormName']
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
                 update = values.updateSubMenuForm(
@@ -1600,7 +1600,7 @@ def super(tablename):
                 FormName = request.form['name']
                 FormLink = request.form['FormLink']
                 RoleID = request.form['Role']
-                if values.NoMenu(LangID, MenuID):
+                if values.NoMenu(MenuID):
                     flash(
                         'No Such Menu exists, for which you are adding SubMenu. Please try again!', 'warning')
                     return redirect('/super/' + tablename)

@@ -1201,23 +1201,22 @@ def updateSubMenuForm(LanguageID, MenuID, SubMenuID, FormName, FormLink,
     return True
 
 
-def getSubMenuID(LangID, MenuID):
+def getSubMenuID(MenuID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(SubMenuID) FROM dbo.SubMenu WHERE LanguageID = ? and MenuID = ?", (LangID, MenuID))
+        "SELECT max(SubMenuID) FROM dbo.SubMenu WHERE MenuID = ?", (MenuID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
     return top[0][0]
 
 
-def NoMenu(LangID, MenuID):
+def NoMenu(MenuID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.Menu WHERE MenuID=? and LanguageID=?', (MenuID,
-                                                                     LangID))
+        'SELECT * FROM dbo.Menu WHERE MenuID=? ', (MenuID))
     if cursor.fetchall() == []:
         return True
     return False
