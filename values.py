@@ -123,7 +123,7 @@ def getIdeaCatSubCat(ideaid):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        'SELECT * FROM dbo.IdeaCatSubCat WHERE IdeaID = ?', (ideaid))
+        'SELECT IdeaID,CategoryID,SubCategoryID FROM dbo.IdeaCatSubCat WHERE IdeaID = ?', (ideaid))
     CatSubCats = cursor.fetchall()
     conn.close()
     return CatSubCats

@@ -876,6 +876,7 @@ def review():
             if cat[0] == session['LanguageID']:
                 category_dict[cat[1]] = cat[2]
         subcat_dict = {}
+        print subcat
         for sub in subcat:
             subcat_dict[sub[1]] = []
         for sub in subcat:

@@ -93,23 +93,21 @@
 		</div>
 	</div>
 	<div class="form-group">
-			{% for subcat in subcategory %}
-			<div class="checkbox-review" id="{{subcat}}">
+    		{% if subcats[idea[0]] %}
+    			{{subcats[idea[0]][0][1]}}
+				<div class="checkbox-review" id="{{subcats[idea[0]][0][1]}}">
     			<label>
-    			{% for data in subcategory[subcat] %}
-    				{% if subcats[idea[0]] %}
-    					{{subcats[idea[0]]}}
-    					{% if subcats[idea[0]][0][1] == data[2] and data[1] in sublist[idea[0]] %}
-	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" checked>{{ data[0] }}
-	      				{% else %}
-	      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
-	      				{% endif %}
-	      			{% endif %}
+    			{% for data in subcategory[subcats[idea[0]][0][1]] %}
+					{% if data[1] in sublist[idea[0]] %}
+      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}" checked>{{ data[0] }}
+      				{% else %}
+      					<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}
+      				{% endif %}
       				<br>
       			{% endfor %}
     			</label>
-  			</div>
-  			{% endfor %}
+  				</div>
+      		{% endif %}
     		{% for subcat in subcategory %}
 			<div class="checkbox" id="{{subcat}}">
     			<label>
@@ -196,14 +194,13 @@
 {% endif %}
 <script>
 $(".hiddenalways").hide();
-var id = $("#ddl1 :selected").attr("id");
+var prev_id = $("#ddl1 :selected").attr("id");
 $(".checkbox").hide();
-$(".checkbox-review").hide();
-$("#" + id + ".checkbox-review").show();
+$("#" + prev_id + ".checkbox-review").show();
 $("#ddl1").change(function(){
 	var id = $("#ddl1 :selected").attr("id");
     $(".checkbox").hide();
-    $(".checkbox-review").hide();
+    $("#" + prev_id + ".checkbox-review").hide();
     $("#" + id + ".checkbox").show();
 });
 $(".ideaform").hide();
