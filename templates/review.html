@@ -84,9 +84,9 @@
 			<select id = "ddl1" name="36" class="form-control">
 			{% for data in category %}
 				{% if data == subcats[idea[0]][1] %}
-					<option id="{{ data }}" value="{{data}}" selected>{{ category[data] }}</option>
+					<option id="{{data}}" value="{{data}}" selected>{{ category[data] }}</option>
 				{% else %}
-					<option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
+					<option id="{{data}}" value="{{data}}">{{ category[data] }}</option>
 				{% endif %}
 			{% endfor %}
 			</select>
@@ -196,9 +196,12 @@
 $(".hiddenalways").hide();
 var prev_id = $("#ddl1 :selected").attr("id");
 $(".checkbox").hide();
+window.alert(prev_id);
 $("#" + prev_id + ".checkbox-review").show();
 $("#ddl1").change(function(){
 	var id = $("#ddl1 :selected").attr("id");
+    window.alert(prev_id);
+    window.alert(id);
     $(".checkbox").hide();
     $("#" + prev_id + ".checkbox-review").hide();
     $("#" + id + ".checkbox").show();
@@ -206,6 +209,7 @@ $("#ddl1").change(function(){
 $(".ideaform").hide();
 $("#e1").change(function(){
   var id = $("#e1 :selected").attr("id");
+  window.alert(id);
   $(".ideaform").hide();
   $("#" + id + ".ideaform").show();
 });
