@@ -881,8 +881,6 @@ def review():
         for sub in subcat:
             if [sub[3], sub[2], sub[1]] not in subcat_dict[sub[1]]:
                 subcat_dict[sub[1]].append([sub[3], sub[2], sub[1]])
-        print category_dict
-        print subcat_dict
         sub_list = {}
         for data in subcatidea:
             sub_list[data] = []
