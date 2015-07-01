@@ -172,7 +172,7 @@ def home():
     return render_template('home.html', inno=inno, label=label_dict, menulist=menulist)
 
 
-@app.route('/about/<pagename>')
+@app.route('/ziiei/<pagename>')
 def about(pagename):
     if 'LanguageID' not in session:
         session['LanguageID'] = 1
@@ -181,35 +181,37 @@ def about(pagename):
     if 'userid' not in session:
         session['userid'] = 0
 
-    if pagename == 'ziiei':
-        return render_template('ziiei.html')
-    elif pagename == 'sas':
-        return render_template('sas.html')
-    elif pagename == 'litchi':
-        return render_template('litchi.html')
-    elif pagename == 'upgovt':
-        return render_template('upgovt.html')
+    if pagename == 'overview':
+        return render_template('overview.html')
+    elif pagename == 'why':
+        return render_template('why_educators.html')
+    elif pagename == 'school':
+        return render_template('what_for_school.html')
+    elif pagename == 'transform':
+        return render_template('state_wide_transform.html')
+    elif pagename == 'press':
+        return render_template('press_announcement.html')
 
 
-@app.route('/ziiei/<pagename>')
-def workflow(pagename):
-    if 'LanguageID' not in session:
-        session['LanguageID'] = 1
-    if 'RoleID' not in session:
-        session['RoleID'] = 0
-    if 'userid' not in session:
-        session['userid'] = 0
+# @app.route('/ziiei/<pagename>')
+# def workflow(pagename):
+#     if 'LanguageID' not in session:
+#         session['LanguageID'] = 1
+#     if 'RoleID' not in session:
+#         session['RoleID'] = 0
+#     if 'userid' not in session:
+#         session['userid'] = 0
 
-    if pagename == 'workflow':
-        return render_template('workflow.html')
-    elif pagename == 'apply':
-        return render_template('apply.html')
-    elif pagename == 'benefits':
-        return render_template('benefits.html')
-    elif pagename == 'examples':
-        return render_template('examples.html')
-    elif pagename == 'terms':
-        return render_template('terms.html')
+#     if pagename == 'workflow':
+#         return render_template('workflow.html')
+#     elif pagename == 'apply':
+#         return render_template('apply.html')
+#     elif pagename == 'benefits':
+#         return render_template('benefits.html')
+#     elif pagename == 'examples':
+#         return render_template('examples.html')
+#     elif pagename == 'terms':
+#         return render_template('terms.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
