@@ -203,7 +203,7 @@ def about(pagename):
         return render_template('state_wide_transform.html',label=label_dict)
     elif pagename == 'press':
         for label in labels:
-            if label[1] == session['LanguageID'] and label[3] == '/ziiei/overview':
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/press':
                 label_dict[label[0]] = label[5]
         return render_template('press_announcement.html',label=label_dict)
 
