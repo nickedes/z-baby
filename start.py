@@ -68,8 +68,7 @@ def index():
     # play with variables
     label_dict = {}
     for label in labels:
-        if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
-                and label[3] == '/':
+        if label[1] == session['LanguageID'] and label[3] == '/':
             label_dict[label[0]] = label[5]
 
     menubody = []
