@@ -262,6 +262,11 @@ def contact():
     return render_template('enquiry.html')
 
 
+@app.route('/news')
+def news():
+    return render_template('news.html')
+
+
 @app.route('/faq')
 def faq():
     return render_template('faq.html')
