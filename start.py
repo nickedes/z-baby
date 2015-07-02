@@ -206,6 +206,26 @@ def about(pagename):
             if label[1] == session['LanguageID'] and label[3] == '/ziiei/press':
                 label_dict[label[0]] = label[5]
         return render_template('press_announcement.html',label=label_dict)
+    elif pagename == 'process':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/process':
+                label_dict[label[0]] = label[5]
+        return render_template('process.html',label=label_dict)
+    elif pagename == 'evaluate':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/evaluate':
+                label_dict[label[0]] = label[5]
+        return render_template('evaluation_selection.html',label=label_dict)
+    elif pagename == 'faq':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/faq':
+                label_dict[label[0]] = label[5]
+        return render_template('faq.html',label=label_dict)
+    elif pagename == 'terms':
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/ziiei/terms':
+                label_dict[label[0]] = label[5]
+        return render_template('terms.html',label=label_dict)
 
 
 # @app.route('/ziiei/<pagename>')
