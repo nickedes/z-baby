@@ -1,104 +1,92 @@
 {% include 'header.html' %}
-<script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
-<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <div class="col-lg-8" style="margin-left:100px">
 
-<div class="dropdown" class="col-lg-8">
-	    <label for="" class="control-label">{{label[354]}}</label> 
-	    <select id = "e1" name="educators" class="" >
-	        	  <option  value="" id="1" >{{ label[311] }}</option>
-	        	  <option  value="" id="2" >{{ label[351] }}</option>
-	        	  <option  value="" id="3" >{{ label[352] }}</option>
-	        	  <option  value="" id="4" >{{ label[353] }}</option>
-      	</select>
-	    <br><br>
+<div class="col-sm-6">
+<label for="" class="control-label">{{label[354]}}</label>
+<select id = "dd" name="educators" onchange="trial(this)" class="form-control">
+	<option>..</option>
+	<option  value="1" id="1" >{{ label[311] }}</option>
+	<option  value="2" id="2" >{{ label[351] }}</option>
+	<option  value="3" id="3" >{{ label[352] }}</option>
+	<option  value="4" id="4" >{{ label[353] }}</option>
+</select>
 </div>
-
+<br><br><br>
 <div class="lead">
 	<div class="educators" id="1">
-		<h3>{{label[311]}}</h3>
-
 		<h4>{{label[312]}}</h4>
-
 		<h6>{{label[347]}}</h6>
 		<ul>
-			<li>{{label[313]}}</li>
-			<li>{{label[314]}}</li>
+			<li>{{label[313]}}</li><br>
+			<li>{{label[314]}}</li><br>
 			<li>{{label[315]}}</li>
 		</ul>
-
-		{{label[316]}}
-		{{label[317]}}
+		{{label[316]}}<br>
+		{{label[317]}}<br>
 		<ul>
-			<li>{{label[318]}}</li>
+			<li>{{label[318]}}</li><br>
 			<li>{{label[319]}}
 				<ul>
-					<li>{{label[320]}}</li>
-					<li>{{label[321]}}</li>
-					<li>{{label[322]}}</li>
-					<li>{{label[323]}}</li>
-					<li>{{label[324]}}</li>
-					<li>{{label[325]}}</li>
-					<li>{{label[326]}}</li>
+					<li>{{label[320]}}</li><br>
+					<li>{{label[321]}}</li><br>
+					<li>{{label[322]}}</li><br>
+					<li>{{label[323]}}</li><br>
+					<li>{{label[324]}}</li><br>
+					<li>{{label[325]}}</li><br>
+					<li>{{label[326]}}</li><br>
 					<li>{{label[327]}}</li>
 				</ul>
 			</li>
 		</ul>
-
-		{{label[348]}}
+		{{label[348]}}<br>
 		<ul>
-			<li>{{label[328]}}</li>
-			<li>{{label[329]}}</li>
-			<li>{{label[330]}}</li>
-			<li>{{label[331]}} <a href="/ziiei/terms">{{label[349]}}</a> {{label[332]}}</li>
-			<li>{{label[333]}}</li>
-			<li>{{label[334]}}</li>
-			<li>{{label[335]}}</li>
+			<li>{{label[328]}}</li><br>
+			<li>{{label[329]}}</li><br>
+			<li>{{label[330]}}</li><br>
+			<li>{{label[331]}} <a href="/ziiei/terms">{{label[349]}}</a> {{label[332]}}</li><br>
+			<li>{{label[333]}}</li><br>
+			<li>{{label[334]}}</li><br>
+			<li>{{label[335]}}</li><br>
 		</ul>
-
-		{{label[336]}}
+		{{label[336]}}<br>
 		<ul>
 			<li>{{label[337]}}
 				<ol>
-					<li>{{label[338]}}</li>
-					<li>{{label[339]}}</li>
-					<li>{{label[340]}}</li>
+					<li>{{label[338]}}</li><br>
+					<li>{{label[339]}}</li><br>
+					<li>{{label[340]}}</li><br>
 				</ol>
 			</li>
 		</ul>
-		{{label[341]}}
+		{{label[341]}}<br>
 		<ul>
-			<li>{{label[342]}}</li>
-			<li>{{label[343]}}</li>
-			<li>{{label[344]}}</li>
+			<li>{{label[342]}}</li><br>
+			<li>{{label[343]}}</li><br>
+			<li>{{label[344]}}</li><br>
 			<li>{{label[345]}} <a href="/ziiei/evaluate">{{label[346]}}</a></li>
 		</ul>
 	</div>
 	<div class="educators" id="2">
+		<br>
 		{{ label[351] }}
 	</div>
 	<div class="educators" id="3">
+		<br>
 		{{ label[352] }}
 	</div>
 	<div class="educators" id="4">
+		<br>
 		{{ label[353] }}
 	</div>
 </div>
 <script type="text/javascript">
-	// $(".educators").hide();
+	$(".educators").hide();
 	var id = $("#e1 :selected").attr("id");
 	$("#" + id + ".educators").show();
-	$("#e1").change(function(){
-		var id = $("#e1 :selected").attr("id");
-		window.alert(id);
+	function trial(e1) {
+		var value = e1.value;
 		$(".educators").hide();
-		$("#" + id + ".educators").show();
-	})
-	$(document).on('change', '#e1', function() {
-		var id = $("#e1 :selected").attr("id");
-		window.alert(id);
-		$(".educators").hide();
-		$("#" + id + ".educators").show();
-	});
+		$("#" + value + ".educators").show();
+	}
 </script>
 {% include 'footer.html' %}
