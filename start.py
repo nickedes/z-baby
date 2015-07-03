@@ -242,6 +242,19 @@ def workflow():
                 label_dict[label[0]] = label[5]
     return render_template('educators.html',label=label_dict)
 
+@app.route('/schools')
+def school():
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
+    label_dict = {}
+    for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/schools':
+                label_dict[label[0]] = label[5]
+    return render_template('school.html',label=label_dict)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
