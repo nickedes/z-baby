@@ -274,6 +274,15 @@ def news():
     return render_template('news.html')
 
 
+@app.route('/register_school')
+def register_school():
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[3] == '/register_school':
+            label_dict[label[0]] = label[5]
+    return render_template('register_school.html',label=label_dict)
+
+
 @app.route('/faq')
 def faq():
     return render_template('faq.html')
