@@ -236,7 +236,11 @@ def workflow():
         session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
-    return render_template('educators.html')
+    label_dict = {}
+    for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/educators':
+                label_dict[label[0]] = label[5]
+    return render_template('educators.html',label=label_dict)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
