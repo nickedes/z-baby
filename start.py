@@ -266,26 +266,44 @@ def logout():
 
 @app.route('/contact')
 def contact():
+    # Todo: Add labels for this page to db.
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[3] == '/contact':
+            label_dict[label[0]] = label[5]
     return render_template('enquiry.html')
 
 
 @app.route('/news')
 def news():
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
     return render_template('news.html')
 
 
 @app.route('/register_school')
 def register_school():
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
     label_dict = {}
     for label in labels:
         if label[1] == session['LanguageID'] and label[3] == '/register_school':
             label_dict[label[0]] = label[5]
     return render_template('register_school.html',label=label_dict)
-
-
-@app.route('/faq')
-def faq():
-    return render_template('faq.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
