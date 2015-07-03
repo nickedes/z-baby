@@ -228,25 +228,15 @@ def about(pagename):
         return render_template('terms.html',label=label_dict)
 
 
-# @app.route('/ziiei/<pagename>')
-# def workflow(pagename):
-#     if 'LanguageID' not in session:
-#         session['LanguageID'] = 1
-#     if 'RoleID' not in session:
-#         session['RoleID'] = 0
-#     if 'userid' not in session:
-#         session['userid'] = 0
-
-#     if pagename == 'workflow':
-#         return render_template('workflow.html')
-#     elif pagename == 'apply':
-#         return render_template('apply.html')
-#     elif pagename == 'benefits':
-#         return render_template('benefits.html')
-#     elif pagename == 'examples':
-#         return render_template('examples.html')
-#     elif pagename == 'terms':
-#         return render_template('terms.html')
+@app.route('/educators')
+def workflow():
+    if 'LanguageID' not in session:
+        session['LanguageID'] = 1
+    if 'RoleID' not in session:
+        session['RoleID'] = 0
+    if 'userid' not in session:
+        session['userid'] = 0
+    return render_template('educators.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
