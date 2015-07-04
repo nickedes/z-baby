@@ -81,7 +81,7 @@
 	    <label for="" class="control-label">{{ label[36] }}</label> 
 	    <h6>{{ label[37] }}</h6> 
 	    <div class="">
-			<select id = "ddl1" name="36" class="form-control">
+			<select id = "{{idea[0]}}ddl1" name="36" class="form-control">
 				{% for data in category %}
 					{% if subcats[idea[0]] %}
 						{% if data == subcats[idea[0]][0][1] %}
@@ -98,7 +98,6 @@
 	</div>
 	<div class="form-group">
     		{% if subcats[idea[0]] %}
-	    		{{subcategory[subcats[idea[0]][0][1]]}}
 				<div class="checkbox-review" id="{{subcats[idea[0]][0][1]}}">
 	    			<label>
 		    			{% for data in subcategory[subcats[idea[0]][0][1]] %}
@@ -198,22 +197,21 @@
 {% endif %}
 <script>
 $(".hiddenalways").hide();
-var id = $("#ddl1 :selected").attr("id");
-$(".checkbox").hide();
-$(".checkbox-review").hide();
-$("#" + id + ".checkbox-review").show();
-// $("#" + prev_id + ".checkbox").show();
-$("#ddl1").change(function(){
-	var id = $("#ddl1 :selected").attr("id");
-    $(".checkbox").hide();
-    $(".checkbox-review").hide();
-    $("#" + id + ".checkbox").show();
-});
 $(".ideaform").hide();
 $("#e1").change(function(){
-  var id = $("#e1 :selected").attr("id");
-  $(".ideaform").hide();
-  $("#" + id + ".ideaform").show();
+	var id = $("#e1 :selected").attr("id");
+	$(".ideaform").hide();
+	$("#" + id + ".ideaform").show();
+	var  catid = $("#"+id+"ddl1 :selected").attr("id");
+	$(".checkbox").hide();
+	$(".checkbox-review").hide();
+	$("#" + catid + ".checkbox-review").show();
+	$("#"+id+"ddl1").change(function(){
+	var catid = $("#"+id+"ddl1 :selected").attr("id");
+    $(".checkbox-review").hide();
+    $(".checkbox").hide();
+    $("#" + catid + ".checkbox").show();
+});
 });
 
 </script>
