@@ -4,7 +4,6 @@
 <div class="col-sm-6">
 <label for="" class="control-label">{{label[354]}}</label>
 <select id = "dd" name="educators" onchange="trial(this)" class="form-control">
-	<option>..</option>
 	<option  value="1" id="1" >{{ label[311] }}</option>
 	<option  value="2" id="2" >{{ label[351] }}</option>
 	<option  value="3" id="3" >{{ label[352] }}</option>
@@ -82,10 +81,10 @@
 </div>
 <script type="text/javascript">
 	$(".educators").hide();
-	var id = $("#e1 :selected").attr("id");
+	var id = $("#dd :selected").attr('id');
 	$("#" + id + ".educators").show();
-	function trial(e1) {
-		var value = e1.value;
+	function trial(dropdown) {
+		var value = dropdown.value;
 		$(".educators").hide();
 		$("#" + value + ".educators").show();
 	}
