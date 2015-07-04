@@ -931,9 +931,10 @@ def review():
         subcatidea = {}
         media = {}
         for idea_single in idea_details:
-            subcatidea[idea_single[0]] = values.getIdeaCatSubCat(
+            subcatidea[idea_single[0]]  = values.getIdeaCatSubCat(
                 idea_single[0])
-            media[idea_single[0]] = values.getMedia(idea_single[0])
+            media[idea_single[0]] = values.getMedia(idea_single[0]) 
+        print subcatidea
         label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
@@ -951,7 +952,6 @@ def review():
             if cat[0] == session['LanguageID']:
                 category_dict[cat[1]] = cat[2]
         subcat_dict = {}
-        print subcat
         for sub in subcat:
             subcat_dict[sub[1]] = []
         for sub in subcat:
@@ -962,7 +962,7 @@ def review():
             sub_list[data] = []
             for y in subcatidea[data]:
                 sub_list[data].append(y[2])
-
+        print category_dict
         return render_template('review.html', label=label_dict,
                                benefit=bene_dict, stage=stage_dict,
                                category=category_dict, media=media,
