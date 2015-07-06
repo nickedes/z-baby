@@ -189,6 +189,15 @@ def change_password():
     else:
         # query for updating password!
         print request.form
+        old_password = request.form['old_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        if case1:
+            flash('Incorrect Old Password!', 'success')
+        elif case2:
+            flash("Entered passwords don't match.", 'success')
+        else:
+            flash('Password successfully changed!', 'success')
         return redirect(url_for('home'))
 
 
