@@ -192,12 +192,16 @@ def change_password():
         old_password = request.form['old_password']
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
-        if case1:
+        print session['userid']
+        changed = values.change_password(old_password,new_password,confirm_password,session['userid'])
+        if changed == 0:
             flash('Incorrect Old Password!', 'success')
-        elif case2:
+        elif changed == 1:
+            flash('Password successfully changed!', 'success')
+        elif changed == 2:
             flash("Entered passwords don't match.", 'success')
         else:
-            flash('Password successfully changed!', 'success')
+            pass
         return redirect(url_for('home'))
 
 
