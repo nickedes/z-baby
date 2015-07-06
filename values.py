@@ -1425,10 +1425,14 @@ def change_password(old_password,new_password,confirm_password,LoginID):
     conn = getConnection()
     cursor = conn.cursor()
     print cursor
-    password = cursor.execute("SELECT Password FROM dbo.Login WHERE LoginID = ?",(LoginID))[0][0]
+    cursor.execute("SELECT Password FROM dbo.Login WHERE LoginID = ?",(LoginID))
+    password = cursor.fetchall()[0][0]
     print password
     if new_password != confirm_password:
         return 2
     elif old_password != password:
-        pass
+        return 0
+    else:
+        cursor.execute("UPDATE dbo.Login SET Password = ? WHERE LoginID = ?",(new_password, LoginID))
+        conn.commit()
     return True
