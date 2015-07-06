@@ -123,8 +123,8 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[26][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
-        <option>..</option>
+      <select id = "dd1" name="26" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control" required>
+        <option value="">..</option>
         {% for data in country %}
           {% if data[0] == session['LanguageID'] %}
             <option value="{{ data[1] }}" >{{ data[2] }}</option>
@@ -138,8 +138,8 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[27][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl2" name="27" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
-      <option>..</option>
+      <select id = "ddl2" name="27" onchange="district(this,document.getElementById('ddl3'))" class="form-control" required>
+      <option value="">..</option>
       </select>
     </div>
   <br><br>
@@ -148,8 +148,8 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[28][1] }}</label> 
     <div class="col-sm-6">
-      <select name="28" id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control">
-      <option>..</option>
+      <select name="28" id = "ddl3" onchange="stat(this,document.getElementById('ddl4'))" class="form-control" required>
+      <option value="">..</option>
       </select>       
     </div>
   <br><br>
@@ -158,8 +158,8 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">{{ label[29][1] }}</label> 
     <div class="col-sm-6">
-      <select id = "ddl4" class="form-control" name="29">
-      <option>..</option>
+      <select id = "ddl4" class="form-control" name="29" required>
+      <option value="">..</option>
       </select>
     </div>
   <br><br><br><br><br>
