@@ -729,7 +729,7 @@ def edit():
         cols = values.getColumns(table)
         if session['RoleID'] == 5:
             filename = 'super_' + table.lower() + '.html'
-            if table == 'Block' or table== 'District':
+            if table == 'Block' or table == 'District':
                 countrylist = {}
                 for single_country in country:
                     statelist = []
@@ -1091,6 +1091,8 @@ def super(tablename):
             'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
+        data = values.gettablevalues(tablename)
+        cols = values.getColumns(tablename)
         label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == 5:
@@ -1124,8 +1126,6 @@ def super(tablename):
             elif tablename == 'State':
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             else:
-                data = values.gettablevalues(tablename)
-                cols = values.getColumns(tablename)
                 return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
             'You do not have the priviledge to access that function!', 'danger')
