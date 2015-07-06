@@ -1,3 +1,4 @@
+import requests
 import os
 import pyodbc
 import ConfigParser
@@ -25,6 +26,19 @@ def getClient_ID():
 
     CLIENT_ID = config.get('Imgur','CLIENT_ID')
     return CLIENT_ID
+
+
+def sendPassword(phone='9818993299', msg='hey'):
+    config = ConfigParser.RawConfigParser()
+    config.read('config.ini')
+    url = config.get('Sms', 'url')
+    usr = config.get('Sms', 'usr')
+    passwd = config.get('Sms', 'pass')
+    sid = config.get('Sms', 'sid')
+    mt = config.get('Sms', 'mt')
+    r = requests.post(url=url, data={'usr': usr,'pass':passwd,'msisdn':phone,
+        'msg':msg,'sid':sid,'mt':mt})
+    print r
 
 
 def gettablelist():
