@@ -373,7 +373,7 @@ def register():
             blocklist = []
             if single_district[0] == session['LanguageID']:
                 for single_block in block:
-                    if single_block[3] == single_district[3]:
+                    if single_block[3] == single_district[3] and single_block[0] == session['LanguageID']:
                         blocklist.append([single_block[5], single_block[4]])
                 districtdict[single_district[3]] = blocklist
         return render_template('register.html', country=country, state=state,
