@@ -172,19 +172,24 @@ def home():
     return render_template('home.html', inno=inno, label=label_dict, menulist=menulist)
 
 
-@app.route('/passwd')
+@app.route('/passwd',methods=['GET', 'POST'])
 @login_required
 def change_password():
     if session['RoleID'] != 1:
         flash(
             'Sorry, you are not authorised to access this function', 'warning')
         return redirect(url_for('home'))
-    label_dict = {}
-    for label in labels:
-        if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
-                and label[3] == '/passwd':
-            label_dict[label[0]] = label[5]
-    return render_template('change_password.html',label=label_dict)
+    if request.method == 'GET':
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
+                    and label[3] == '/passwd':
+                label_dict[label[0]] = label[5]
+        return render_template('change_password.html',label=label_dict)
+    else:
+        # query for updating password!
+        print request.form
+        return redirect(url_for('home'))
 
 
 @app.route('/ziiei/<pagename>')
