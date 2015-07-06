@@ -187,12 +187,9 @@ def change_password():
                 label_dict[label[0]] = label[5]
         return render_template('change_password.html',label=label_dict)
     else:
-        # query for updating password!
-        print request.form
         old_password = request.form['old_password']
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
-        print session['userid']
         changed = values.change_password(old_password,new_password,confirm_password,session['userid'])
         if changed == 0:
             flash('Incorrect Old Password!', 'success')

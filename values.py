@@ -2,6 +2,7 @@ import os
 import pyodbc
 import ConfigParser
 from datetime import datetime
+from random import randint
 
 
 def getConnection():
@@ -35,6 +36,10 @@ def gettablelist():
     return val
 
 
+def getPassword():
+    return "%0.6d" % randint(0,999999)
+
+
 def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
                  empid, qual, gender, resi_addr, email, desig, subj, block,
                  dist, state, country, cr_by, cr_date):
@@ -46,8 +51,8 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         'INSERT INTO dbo.Registration VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', vals)
 
 
-    # todo: Password Logic
-    password = "dummy"
+    # Password - A 6 digit Random no.
+    password = getPassword()
     cursor.execute(
         'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
     loginid = cursor.fetchall()
