@@ -168,8 +168,19 @@ def home():
     for menu in menus:
         if menu[0] == session['LanguageID'] and menu[2] == '/home' and menu[5] == session['RoleID']:
             menulist.append([menu[3], menu[4]])
-    inno = values.checkInnovation(session['userid'])
+    inno = values.checkInnovation(session['userid'])    
     return render_template('home.html', inno=inno, label=label_dict, menulist=menulist)
+
+
+@app.route('/passwd')
+@login_required
+def change_password():
+    label_dict = {}
+    for label in labels:
+        if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
+                and label[3] == '/passwd':
+            label_dict[label[0]] = label[5]
+    return 
 
 
 @app.route('/ziiei/<pagename>')
