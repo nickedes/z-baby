@@ -2,6 +2,7 @@ import os
 import datetime
 import pyodbc
 import ConfigParser
+import json
 from datetime import datetime
 import values
 
@@ -14,9 +15,9 @@ password = config.get('Database', 'password')
 
 connection_string = 'DRIVER={SQL Server};SERVER=%s;DATABASE=ziiei;UID=%s;PWD=%s' % (server, user, password)
 
+'''
 cnxn = pyodbc.connect(connection_string)
 cursor = cnxn.cursor()
-'''
 <li><a href="/workflow">Workflow with timelines</a></li>
                     <li><a href="/apply">How to apply</a></li>
                     <li><a href="/benefits">Benefits</a></li>
@@ -778,8 +779,13 @@ conn.commit()
 cr_date = str(datetime.now())
 cursor.execute("INSERT INTO dbo.History VALUES (?,?,?,?,?,?,?)",  ('Label','LabelValue','UPDATE','test','tested',1,cr_date))
 cursor.execute("DELETE FROM dbo.History where HistoryID < 4")
-'''
 # cnxn.commit()
 cursor.execute('SELECT * FROM dbo.Login')
 row = cursor.fetchall()
 print row
+empid = 'pyodbc'
+password = 'mummy'
+msg = 'Username:'+ empid + '\n'+'Password:' + password
+r = values.sendPassword(msg)
+print r
+'''

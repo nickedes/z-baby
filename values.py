@@ -28,7 +28,7 @@ def getClient_ID():
     return CLIENT_ID
 
 
-def sendPassword(phone='9818993299', msg='hey'):
+def sendPassword(msg, phone):
     config = ConfigParser.RawConfigParser()
     config.read('config.ini')
     url = config.get('Sms', 'url')
@@ -36,9 +36,12 @@ def sendPassword(phone='9818993299', msg='hey'):
     passwd = config.get('Sms', 'pass')
     sid = config.get('Sms', 'sid')
     mt = config.get('Sms', 'mt')
-    r = requests.post(url=url, data={'usr': usr,'pass':passwd,'msisdn':phone,
-        'msg':msg,'sid':sid,'mt':mt})
-    print r
+    try:
+        r = requests.post(url=url, data={'usr': usr,'pass':passwd,'msisdn':phone,
+            'msg':msg,'sid':sid,'mt':mt})
+        return True
+    except:
+        return False
 
 
 def gettablelist():
@@ -70,19 +73,22 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     cursor.execute(
         'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
     loginid = cursor.fetchall()
-        # try:
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
         'INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
     conn_reg.commit()
     conn.commit()
+
+    # Send SMS to teacher, Username and Password.
+    # Username is Empid
+    msg = 'Username:'+ empid + '\n' + 'Password:' + password
+    if sendPassword(msg,ph):
+        print 'Sms Sent'
+    else:
+        print 'Sms failed'
     conn_reg.close()
     conn.close()
-    #     except:
-    #         return False
-    # except:
-    #     return False
     return True
 
 
