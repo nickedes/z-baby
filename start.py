@@ -175,12 +175,16 @@ def home():
 @app.route('/passwd')
 @login_required
 def change_password():
+    if session['RoleID'] != 1:
+        flash(
+            'Sorry, you are not authorised to access this function', 'warning')
+        return redirect(url_for('home'))
     label_dict = {}
     for label in labels:
         if label[1] == session['LanguageID'] and label[2] == session['RoleID']\
                 and label[3] == '/passwd':
             label_dict[label[0]] = label[5]
-    return 
+    return render_template('change_password.html',label=label_dict)
 
 
 @app.route('/ziiei/<pagename>')
