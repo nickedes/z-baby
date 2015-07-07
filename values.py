@@ -79,14 +79,14 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
         'INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
     conn_reg.commit()
     conn.commit()
-
+    print '@here'
     # Send SMS to teacher, Username and Password.
     # Username is Empid
-    msg = 'Username:'+ empid + '\n' + 'Password:' + password
-    if sendPassword(msg,ph):
-        print 'Sms Sent'
-    else:
-        print 'Sms failed'
+    # msg = 'Username:'+ empid + '\n' + 'Password:' + password
+    # if sendPassword(msg,ph):
+    #     print 'Sms Sent'
+    # else:
+    #     print 'Sms failed'
     conn_reg.close()
     conn.close()
     return True
