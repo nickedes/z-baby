@@ -28,6 +28,15 @@ def getClient_ID():
     return CLIENT_ID
 
 
+def getVimeo():
+    config = ConfigParser.RawConfigParser()
+    config.read('config.ini')
+    token = config.get('Vimeo','token')
+    secret= config.get('Vimeo','secret')
+    Client_Identifier= config.get('Vimeo','Client_Identifier')
+    return VimeoClient(token=token,key=Client_Identifier,secret=secret)
+
+
 def sendPassword(msg, phone):
     config = ConfigParser.RawConfigParser()
     config.read('config.ini')
