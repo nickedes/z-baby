@@ -294,20 +294,32 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    # Todo: Add labels for this page to db.
     if 'LanguageID' not in session:
         session['LanguageID'] = 1
     if 'RoleID' not in session:
         session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
-    label_dict = {}
-    for label in labels:
-        if label[1] == session['LanguageID'] and label[3] == '/contact':
-            label_dict[label[0]] = label[5]
-    return render_template('enquiry.html', label=label_dict)
+    if request.method == 'GET':
+        label_dict = {}
+        for label in labels:
+            if label[1] == session['LanguageID'] and label[3] == '/contact':
+                label_dict[label[0]] = label[5]
+        return render_template('enquiry.html', label=label_dict)
+    else:
+        print request.form
+        name = request.form['InputName']
+        phone = request.form['InputPhone']
+        msg = request.form['InputMessage']
+        EmailID = request.form['InputEmail']
+        if values.insertEnquiry(name, EmailID, phone, msg):
+            flash(
+                'Your Query has been submitted.', 'info')
+        else:
+            flash('Something went wrong! Please try again later!', 'danger')
+        return redirect(url_for('index'))         
 
 
 @app.route('/news')

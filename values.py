@@ -1469,3 +1469,27 @@ def change_password(old_password,new_password,confirm_password,LoginID):
         cursor.execute("UPDATE dbo.Login SET Password = ? WHERE LoginID = ?",(new_password, LoginID))
         conn.commit()
     return True
+
+
+def getContactID():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(ContactID) FROM dbo.Contact")
+    top = cursor.fetchall()
+    if not top[0][0]:
+        return 0
+    return top[0][0]
+
+
+def insertEnquiry(Name, EmailID, Phone, Message):
+    conn = getConnection()
+    cursor = conn.cursor()
+    ContactID = getContactID()
+    try:
+        cursor.execute(
+                'INSERT INTO dbo.Contact VALUES (?, ?, ?, ?, ?)', (ContactID, Name, EmailID, Phone, Message))
+        conn.commit()
+    except:
+        return False
+    return True
