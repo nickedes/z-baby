@@ -78,6 +78,13 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
 
     # Password - A 6 digit Random no.
     password = getPassword()
+    # Send SMS to teacher, Username and Password.
+    # Username is Empid
+    msg = 'Username:'+ empid + '\n' + 'Password:' + password
+    if sendPassword(msg,ph):
+        print 'Sms Sent'
+    else:
+        print 'Sms failed'
     cursor.execute(
         'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
     loginid = cursor.fetchall()
@@ -88,13 +95,6 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     conn_reg.commit()
     conn.commit()
     print '@here'
-    # Send SMS to teacher, Username and Password.
-    # Username is Empid
-    # msg = 'Username:'+ empid + '\n' + 'Password:' + password
-    # if sendPassword(msg,ph):
-    #     print 'Sms Sent'
-    # else:
-    #     print 'Sms failed'
     conn_reg.close()
     conn.close()
     return True
