@@ -309,7 +309,6 @@ def contact():
                 label_dict[label[0]] = label[5]
         return render_template('enquiry.html', label=label_dict)
     else:
-        print request.form
         name = request.form['InputName']
         phone = request.form['InputPhone']
         msg = request.form['InputMessage']
@@ -710,6 +709,7 @@ def view():
         return redirect(url_for('home'))
     data = values.gettablevalues('Idea')
     header = values.getColumns('Idea')
+    # districts = values.getIdeaDistricts()
     return render_template('view.html', header=header, table=data)
 
 
