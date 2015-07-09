@@ -76,7 +76,6 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     cursor.execute(
         'INSERT INTO dbo.Registration VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', vals)
 
-
     # Password - A 6 digit Random no.
     password = getPassword()
     cursor.execute(
@@ -84,8 +83,8 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     loginid = cursor.fetchall()
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute(
-        'INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
+    print loginid,empid,password,1,"teacher",str(cr_by), cr_date
+    cursor.execute('INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
     conn_reg.commit()
     conn.commit()
     print '@here'
