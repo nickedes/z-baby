@@ -307,7 +307,7 @@ def contact():
     for label in labels:
         if label[1] == session['LanguageID'] and label[3] == '/contact':
             label_dict[label[0]] = label[5]
-    return render_template('enquiry.html')
+    return render_template('enquiry.html', label=label_dict)
 
 
 @app.route('/news')
