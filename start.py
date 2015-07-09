@@ -709,8 +709,8 @@ def view():
         return redirect(url_for('home'))
     data = values.gettablevalues('Idea')
     header = values.getColumns('Idea')
-    # districts = values.getIdeaDistricts()
-    return render_template('view.html', header=header, table=data)
+    login_district = values.LoginDistrict()
+    return render_template('view.html', header=header, table=data,dist=login_district)
 
 
 @app.route('/edit', methods=['GET', 'POST'])

@@ -1493,3 +1493,10 @@ def insertEnquiry(Name, EmailID, Phone, Message):
     except:
         return False
     return True
+
+
+def LoginDistrict():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT LoginID,DistrictID FROM dbo.Registration')
+    return cursor.fetchall()
