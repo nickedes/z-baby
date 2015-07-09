@@ -710,7 +710,16 @@ def view():
     data = values.gettablevalues('Idea')
     header = values.getColumns('Idea')
     login_district = values.LoginDistrict()
-    return render_template('view.html', header=header, table=data,dist=login_district)
+    uniq_dist = []
+    for district in login_district:
+        if district[1] not in uniq_dist:
+            uniq_dist.append(district[1])
+    all_dist = values.distinctDistricts()
+    dist = {}
+    for district in login_district:
+        dist[district[0]] = district[1]
+    print dist
+    return render_template('view.html', header=header, table=data,dist=dist,unique=uniq_dist,all_dist=all_dist)
 
 
 @app.route('/edit', methods=['GET', 'POST'])

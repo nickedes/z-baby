@@ -1500,3 +1500,10 @@ def LoginDistrict():
     cursor = conn.cursor()
     cursor.execute('SELECT LoginID,DistrictID FROM dbo.Registration')
     return cursor.fetchall()
+
+
+def distinctDistricts():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT DISTINCT DistrictID,DistrictName FROM dbo.District')
+    return cursor.fetchall()
