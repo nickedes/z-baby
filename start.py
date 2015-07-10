@@ -547,7 +547,6 @@ def update():
                                details=details)
     else:
         teacher_id = None
-        print request.form
         if 'teacher_id' in request.form:
             teacher_id = request.form['teacher_id']
         name = request.form['10']
