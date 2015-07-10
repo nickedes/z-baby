@@ -788,4 +788,8 @@ password = 'mummy'
 msg = 'Username:'+ empid + '\n'+'Password:' + password
 r = values.sendPassword(msg)
 print r
+conn = values.getConnection()
+cursor = conn.cursor()
+print loginid,empid,password,1,"teacher",str(cr_by), cr_date
+cursor.execute('INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date))
 '''

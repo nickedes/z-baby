@@ -75,6 +75,7 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     vals = (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date)
     cursor.execute(
         'INSERT INTO dbo.Registration VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', vals)
+    conn_reg.commit()
 
     # Password - A 6 digit Random no.
     password = getPassword()
@@ -88,15 +89,15 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     cursor.execute(
         'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
     loginid = cursor.fetchall()
-    conn = getConnection()
-    cursor = conn.cursor()
     print loginid,empid,password,1,"teacher",str(cr_by), cr_date
-    cursor.execute('INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", str(cr_by), cr_date))
-    conn_reg.commit()
-    conn.commit()
-    print '@here'
+    # cursor.execute('INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date))
+    # conn_reg.commit()
+    if createLogin(loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date):
+        print 'Login created'
+    else:
+        print 'Login Failed'
     conn_reg.close()
-    conn.close()
+    # conn.close()
     return True
 
 
