@@ -1,39 +1,42 @@
 {% include 'header.html' %}
 <br><br>
-<div class="col-sm-6">
-<select id = "dd" class="form-control">
-	<option value="">..</option>
-	{% for data in all_dist %}
-		{% if data[0] in unique %}
-			<option id ="{{data[0]}}" value="{{ data[0] }}">{{ data[1] }}</option>
-		{% endif %}
-	{% endfor %}
+<div class="col-sm-2">
+	<select id = "dd" class="form-control">
+		<option value="">..</option>
+		{% for data in all_dist %}
+			{% if data[0] in unique %}
+				<option id ="{{data[0]}}" value="{{ data[0] }}">{{ data[1] }}</option>
+			{% endif %}
+		{% endfor %}
 	</select>
 </div>
+<br><br>
 <div class="col-lg-10">
 <table class="table">
-	<thead>
+	<thead id="head">
 		<tr>
-			{% for head in header %}
-				<th>  {{head}}  </th>
-			{% endfor %}
+		{% for head in header %}
+			<th>{{head}}</th>
+		{% endfor %}
 		</tr>
 	</thead>
 	<tbody>
 		{% for row in table %}
-				<tr class="row" id="{{dist[row[1]]}}">
-						{% for data in row %}
-							<td>{{data}}</td>
-						{% endfor %}
-				</tr>
+		<tr class="row" id="{{dist[row[1]]}}">
+		{% for data in row %}
+			<td>{{data}}</td>
+		{% endfor %}
+		</tr>
 		{% endfor %}
 	</tbody>
 </table>
 <br><br><br>
 <script>
 $(".row").hide();
+$("#head").hide();
 $("#dd").change(function(){
 	var id = $("#dd :selected").attr("id");
+	$("#head").show();
 	$(".row").hide();
     $("#" + id + ".row").show();
 }); 
