@@ -22,18 +22,18 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-		<tr class="row" id="{{dist[row[1]]}}">
-		{% for data in row %}
-			<td>{{data}}</td>
-		{% endfor %}
-		</tr>
+			<tr class="row" id="{{dist[row[1]]}}">
+			{% for data in row %}
+				<td>{{data}}</td>
+			{% endfor %}
+			</tr>
 		{% endfor %}
 	</tbody>
 </table>
 <br><br><br>
 <script>
-$(".row").hide();
 $("#head").hide();
+$(".row").hide();
 $("#dd").change(function(){
 	var id = $("#dd :selected").attr("id");
 	$("#head").show();
