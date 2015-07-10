@@ -657,7 +657,7 @@ def submit():
         file = request.files['file']
         UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
         ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif','PNG','JPG','JPEG'])
-        ALLOWED_EXTENSIONS_VIDEO = set(['mp4'])
+        ALLOWED_EXTENSIONS_VIDEO = set(['mp4','MP4'])
         app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
         medias = {}
         if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
@@ -672,6 +672,16 @@ def submit():
             image_link = uploaded_image.link
             medias['image'] = image_link
 
+        video_link = None
+        file = request.files['video']
+        if file and allowed_file(file.filename, ALLOWED_EXTENSIONS_VIDEO):
+            print 'here'
+            filename = secure_filename(file.filename)
+            PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(PATH)
+            # link -> video_link[8:]
+            video_link = VideoUpload(PATH)[8:]
+            os.remove(PATH)
     IdeaID = values.getLatestIdea() + 1
     if session['RoleID'] == 1:
         LoginID = session['userid']
