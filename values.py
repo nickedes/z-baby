@@ -4,6 +4,7 @@ import pyodbc
 import ConfigParser
 from datetime import datetime
 from random import randint
+from vimeo import VimeoClient
 
 
 def getConnection():
