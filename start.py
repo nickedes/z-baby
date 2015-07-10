@@ -699,6 +699,10 @@ def submit():
     MediaID = values.getLatestMedia() + 1
     example_text = values.insertMedia(
         MediaID, IdeaID, example, 'text', session['userid'], datetime.now())
+    if video_link:
+        MediaID = values.getLatestMedia() + 1
+        example_vid = values.insertMedia(
+            MediaID, IdeaID, video_link, 'video', session['userid'], datetime.now())
     ideacatsubcat = values.insertIdeaCatSubCat(
         IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
