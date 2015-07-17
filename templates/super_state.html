@@ -10,9 +10,10 @@
 	<tbody>
 		{% for row in table %}
 			<tr>
-				{% for data in row %}
-					<td>{{data}}</td>
+				{% for index in range(row|length-1) %}
+					<td>{{row[index]}}</td>
 				{% endfor %}
+				<td>{{row[-1][:-8]}}</td>
 			</tr>
 		{% endfor %}
 	</tbody>
@@ -83,6 +84,7 @@
 			<tr>
 				<td>
 				<select id = "dd1" name="CID" class="form-control">
+					<option>..</option>
 					{% for data in country %}
 					  {% if data[0] == session['LanguageID'] %}
 					    <option value="{{ data[1] }}" >{{ data[2] }}</option>

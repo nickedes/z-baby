@@ -11,15 +11,15 @@
 	<tbody>
 		{% for row in table %}
 			<tr>
-					{% for data in row %}
-						<td>{{data}}</td>
-					{% endfor %}
-					<br>
+				{% for index in range(row|length-1) %}
+					<td>{{row[index]}}</td>
+				{% endfor %}
+				<td>{{row[-1][:-8]}}</td>
 			</tr>
 		{% endfor %}
 	</tbody>
 </table>
-<br><br><br>
+<br>
 <table class="table">
 	<thead>
 		<tr>
@@ -75,7 +75,7 @@
 				</select>
 				</td>
 				<td>
-				<select id = "ddl2" name="SID" onchange="district(this,document.getElementById('ddl3'))" class="form-control">
+				<select id = "ddl2" name="SID" class="form-control">
 					<option>..</option>
 				</select>
 				</td>
