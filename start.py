@@ -1160,7 +1160,6 @@ def super(tablename):
                     return render_template(filename, table=data, country=country,clist=countrylist,
                                        slist=statelist,header=cols, label=label_dict)
             elif tablename == 'state':
-                print country
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             else:
                 return render_template(filename, table=data, header=cols,label=label_dict)
