@@ -13,6 +13,7 @@ from functools import wraps
 from datetime import datetime
 from errors import showerrors
 import values
+from upload import VideoUpload
 from werkzeug import secure_filename
 import pyimgur
 
@@ -639,7 +640,6 @@ def submit():
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
     else:
-        print request.files
         title = request.form['31']
         stage_id = request.form['33']
         benefit_id = request.form['34']
@@ -703,6 +703,7 @@ def submit():
         MediaID = values.getLatestMedia() + 1
         example_vid = values.insertMedia(
             MediaID, IdeaID, video_link, 'video', session['userid'], datetime.now())
+        print (MediaID, IdeaID, video_link, 'video', session['userid'], datetime.now())
     ideacatsubcat = values.insertIdeaCatSubCat(
         IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
@@ -1034,7 +1035,6 @@ def review():
                                ideas=idea_details, subcats=subcatidea,
                                sublist=sub_list)
     else:
-        print request.form
         IdeaID = request.form['idea']
         title = request.form['31']
         stage_id = request.form['33']
