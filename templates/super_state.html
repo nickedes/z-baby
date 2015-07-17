@@ -1,5 +1,4 @@
 {% include 'header.html' %}
-
 <table class="table">
 	<thead>
 		<tr>
@@ -11,15 +10,14 @@
 	<tbody>
 		{% for row in table %}
 			<tr>
-					{% for data in row %}
-						<td>{{data}}</td>
-					{% endfor %}
-					<br>
+				{% for data in row %}
+					<td>{{data}}</td>
+				{% endfor %}
 			</tr>
 		{% endfor %}
 	</tbody>
 </table>
-<br><br><br>
+<br>
 <table class="table">
 	<thead>
 		<tr>
@@ -84,8 +82,7 @@
 			<input type="hidden" class="form-control" name="table" value="State">
 			<tr>
 				<td>
-				<select id = "dd1" name="CID" onchange="configureDropDownLists(this,document.getElementById('ddl2'))" class="form-control">
-					<option>..</option>
+				<select id = "dd1" name="CID" class="form-control">
 					{% for data in country %}
 					  {% if data[0] == session['LanguageID'] %}
 					    <option value="{{ data[1] }}" >{{ data[2] }}</option>

@@ -763,8 +763,9 @@ def edit():
         data = values.gettablevalues(table)
         cols = values.getColumns(table)
         if session['RoleID'] == 5:
-            filename = 'super_' + table.lower() + '.html'
-            if table == 'Block' or table == 'District':
+            table = table.lower()
+            filename = 'super_' + table + '.html'
+            if table == 'block' or table == 'district':
                 countrylist = {}
                 for single_country in country:
                     statelist = []
@@ -773,7 +774,7 @@ def edit():
                             if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
                                 statelist.append([single_state[3], single_state[2]])
                         countrylist[single_country[1]] = statelist
-                if table == 'District':
+                if table == 'district':
                     return render_template(filename, table=data, country=country,clist=countrylist,
                                             header=cols, label=label_dict)
                 else:
@@ -789,7 +790,7 @@ def edit():
                     return render_template(filename, table=data, country=country, state=state,
                                        district=district, block=block, clist=countrylist,
                                        slist=statelist,header=cols, label=label_dict)
-            elif table == 'State':
+            elif table == 'state':
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             else:
                 return render_template(filename, table=data, header=cols, label=label_dict)
@@ -1132,8 +1133,9 @@ def super(tablename):
             if label[1] == session['LanguageID'] and label[2] == 5:
                 label_dict[label[0]] = label[5]
         if session['RoleID'] == 5:
-            filename = 'super_' + tablename.lower() + '.html'
-            if tablename == 'Block' or tablename == 'District':
+            tablename = tablename.lower()
+            filename = 'super_' + tablename + '.html'
+            if tablename == 'block' or tablename == 'district':
                 countrylist = {}
                 for single_country in country:
                     statelist = []
@@ -1142,7 +1144,7 @@ def super(tablename):
                             if single_state[0] == session['LanguageID'] and single_state[1] == single_country[1]:
                                 statelist.append([single_state[3], single_state[2]])
                         countrylist[single_country[1]] = statelist
-                if tablename == 'District':
+                if tablename == 'district':
                     return render_template(filename, table=data, country=country,clist=countrylist,
                                             header=cols, label=label_dict)
                 else:
@@ -1157,7 +1159,8 @@ def super(tablename):
                             statelist[single_state[2]] = districtlist
                     return render_template(filename, table=data, country=country,clist=countrylist,
                                        slist=statelist,header=cols, label=label_dict)
-            elif tablename == 'State':
+            elif tablename == 'state':
+                print country
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             else:
                 return render_template(filename, table=data, header=cols,label=label_dict)
