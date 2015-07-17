@@ -11,10 +11,10 @@
 	<tbody>
 		{% for row in table %}
 			<tr>
-					{% for data in row %}
-						<td>{{data}}</td>
-					{% endfor %}
-					<br>
+				{% for index in range(row|length-1) %}
+					<td>{{row[index]}}</td>
+				{% endfor %}
+				<td>{{row[-1][:-8]}}</td>
 			</tr>
 		{% endfor %}
 	</tbody>

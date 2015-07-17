@@ -1161,6 +1161,8 @@ def super(tablename):
                                        slist=statelist,header=cols, label=label_dict)
             elif tablename == 'state':
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
+            elif tablename == 'submenu':
+                return render_template(filename, table=data, menu=menus, header=cols, label=label_dict)
             else:
                 return render_template(filename, table=data, header=cols,label=label_dict)
         flash(

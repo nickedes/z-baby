@@ -75,7 +75,15 @@
 			<input type="hidden" class="form-control" name="table" value="SubMenu">
 			<tr>
 				<td>
-				<input type="text" class="form-control" name="id">
+				<select id = "dd1" name="id" class="form-control">
+					<option>..</option>
+					{{menu}}
+					{% for data in menu %}
+					  {% if data[0] == session['LanguageID'] %}
+					    <option value="{{ data[1] }}" >{{ data[3] }}</option>
+					  {% endif %}
+					{% endfor %}
+				</select>
 				</td>
 				<td>
 				<input type="text" class="form-control" name="name">
