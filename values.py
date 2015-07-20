@@ -299,12 +299,12 @@ def insertSubMenu(submenuvalues):
     return True
 
 
-def insertSubSubMenu(submenuvalues):
+def insertSubSubMenu(values):
     conn = getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'INSERT INTO dbo.SubSubMenu VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', subsubmenuvalues)
+            'INSERT INTO dbo.SubSubMenu VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values)
     except:
         return False
     conn.commit()

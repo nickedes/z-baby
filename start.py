@@ -1203,6 +1203,7 @@ def super(tablename):
             'You do not have the priviledge to access that function!', 'danger')
         return redirect(url_for('home'))
     elif request.method == 'POST':
+        print request.form
         table = request.form['table']
         if table == "Media":
             if request.form['submit'] == 'edit':
@@ -1264,7 +1265,26 @@ def super(tablename):
 
             else:
                 pass
-
+        elif table == 'SubSubMenu':
+            if request.form['submit'] == 'add':
+                MenuID = request.form['id']
+                SubMenuID = request.form['submenu']
+                FormName = request.form['name']
+                FormLink = request.form['FormLink']
+                RoleID = request.form['Role']
+                SubSubMenuID = values.getSubSubMenuID(MenuID, SubMenuID) + 1
+                LangIDs = values.getLangIDs()
+                for LanguageID in LangIDs:
+                    insert = values.insertSubSubMenu(
+                        (LanguageID,MenuID,SubMenuID,SubSubMenuID,FormName,FormLink,RoleID,session['userid'],datetime.now()))
+                if insert:
+                    flash('Sub-subMenu Added successfully!', 'success')
+                    return redirect('/super/' + tablename)
+                flash(
+                    'There was problem adding the Sub-subMenu! Please try again!', 'warning')
+                return redirect('/super/' + tablename)
+            else:
+                pass
         elif table == 'Country':
             if request.form['submit'] == 'edit':
                 LangID = request.form['LangID']
@@ -1791,6 +1811,7 @@ def super(tablename):
                 flash(
                     'There was problem adding the SubMenu! Please try again!', 'warning')
                 return redirect('/super/' + tablename)
+
         elif table == 'Registration':
             if request.form['submit'] == 'edit':
                 cols = values.getColumns(table)
