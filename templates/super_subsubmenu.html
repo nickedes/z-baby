@@ -32,8 +32,8 @@
 	</thead>
 	<tbody>
 		{% for row in table %}
-			<form action="/super/SubMenu" method="POST">
-				<input type="hidden" class="form-control" name="table" value="SubMenu">
+			<form action="/super/SubSubMenu" method="POST">
+				<input type="hidden" class="form-control" name="table" value="SubSubMenu">
 				<input type="hidden" class="form-control" name="LangID" value="{{row[0]}}">
 				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
 				<tr>
@@ -64,7 +64,7 @@
 	<thead>
 		<tr>
 			<th>{{ header[1] }}</th>
-			<th>{{ header[3] }}</th>
+			<th>{{ header[2] }}</th>
 			<th>{{ header[4] }}</th>
 			<th>{{ header[5] }}</th>
 			<th>Add</th>
@@ -72,7 +72,7 @@
 	</thead>
 	<tbody>
 		<form action="/super/SubSubMenu" method="POST">
-			<input type="hidden" class="form-control" name="table" value="SubMenu">
+			<input type="hidden" class="form-control" name="table" value="SubSubMenu">
 			<tr>
 				<td>
 					<select id = "dd1" name="id" class="form-control">

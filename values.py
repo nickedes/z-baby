@@ -1518,3 +1518,14 @@ def distinctDistricts():
     cursor = conn.cursor()
     cursor.execute('SELECT DISTINCT DistrictID,DistrictName FROM dbo.District')
     return cursor.fetchall()
+
+
+def getSubSubMenuID(MenuID, SubMenuID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT max(SubSubMenuID) FROM dbo.SubSubMenu WHERE MenuID = ? and SubMenuID = ?", (MenuID,SubMenuID))
+    top = cursor.fetchall()
+    if not top[0][0]:
+        return 0
+    return top[0][0]
