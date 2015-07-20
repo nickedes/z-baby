@@ -57,7 +57,7 @@
                 <ul class="dropdown-menu multi-level" role="menu">
                 {% for sub in g.topsubmenu %}
                   {% if menu[2] == sub[0] %}
-                    {% if sub[3] in g.subs %}
+                    {% if [sub[0], sub[3]] in g.subs %}
                       <li class="dropdown-submenu">
                         <a tabindex="-1" href="#">{{ sub[1] }}</a>
                       <ul class="dropdown-menu">

@@ -41,11 +41,11 @@ def lalloo():
             if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == session['LanguageID'] and menu[0] == session['LanguageID']:
                 menuarray[submenu[1]-1] = 1
                 topsubmenu.append([submenu[1], submenu[3], submenu[4], submenu[2]])
-            for subs in subsubmenus:
-                if subs[2] not in sub_list:
-                    sub_list.append(subs[2])
-                if subs[6] == -1 and subs[2] == submenu[2] and subs[0] == session['LanguageID'] and submenu[0] == session['LanguageID']:
-                    topsubsubmenu.append([subs[2], subs[4], subs[5], subs[1]])
+    for subs in subsubmenus:
+        if [subs[1], subs[2]] not in sub_list:
+            sub_list.append([subs[1], subs[2]])
+        if subs[6] == -1 and subs[0] == session['LanguageID']:
+            topsubsubmenu.append([subs[2], subs[4], subs[5], subs[1]])
     g.languages = languages
     g.topmenu = topmenu
     g.topsubmenu = topsubmenu
