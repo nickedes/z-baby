@@ -794,6 +794,18 @@ def edit():
                                        slist=statelist,header=cols, label=label_dict)
             elif table == 'state':
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
+            elif table == 'submenu':
+                return render_template(filename, table=data, menu=menus, header=cols, label=label_dict)
+            elif table == 'subsubmenu':
+                menus_with_subs = []
+                submenu_dict = {}
+                for subs in submenus:
+                    if subs[1] not in menus_with_subs:
+                        submenu_dict[subs[1]] = []
+                        menus_with_subs.append(subs[1])
+                    if subs[0] == session['LanguageID']:
+                        submenu_dict[subs[1]].append([subs[2], subs[3]])
+                return render_template(filename, table=data, menu=menus, submenu=submenus, submenu_dict=submenu_dict, menus_with_subs=menus_with_subs, header=cols, label=label_dict)
             elif table == 'label':
                 lang = {}
                 for data in languages:
@@ -1175,6 +1187,16 @@ def super(tablename):
                 for single_lang in languages:
                     lang_dict[single_lang[0]] = single_lang[1]              
                 return render_template(filename, table=data, header=cols, label=label_dict, lang_dict=lang_dict)
+            elif tablename == 'subsubmenu':
+                menus_with_subs = []
+                submenu_dict = {}
+                for subs in submenus:
+                    if subs[1] not in menus_with_subs:
+                        submenu_dict[subs[1]] = []
+                        menus_with_subs.append(subs[1])
+                    if subs[0] == session['LanguageID']:
+                        submenu_dict[subs[1]].append([subs[2], subs[3]])
+                return render_template(filename, table=data, menu=menus, submenu=submenus, submenu_dict=submenu_dict, menus_with_subs=menus_with_subs, header=cols, label=label_dict)
             else:
                 return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
