@@ -794,6 +794,11 @@ def edit():
                                        slist=statelist,header=cols, label=label_dict)
             elif table == 'state':
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
+            elif table == 'label':
+                lang = {}
+                for data in languages:
+                    print data                
+                return render_template(filename, table=data, lang=lang, header=cols, label=label_dict)
             else:
                 return render_template(filename, table=data, header=cols, label=label_dict)
         elif session['RoleID'] == 4:
@@ -1165,6 +1170,11 @@ def super(tablename):
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
             elif tablename == 'submenu':
                 return render_template(filename, table=data, menu=menus, header=cols, label=label_dict)
+            elif tablename == 'label':
+                lang_dict = {}
+                for single_lang in languages:
+                    lang_dict[single_lang[0]] = single_lang[1]              
+                return render_template(filename, table=data, header=cols, label=label_dict, lang_dict=lang_dict)
             else:
                 return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
@@ -1898,7 +1908,13 @@ def super(tablename):
                 details = []
                 details.append(request.form['LabelID'])
                 cols = values.getColumns(table)
-                for count in range(1, len(cols)-2):
+                for single_lang in languages:
+                    if request.form['Lang'] in single_lang:
+                        LangID = single_lang[0]
+                        break
+                details.append(LangID)
+                print LangID
+                for count in range(2, len(cols)-2):
                     details.append(request.form[str(count)])
                 updatevals = values.updateLabelSA(*details)
                 if updatevals:
