@@ -1,0 +1,121 @@
+{% include 'header.html' %}
+<div class="col-lg-10">
+<table class="table">
+	<thead>
+		<tr>
+			{% for head in header %}
+				<th>{{head}}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<tr>
+				{% for index in range(row|length-1) %}
+					<td>{{row[index]}}</td>
+				{% endfor %}
+				<td>{{row[-1][:-8]}}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br>
+<table class="table">
+	<thead>
+		<tr>
+			<th>{{ header[2] }}</th>
+			<th>{{ header[3] }}</th>
+			<th>{{ header[4] }}</th>
+			<th>{{ label[72] }}</th>
+			<th>{{ label[70] }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in table %}
+			<form action="/super/SubMenu" method="POST">
+				<input type="hidden" class="form-control" name="table" value="SubMenu">
+				<input type="hidden" class="form-control" name="LangID" value="{{row[0]}}">
+				<input type="hidden" class="form-control" name="id" value="{{row[1]}}">
+				<tr>
+					<td>
+					<input type="text" class="form-control" name="{{row[1]}}" value="{{row[2]}}">
+					</td>
+					<td>
+					<input type="text" class="form-control" name="FormName" value="{{row[3]}}">
+					</td>
+					<td>
+					<input type="text" class="form-control" name="FormLink" value="{{row[4]}}">
+					</td>
+					<td>
+					<input type="text" class="form-control" name="Role" value="{{row[5]}}">
+					</td>
+					<td>
+					<button type="submit" name="submit" value="edit" class="btn btn-custom btn-primary">{{ label[54] }}</button>
+					</td>
+					<td>
+					<button type="submit" name="submit" value="delete" class="btn btn-custom btn-primary">{{ label[56] }}</button>
+					</td>
+				</tr>
+			</form>
+		{% endfor %}
+	</tbody>
+</table>
+<table class="table">
+	<thead>
+		<tr>
+			<th>{{ header[1] }}</th>
+			<th>{{ header[3] }}</th>
+			<th>{{ header[4] }}</th>
+			<th>{{ header[5] }}</th>
+			<th>Add</th>
+		</tr>
+	</thead>
+	<tbody>
+		<form action="/super/SubSubMenu" method="POST">
+			<input type="hidden" class="form-control" name="table" value="SubMenu">
+			<tr>
+				<td>
+					<select id = "dd1" name="id" class="form-control">
+						<option>..</option>
+						{% for data in menu %}
+						  {% if data[0] == session['LanguageID'] and data[1] in menus_with_subs %}
+						    <option value="{{ data[1] }}" id="{{ data[1] }}" >{{ data[3] }}</option>
+						  {% endif %}
+						{% endfor %}
+					</select>
+				</td>
+				<td>
+					<select id = "dd2" name="submenu" class="form-control">
+						<option>..</option>
+						{% for menu in submenu_dict %}
+							{% for subs in submenu_dict[menu] %}
+								<option class="submenu" id="{{menu}}" name="submenu" value="{{subs[0]}}">{{subs[1]}}</option>
+							{% endfor %}
+						{% endfor %}
+					</select>
+				</td>
+				<td>
+				<input type="text" class="form-control" name="name">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="FormLink">
+				</td>
+				<td>
+				<input type="text" class="form-control" name="Role">
+				</td>
+				<td>
+				<button type="submit" name="submit" value="add" class="btn btn-custom btn-primary">{{ label[55] }}</button>
+				</td>
+			</tr>
+		</form>
+	</tbody>
+</table>
+<script type="text/javascript">
+	$(".submenu").hide();
+	$("#dd1").change(function(){
+		var id = $("#dd1 :selected").attr("id");
+		$(".submenu").hide();
+		$("#" + id + ".submenu").show();
+	});
+</script>
+{% include 'footer.html' %}
