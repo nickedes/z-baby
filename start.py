@@ -401,7 +401,9 @@ def register():
         awards = request.form['18']
         address = request.form['19']
         phone = int(request.form['20'])
-        altphone = int(request.form['53'])
+        altphone = None
+        if request.form['53'] != '':
+            altphone = int(request.form['53'])
         email = request.form['21']
         sch_name = request.form['22']
         designation = request.form['23']
