@@ -30,6 +30,8 @@ def lalloo():
         session['LanguageID'] = masterlang
     topmenu = []
     topsubmenu = []
+    topsubsubmenu = []
+    sub_list = []
     menuarray = [0 for menu in menus if menu[5]
                  == -1 and menu[0] == session['LanguageID']]
     for menu in menus:
@@ -38,12 +40,20 @@ def lalloo():
         for submenu in submenus:
             if submenu[5] == -1 and submenu[1] == menu[1] and submenu[0] == session['LanguageID'] and menu[0] == session['LanguageID']:
                 menuarray[submenu[1]-1] = 1
-                topsubmenu.append([submenu[1], submenu[3], submenu[4]])
+                topsubmenu.append([submenu[1], submenu[3], submenu[4], submenu[2]])
+            for subs in subsubmenus:
+                if subs[2] not in sub_list:
+                    sub_list.append(subs[2])
+                if subs[6] == -1 and subs[2] == submenu[2] and subs[0] == session['LanguageID'] and submenu[0] == session['LanguageID']:
+                    topsubsubmenu.append([subs[2], subs[4], subs[5], subs[1]])
     g.languages = languages
     g.topmenu = topmenu
     g.topsubmenu = topsubmenu
     g.menuarray = menuarray
     g.masterlang = masterlang
+    g.topsubsubmenu = topsubsubmenu
+    # Only those Submenus that have another SubMenu
+    g.subs = sub_list
 
 
 def login_required(f):
@@ -2014,6 +2024,7 @@ if __name__ == '__main__':
     labels = values.gettablevalues('Label')
     menus = values.gettablevalues('Menu')
     submenus = values.gettablevalues('SubMenu')
+    subsubmenus = values.gettablevalues('SubSubMenu')
     categories = values.gettablevalues('Category')
     subcategories = values.gettablevalues('SubCategory')
     country = values.gettablevalues('Country')
