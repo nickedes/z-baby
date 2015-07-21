@@ -1559,3 +1559,21 @@ def getOtherID():
     if not top[0][0]:
         return 0
     return top[0][0]
+
+
+def getPassword_Number(EmployeeID):
+    # Returns Password and Phone Number for this teacher.
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT PhoneNumber FROM dbo.Registration WHERE EmployeeID=?",EmployeeID)
+    phone = cursor.fetchall()
+    cursor.execute("SELECT Password FROM dbo.Login WHERE Username=?",EmployeeID)
+    passwd = cursor.fetchall()
+    return (phone[0][0], passwd[0][0])
+
+
+def ForgotSms(username):
+    # Send Sms if this User forgots his password.
+    phone, passwd = getPassword_Number(username)
+    msg = 'Username:'+ username + '\n' + 'Password:' + passwd
+    return sendPassword(msg, phone)
