@@ -269,19 +269,40 @@ def about(pagename):
         return render_template('terms.html',label=label_dict)
 
 
-@app.route('/educators')
-def workflow():
+@app.route('/educators/<pagename>')
+def workflow(pagename):
     if 'LanguageID' not in session:
         session['LanguageID'] = 1
     if 'RoleID' not in session:
         session['RoleID'] = 0
     if 'userid' not in session:
         session['userid'] = 0
-    label_dict = {}
-    for label in labels:
-            if label[1] == session['LanguageID'] and label[3] == '/educators':
-                label_dict[label[0]] = label[5]
-    return render_template('educators.html',label=label_dict)
+    if pagename == 'apply':
+        label_dict = {}
+        for label in labels:
+                if label[1] == session['LanguageID'] and label[3] == '/educators/apply':
+                    label_dict[label[0]] = label[5]
+        return render_template('apply.html',label=label_dict)
+    elif pagename == 'register':
+        label_dict = {}
+        for label in labels:
+                if label[1] == session['LanguageID'] and label[3] == '/educators/register':
+                    label_dict[label[0]] = label[5]
+        return render_template('edu_register.html',label=label_dict)
+    elif pagename == 'login':
+        label_dict = {}
+        for label in labels:
+                if label[1] == session['LanguageID'] and label[3] == '/educators/login':
+                    label_dict[label[0]] = label[5]
+        return render_template('edu_login.html',label=label_dict)
+    elif pagename == 'submit':
+        label_dict = {}
+        for label in labels:
+                if label[1] == session['LanguageID'] and label[3] == '/educators/submit':
+                    label_dict[label[0]] = label[5]
+        return render_template('edu_submit.html',label=label_dict)
+    else:
+        pass
 
 @app.route('/schools')
 def school():
@@ -817,10 +838,10 @@ def edit():
                         submenu_dict[subs[1]].append([subs[2], subs[3]])
                 return render_template(filename, table=data, menu=menus, submenu=submenus, submenu_dict=submenu_dict, menus_with_subs=menus_with_subs, header=cols, label=label_dict)
             elif table == 'label':
-                lang = {}
-                for data in languages:
-                    print data                
-                return render_template(filename, table=data, lang=lang, header=cols, label=label_dict)
+                lang_dict = {}
+                for single_lang in languages:
+                    lang_dict[single_lang[0]] = single_lang[1]              
+                return render_template(filename, table=data, header=cols, label=label_dict, lang_dict=lang_dict)
             else:
                 return render_template(filename, table=data, header=cols, label=label_dict)
         elif session['RoleID'] == 4:
