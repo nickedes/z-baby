@@ -106,8 +106,11 @@ def insertIdeaCatSubCat(idea_id, category_id, subcategory_id,cr_by, cr_date):
     conn = getConnection()
     cursor = conn.cursor()
     vals = []
-    for subcategory in subcategory_id:
-        vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
+    if int(category_id) == 7:
+        vals.append((idea_id, category_id, subcategory_id, cr_by, cr_date))
+    else:
+        for subcategory in subcategory_id:
+            vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
     try:
         cursor.executemany(
             'INSERT INTO dbo.IdeaCatSubCat VALUES (?, ?, ?, ?, ?)', vals)
@@ -1525,6 +1528,33 @@ def getSubSubMenuID(MenuID, SubMenuID):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT max(SubSubMenuID) FROM dbo.SubSubMenu WHERE MenuID = ? and SubMenuID = ?", (MenuID,SubMenuID))
+    top = cursor.fetchall()
+    if not top[0][0]:
+        return 0
+    return top[0][0]
+
+
+def insertOther(Id, TableName, TableID, Value):
+    """
+    Fields:
+    Id : Other Id
+    TableName : Category (example)
+    TableID : IdeaID (for Category) -> the Unique ID with which it can be mapped.
+    Value : Other Category Value
+    """
+    print (Id, TableName, TableID, Value)
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO dbo.Other VALUES (?, ?, ?, ?)', (Id, TableName, TableID, Value))
+    conn.commit()
+    return True
+
+
+def getOtherID():
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT max(OtherId) FROM dbo.Other")
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
