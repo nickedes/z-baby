@@ -19,132 +19,142 @@
   <br><br>
 </div>
 {% endif %}
-	<div class="form-group">
-	    <div>
-	    	<label for="" class="control-label">{{ label[31] }}</label>
-	    	<h6>{{ label[32] }}</h6>
-	    </div>
-	    <br>
-      	<div class="">
-        	<input type="text" class="form-control" name="31">
-      	</div>
-      	<br>
-  	</div>
-  	<div class="form-group">
-  		<div>
-	    	<label for="" class="control-label">{{ label[33] }}</label>	
-  		</div>
-  		<br>
-	    <select id = "33" name="33" class="form-control" >
-	        {% for data in stage %}
-	          <option value="{{ data }}" >{{ stage[data] }}</option>
-	        {% endfor %}
-      	</select>
-	    <br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class="control-label">{{ label[34] }}</label>
-	    <h6>{{ label[35] }}</h6>  
-	    <select id = "34" name="34" class="form-control" >
-	        {% for data in benefit %}
-	          <option value="{{ data }}" >{{ benefit[data] }}</option>
-	        {% endfor %}
-      	</select>
-	    <br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class="control-label">{{ label[36] }}</label> 
-	    <h6>{{ label[37] }}</h6> 
-	    <div class="">
-			<select id = "ddl1" name="36" class="form-control">
-			<option>..</option>
-			{% for data in category %}
-				<option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
-			{% endfor %}
-			</select>
-		</div>
-	</div>
-	<div class="form-group">
-    		{% for subcat in subcategory %}
-			<div class="checkbox" id="{{subcat}}">
-    			<label>
-    			{% for data in subcategory[subcat] %}
-      				<input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
-      			{% endfor %}
-    			</label>
-  			</div>
-  			{% endfor %}
-	    <br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[38] }}</label>
-	    <h6>{{ label[39] }}</h6> 
-	      <div class="">
-	        <input type="text" class="form-control" name="38" >
-	      </div>
-	      <br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[40] }}</label>
-	    <h6>{{ label[41] }}</h6>  
-		<div class="">
-		<input type="file" name="file" id="40">
-		</div>
-		<br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[42] }}</label>
-	    <h6>{{ label[43] }}</h6>  
-		<div class="">
-		<textarea class="form-control" name="42" ></textarea>
-		</div>
-		<br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[44] }}</label>
-	    <h6>{{ label[45] }}</h6>  
-	      <div class="">
-	        <input type="text" class="form-control" name="44" >
-	      </div>
-	      <br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[46] }}</label>  
-	      <div class="">
-	        <input type="text" class="form-control" name="46" >
-	      </div>
-	      <br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[47] }}</label>
-	    <h6>{{ label[48] }}</h6> 
-	      <div class="">
-	        <textarea class="form-control" name="47" ></textarea>
-	      </div>
-	      <br><br>
-  	</div>
-  	<div class="form-group">
-	    <label for="" class=" control-label">{{ label[49] }}</label>
-	    <h6>{{ label[50] }}</h6> 
-	      <div class="">
-	        <textarea class="form-control" name="49" ></textarea>
-	      </div>
-	      <br>
-	      <div class="video-upload">
-	        <input type="file" name="video" id="50">
-	      </div>
-	      <br>
-  	</div>
-  	<button type="submit"  class="btn btn-custom btn-info">{{ label[52] }}</button>
-  	<br><br><br>
+    <div class="form-group">
+        <div>
+            <label for="" class="control-label">{{ label[31] }}</label>
+            <h6>{{ label[32] }}</h6>
+        </div>
+        <br>
+        <div class="">
+            <input type="text" class="form-control" name="31">
+        </div>
+        <br>
+    </div>
+    <div class="form-group">
+        <div>
+            <label for="" class="control-label">{{ label[33] }}</label> 
+        </div>
+        <br>
+        <select id = "33" name="33" class="form-control" >
+            {% for data in stage %}
+              <option value="{{ data }}" >{{ stage[data] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+    </div>
+    <div class="form-group">
+        <label for="" class="control-label">{{ label[34] }}</label>
+        <h6>{{ label[35] }}</h6>  
+        <select id = "34" name="34" class="form-control" >
+            {% for data in benefit %}
+              <option value="{{ data }}" >{{ benefit[data] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class="control-label">{{ label[36] }}</label> 
+        <h6>{{ label[37] }}</h6> 
+        <div class="">
+            <select id = "ddl1" name="36" class="form-control">
+            <option>..</option>
+            {% for data in category %}
+                <option id="{{ data }}" value="{{data}}">{{ category[data] }}</option>
+            {% endfor %}
+            </select>
+            <br>
+            <input type="text" id="other" class="form-control" name="other">
+        </div>
+    </div>
+    <div class="form-group">
+            {% for subcat in subcategory %}
+            <div class="checkbox" id="{{subcat}}">
+                <label>
+                {% for data in subcategory[subcat] %}
+                    <input type="checkbox" name="37{{data[2]}}" value="{{data[1]}}">{{ data[0] }}<br>
+                {% endfor %}
+                </label>
+            </div>
+            {% endfor %}
+        <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[38] }}</label>
+        <h6>{{ label[39] }}</h6> 
+          <div class="">
+            <input type="text" class="form-control" name="38" >
+          </div>
+          <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[40] }}</label>
+        <h6>{{ label[41] }}</h6>  
+        <div class="">
+        <input type="file" name="file" id="40">
+        </div>
+        <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[42] }}</label>
+        <h6>{{ label[43] }}</h6>  
+        <div class="">
+        <textarea class="form-control" name="42" ></textarea>
+        </div>
+        <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[44] }}</label>
+        <h6>{{ label[45] }}</h6>  
+          <div class="">
+            <input type="text" class="form-control" name="44" >
+          </div>
+          <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[46] }}</label>  
+          <div class="">
+            <input type="text" class="form-control" name="46" >
+          </div>
+          <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[47] }}</label>
+        <h6>{{ label[48] }}</h6> 
+          <div class="">
+            <textarea class="form-control" name="47" ></textarea>
+          </div>
+          <br><br>
+    </div>
+    <div class="form-group">
+        <label for="" class=" control-label">{{ label[49] }}</label>
+        <h6>{{ label[50] }}</h6> 
+          <div class="">
+            <textarea class="form-control" name="49" ></textarea>
+          </div>
+          <br>
+          <div class="video-upload">
+            <input type="file" name="video" id="50">
+          </div>
+          <br>
+    </div>
+    <button type="submit"  class="btn btn-custom btn-info">{{ label[52] }}</button>
+    <br><br><br>
 </form>
 
 <script>
 $(".checkbox").hide();
+$("#other").hide();
 $("#ddl1").change(function(){
-	var id = $("#ddl1 :selected").attr("id");
+    var id = $("#ddl1 :selected").attr("id");
+    $("#other").hide();
     $(".checkbox").hide();
-    $("#" + id + ".checkbox").show();
+    if (id == 7){
+        window.alert(id);
+        $("#other").show();
+    }
+    else{
+        $("#" + id + ".checkbox").show();
+    }
 }); 
 </script>
 

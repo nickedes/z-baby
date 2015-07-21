@@ -673,11 +673,16 @@ def submit():
                                stage=stage_dict, category=category_dict,
                                subcategory=subcat_dict)
     else:
+        print request.form
         title = request.form['31']
         stage_id = request.form['33']
         benefit_id = request.form['34']
         category_id = request.form['36']
-        subcategory_id = request.form.getlist('37'+str(category_id))
+        if category_id == 7:
+            other_cat = request.form['other']
+            subcategory_id = None
+        else:
+            subcategory_id = request.form.getlist('37'+str(category_id))
         description = request.form['38']
 
         resource = request.form['42']
@@ -739,6 +744,9 @@ def submit():
         print (MediaID, IdeaID, video_link, 'video', session['userid'], datetime.now())
     ideacatsubcat = values.insertIdeaCatSubCat(
         IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
+    if category_id == 7:
+        # Enter into dbo.Other
+        pass
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
         flash('The idea has been submitted successfully!', 'success')
         return redirect(url_for('home'))
