@@ -163,6 +163,14 @@ def login():
                 session['userid'] = logged_in_val[0][1]
                 flash('You have successfully logged in!', 'success')
                 return redirect(url_for('home'))
+        elif 'forgot' in request.form:
+            username = request.form['username']
+            # Send Sms to this user <Username,Password>
+            if values.ForgotSms(username):
+                flash('Check Sms on your Phone', 'success')
+            else:
+                flash('Something Went Wrong', 'danger')
+            return redirect(url_for('home'))
         elif 'submit' in request.form:
             pass
 
