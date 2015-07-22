@@ -1604,3 +1604,11 @@ def updateOther(TableName, TableID, Value):
     else:
        insert = insertOther(TableName, TableID, Value)
     return True
+
+
+def deleteOther(TableName, TableID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
+    conn.commit()
+    return True

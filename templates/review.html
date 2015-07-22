@@ -220,30 +220,33 @@ $("#e1").change(function(){
 	$(".checkbox-review").hide();
 	$("#" + catid + ".checkbox-review").show();
 	$("#"+id+"ddl1").change(function(){
-	var catid = $("#"+id+"ddl1 :selected").attr("id");
-    $(".checkbox-review").hide();
-    $(".checkbox").hide();
-    $("#" + catid + ".checkbox").show();
-    // Handle Other Category!
-
+		var catid = $("#"+id+"ddl1 :selected").attr("id");
+	    // Handle Other Category!
+		$("#"+id+"other_cat").hide();
+	    $(".checkbox-review").hide();
+	    $(".checkbox").hide();
+	    $("#" + catid + ".checkbox").show();
+	    if (catid == 7){
+			$("#"+id+"other_cat").show();
+		}
 	});
 	// If Stage Changed!
 	$("#"+id+"33").change(function(){
-	var sid = $("#"+id+"33 :selected").attr("id");
-	$("#"+id+"other_stage").hide();
-	window.alert(sid);
-	if (sid == 4){
-		$("#"+id+"other_stage").show();
+		var sid = $("#"+id+"33 :selected").attr("id");
+		$("#"+id+"other_stage").hide();
+		window.alert(sid);
+		if (sid == 4){
+			$("#"+id+"other_stage").show();
 	}
 	});
 	// If Benefit Changed!
 	$("#"+id+"34").change(function(){
-	var bid = $("#"+id+"34 :selected").attr("id");
-	$("#"+id+"other_ben").hide();
-	window.alert(bid);
-	if (bid == 10){
-		$("#"+id+"other_ben").show();
-	}
+		var bid = $("#"+id+"34 :selected").attr("id");
+		$("#"+id+"other_ben").hide();
+		window.alert(bid);
+		if (bid == 10){
+			$("#"+id+"other_ben").show();
+		}
 	});
 });
 </script>

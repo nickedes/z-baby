@@ -1123,12 +1123,12 @@ def review():
                                sublist=sub_list,other_ben=other_ben,
                                other_stage=other_stage,other_cat=other_cat)
     else:
+        print request.form
         IdeaID = request.form['idea']
         title = request.form['31']
         stage_id = request.form['33']
         benefit_id = request.form['34']
         category_id = request.form['36']
-        subcategory_id = request.form.getlist('37'+str(category_id))
         description = request.form['38']
         resource = request.form['42']
         support = request.form['44']
@@ -1158,14 +1158,27 @@ def review():
             pass
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach)
+        # Check for Other category
+        if int(category_id) == 7:
+            other_cat = request.form['other']
+            subcategory_id = 0
+        else:
+            # Todo: Delete other's entry for this Idea's Category
+            subcategory_id = request.form.getlist('37'+str(category_id))
         # Check for 'Other' Stage
         if int(stage_id) == 4:
             other_stage = request.form['other_stage']
             insert_other = values.updateOther('Stage', IdeaID, other_stage)
+        else:
+            # Todo: Delete other's entry for this Idea's Stage
+            pass
         # Check for 'Other' Benefit
         if int(benefit_id) == 10:
             other_ben = request.form['other_ben']
             insert_other = values.updateOther('Benefit', IdeaID, other_ben)
+        else:
+            # Todo: Delete other's entry for this Idea's Benefit
+            pass
         if image_link:
             if 'MediaID_img' in request.form:
                 MediaID = request.form['MediaID_img']
