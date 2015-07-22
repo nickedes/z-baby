@@ -59,6 +59,10 @@
 	          		<option value="{{ data }}">{{ stage[data] }}</option>
 	        	{% endif %}
 	        {% endfor %}
+	        <br>
+	        {% if idea[3] == 4 %}
+        		<input type="text" id="other_stage" class="form-control" name="other_stage">
+	        {% endif %}
       	</select>
 	    <br>
   	</div>

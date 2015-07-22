@@ -1578,3 +1578,10 @@ def ForgotSms(username):
     phone, passwd = getPassword_Number(username)
     msg = 'Username:'+ username + '\n' + 'Password:' + passwd
     return sendPassword(msg, phone)
+
+
+def getOtherVal(TableName, TableID):
+    conn = getConnection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT Value FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
+    return cursor.fetchall()[0][0]
