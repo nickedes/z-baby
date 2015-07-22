@@ -59,11 +59,11 @@
 	          		<option value="{{ data }}">{{ stage[data] }}</option>
 	        	{% endif %}
 	        {% endfor %}
-	        <br>
-	        {% if idea[3] == 4 %}
-        		<input type="text" id="other_stage" class="form-control" name="other_stage">
-	        {% endif %}
       	</select>
+        <br>
+        {% if idea[3] == 4 %}
+    		<input type="text" id="other_stage" class="form-control" name="other_stage" value="{{other_stage[idea[0]]}}">
+        {% endif %}
 	    <br>
   	</div>
   	<div class="form-group">
@@ -79,7 +79,11 @@
 	        	{% endif %}
 	        {% endfor %}
       	</select>
-	    <br><br>
+	    <br>
+	    {% if idea[4] == 10 %}
+    		<input type="text" id="other_ben" class="form-control" name="other_ben" value="{{other_ben[idea[0]]}}">
+        {% endif %}
+	    <br>
   	</div>
   	<div class="form-group">
 	    <label for="" class="control-label">{{ label[36] }}</label> 
@@ -98,6 +102,10 @@
 					{% endif %}
 				{% endfor %}
 			</select>
+			<br>
+		    {% if idea[0] in other_cat %}
+	    		<input type="text" id="other_cat" class="form-control" name="other_cat" value="{{other_cat[idea[0]]}}">
+	        {% endif %}
 		</div>
 	</div>
 	<div class="form-group">

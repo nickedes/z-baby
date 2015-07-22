@@ -1070,10 +1070,24 @@ def review():
             idea_details = values.getIdeaUnderOperator(session['userid'])
         subcatidea = {}
         media = {}
+        other_cat = {}
+        other_stage = {}
+        other_ben = {}
         for idea_single in idea_details:
             subcatidea[idea_single[0]]  = values.getIdeaCatSubCat(
                 idea_single[0])
-            media[idea_single[0]] = values.getMedia(idea_single[0]) 
+            # Handle Other Category
+            if subcatidea[idea_single[0]]:
+                if subcatidea[idea_single[0]][0][1] == 7:
+                    other_cat[idea_single[0]] = values.getOtherVal('Category', idea_single[0])
+                    
+            media[idea_single[0]] = values.getMedia(idea_single[0])
+            # Other Stage
+            if idea_single[3] == 4:
+                other_stage[idea_single[0]] = values.getOtherVal('Stage', idea_single[0])
+            # Other Benefit
+            if idea_single[4] == 10:
+                other_ben[idea_single[0]] = values.getOtherVal('Benefit', idea_single[0])
         label_dict = {}
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
@@ -1106,7 +1120,8 @@ def review():
                                category=category_dict, media=media,
                                teachers=teachers, subcategory=subcat_dict,
                                ideas=idea_details, subcats=subcatidea,
-                               sublist=sub_list)
+                               sublist=sub_list,other_ben=other_ben,
+                               other_stage=other_stage,other_cat=other_cat)
     else:
         IdeaID = request.form['idea']
         title = request.form['31']
