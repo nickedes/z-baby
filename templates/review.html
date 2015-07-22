@@ -2,9 +2,9 @@
 <script src="{{url_for('static', filename='js/bootstrap-multiselect.js')}}"></script>
 <link rel="stylesheet"href="{{url_for('static', filename='css/bootstrap-multiselect.css')}}">
 <div class="col-lg-8" style="margin-left:100px">
+{% if ideas %}
 <h3>{{ label[51] }}</h3>
 <br>
-{% if ideas %}
 <div class="dropdown" class="col-lg-8">
 	    <label for="" class="control-label">Select Idea to update</label> 
 	    <select id = "e1" name="idea" class="" >
@@ -194,6 +194,8 @@
 </form>
 </div>
 {% endfor %}
+{% else %}
+	<h3>Submit Innovation first</h3>
 {% endif %}
 <script>
 $(".hiddenalways").hide();
