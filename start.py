@@ -1522,8 +1522,6 @@ def super(tablename):
                     'There was problem deleting the Block! Please try again!', 'warning')
 
             elif request.form['submit'] == 'add':
-                print request.form
-
                 CountryID = request.form['CID']
                 StateID = request.form['SID']
                 DistrictID = request.form['DID']

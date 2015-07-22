@@ -897,7 +897,7 @@ def getStageID():
     return top[0][0]
 
 
-def insertStage(LanguageID, StageID, value, CreatedBy):
+def insertStage(StageID, value, CreatedBy):
     conn = getConnection()
     cursor = conn.cursor()
     CreateDate = datetime.now()
