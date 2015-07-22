@@ -1160,10 +1160,12 @@ def review():
                                    description, resource, support, implement_time, reach)
         # Check for Other category
         if int(category_id) == 7:
-            other_cat = request.form['other']
+            other_cat = request.form['other_cat']
             subcategory_id = 0
+            insert_other = values.updateOther('Category', IdeaID, other_cat)
         else:
             # Todo: Delete other's entry for this Idea's Category
+            delete = values.deleteOther('Category', IdeaID)
             subcategory_id = request.form.getlist('37'+str(category_id))
         # Check for 'Other' Stage
         if int(stage_id) == 4:
@@ -1171,6 +1173,7 @@ def review():
             insert_other = values.updateOther('Stage', IdeaID, other_stage)
         else:
             # Todo: Delete other's entry for this Idea's Stage
+            delete = values.deleteOther('Stage', IdeaID)
             pass
         # Check for 'Other' Benefit
         if int(benefit_id) == 10:
@@ -1178,6 +1181,7 @@ def review():
             insert_other = values.updateOther('Benefit', IdeaID, other_ben)
         else:
             # Todo: Delete other's entry for this Idea's Benefit
+            delete = values.deleteOther('Benefit', IdeaID)
             pass
         if image_link:
             if 'MediaID_img' in request.form:

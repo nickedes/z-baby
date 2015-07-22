@@ -466,8 +466,11 @@ def updateIdeaCatSubCat(idea_id, category_id, subcategory_id, cr_by, cr_date):
     cursor.execute('DELETE FROM dbo.IdeaCatSubCat WHERE IdeaID=?', (idea_id))
     conn.commit()
     vals = []
-    for subcategory in subcategory_id:
-        vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
+    if int(category_id) == 7:
+        vals.append((idea_id, category_id, subcategory_id, cr_by, cr_date))
+    else:
+        for subcategory in subcategory_id:
+            vals.append((idea_id, category_id, subcategory, cr_by, cr_date))
     try:
         cursor.executemany(
             'INSERT INTO dbo.IdeaCatSubCat VALUES (?, ?, ?, ?, ?)', vals)
@@ -1585,8 +1588,7 @@ def getOtherVal(TableName, TableID):
     cursor = conn.cursor()
     cursor.execute("SELECT Value FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
     value = cursor.fetchall()
-    print value
-    if not value[0][0]:
+    if not value:
         return 0
     else:
         return value[0][0]
@@ -1609,6 +1611,7 @@ def updateOther(TableName, TableID, Value):
 def deleteOther(TableName, TableID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
-    conn.commit()
+    if getOtherVal(TableName, TableID):
+        cursor.execute("DELETE FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
+        conn.commit()
     return True
