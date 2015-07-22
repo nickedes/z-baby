@@ -736,6 +736,14 @@ def submit():
         LoginID = values.getLoginID(Username)
     insert = values.insertIdea(IdeaID, LoginID, title, stage_id, benefit_id,
                                description, resource, support, implement_time, reach, session['userid'], datetime.now())
+    # Check for 'Other' Stage
+    if int(stage_id) == 4:
+        other_stage = request.form['other_stage']
+        insert_other = values.insertOther('Stage', IdeaID, other_stage)
+    # Check for 'Other' Benefit
+    if int(benefit_id) == 10:
+        other_ben = request.form['other_ben']
+        insert_other = values.insertOther('Benefit', IdeaID, other_ben)
     if image_link:
         MediaID = values.getLatestMedia() + 1
         example_img = values.insertMedia(
@@ -754,8 +762,7 @@ def submit():
         IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
     if int(category_id) == 7:
         # Enter into dbo.Other
-        Id = values.getOtherID()+1
-        insert_other = values.insertOther(Id, 'Category', IdeaID, other_cat)
+        insert_other = values.insertOther('Category', IdeaID, other_cat)
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
         flash('The idea has been submitted successfully!', 'success')
         return redirect(url_for('home'))

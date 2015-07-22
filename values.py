@@ -1534,7 +1534,7 @@ def getSubSubMenuID(MenuID, SubMenuID):
     return top[0][0]
 
 
-def insertOther(Id, TableName, TableID, Value):
+def insertOther(TableName, TableID, Value):
     """
     Fields:
     Id : Other Id
@@ -1542,6 +1542,7 @@ def insertOther(Id, TableName, TableID, Value):
     TableID : IdeaID (for Category) -> the Unique ID with which it can be mapped.
     Value : Other Category Value
     """
+    Id = getOtherID() + 1
     print (Id, TableName, TableID, Value)
     conn = getConnection()
     cursor = conn.cursor()
