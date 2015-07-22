@@ -1584,4 +1584,23 @@ def getOtherVal(TableName, TableID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute("SELECT Value FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
-    return cursor.fetchall()[0][0]
+    value = cursor.fetchall()
+    print value
+    if not value[0][0]:
+        return 0
+    else:
+        return value[0][0]
+
+
+def updateOther(TableName, TableID, Value):
+    # First check if already present? -> then update
+    #  else -> insert
+    if getOtherVal(TableName, TableID):
+        # Update
+        conn = getConnection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE dbo.Other SET Value = ? WHERE TableName=? and TableID=?",(Value, TableName, TableID))
+        conn.commit()
+    else:
+       insert = insertOther(TableName, TableID, Value)
+    return True

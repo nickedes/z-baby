@@ -1158,6 +1158,14 @@ def review():
             pass
         insert = values.updateIdea(IdeaID, title, stage_id, benefit_id,
                                    description, resource, support, implement_time, reach)
+        # Check for 'Other' Stage
+        if int(stage_id) == 4:
+            other_stage = request.form['other_stage']
+            insert_other = values.updateOther('Stage', IdeaID, other_stage)
+        # Check for 'Other' Benefit
+        if int(benefit_id) == 10:
+            other_ben = request.form['other_ben']
+            insert_other = values.updateOther('Benefit', IdeaID, other_ben)
         if image_link:
             if 'MediaID_img' in request.form:
                 MediaID = request.form['MediaID_img']
