@@ -8,17 +8,18 @@ from vimeo import VimeoClient
 
 
 def getConnection():
-	config = ConfigParser.RawConfigParser()
-	config.read('config.ini')
+    os.environ['TDSVER'] = '8.0'
+    config = ConfigParser.RawConfigParser()
+    config.read('config.ini')
 
-	server = config.get('Database', 'server')
-	user = config.get('Database', 'user')
-	password = config.get('Database', 'password')
+    server = config.get('Database', 'server')
+    user = config.get('Database', 'user')
+    password = config.get('Database', 'password')
 
-	connection_string = 'DRIVER={SQL Server};SERVER=%s;DATABASE=ziiei;UID=%s;PWD=%s' % (server, user, password)
-
-	cnxn = pyodbc.connect(connection_string)
-	return cnxn
+    connection_string = 'DRIVER={FreeTDS};SERVER=%s;DATABASE=ziiei;UID=%s;PWD=%s' % (
+        server, user, password)
+    cnxn = pyodbc.connect(connection_string)
+    return cnxn
 
 
 def getClient_ID():
