@@ -849,6 +849,11 @@ def edit():
                                        slist=statelist,header=cols, label=label_dict)
             elif table == 'state':
                 return render_template(filename, table=data, country=country, header=cols, label=label_dict)
+            elif table == 'country':
+                lang_dict = {}
+                for single_lang in languages:
+                    lang_dict[single_lang[0]] = single_lang[1]
+                return render_template(filename, table=data, header=cols, label=label_dict, lang_dict=lang_dict)
             elif table == 'submenu':
                 return render_template(filename, table=data, menu=menus, header=cols, label=label_dict)
             elif table == 'subsubmenu':

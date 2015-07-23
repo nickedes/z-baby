@@ -225,6 +225,10 @@ $("#e1").change(function(){
 	$(".checkbox").hide();
 	$(".checkbox-review").hide();
 	$("#" + catid + ".checkbox-review").show();
+	// Hide Other Fields if not already present
+	$("#"+id+"other_cat").hide();
+	$("#"+id+"other_stage").hide();
+	$("#"+id+"other_ben").hide();
 	$("#"+id+"ddl1").change(function(){
 		var catid = $("#"+id+"ddl1 :selected").attr("id");
 	    // Handle Other Category!
