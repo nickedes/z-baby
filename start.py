@@ -822,6 +822,9 @@ def edit():
         if session['RoleID'] == 5:
             table = table.lower()
             filename = 'super_' + table + '.html'
+            lang_dict = {}
+            for single_lang in languages:
+                lang_dict[single_lang[0]] = single_lang[1]
             if table == 'block' or table == 'district':
                 countrylist = {}
                 for single_country in country:
@@ -833,7 +836,7 @@ def edit():
                         countrylist[single_country[1]] = statelist
                 if table == 'district':
                     return render_template(filename, table=data, country=country,clist=countrylist,
-                                            header=cols, label=label_dict)
+                                            header=cols, label=label_dict, lang_dict=lang_dict)
                 else:
                     statelist = {}
                     for single_state in state:
@@ -846,16 +849,13 @@ def edit():
                             statelist[single_state[2]] = districtlist
                     return render_template(filename, table=data, country=country, state=state,
                                        district=district, block=block, clist=countrylist,
-                                       slist=statelist,header=cols, label=label_dict)
+                                       slist=statelist,header=cols, label=label_dict, lang_dict=lang_dict)
             elif table == 'state':
-                return render_template(filename, table=data, country=country, header=cols, label=label_dict)
+                return render_template(filename, table=data, country=country, header=cols, label=label_dict, lang_dict=lang_dict)
             elif table == 'country':
-                lang_dict = {}
-                for single_lang in languages:
-                    lang_dict[single_lang[0]] = single_lang[1]
                 return render_template(filename, table=data, header=cols, label=label_dict, lang_dict=lang_dict)
             elif table == 'submenu':
-                return render_template(filename, table=data, menu=menus, header=cols, label=label_dict)
+                return render_template(filename, table=data, menu=menus, header=cols, label=label_dict, lang_dict=lang_dict)
             elif table == 'subsubmenu':
                 menus_with_subs = []
                 submenu_dict = {}
@@ -867,12 +867,9 @@ def edit():
                         submenu_dict[subs[1]].append([subs[2], subs[3]])
                 return render_template(filename, table=data, menu=menus, submenu=submenus, submenu_dict=submenu_dict, menus_with_subs=menus_with_subs, header=cols, label=label_dict)
             elif table == 'label':
-                lang_dict = {}
-                for single_lang in languages:
-                    lang_dict[single_lang[0]] = single_lang[1]              
                 return render_template(filename, table=data, header=cols, label=label_dict, lang_dict=lang_dict)
             else:
-                return render_template(filename, table=data, header=cols, label=label_dict)
+                return render_template(filename, table=data, header=cols, label=label_dict,lang_dict=lang_dict)
         elif session['RoleID'] == 4:
             return render_template(table + ".html", table=data, header=cols,label=label_dict)
 

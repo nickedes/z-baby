@@ -11,7 +11,8 @@
 	<tbody>
 		{% for row in table %}
 			<tr>
-				{% for index in range(row|length-1) %}
+				<td>{{lang_dict[row[0]]}}</td>
+				{% for index in range(1,row|length-1) %}
 					<td>{{row[index]}}</td>
 				{% endfor %}
 				<td>{{row[-1][:-8]}}</td>
