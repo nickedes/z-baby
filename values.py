@@ -19,24 +19,26 @@ def getConnection():
     connection_string = 'DRIVER={FreeTDS};SERVER=%s;DATABASE=ziiei;UID=%s;PWD=%s' % (
         server, user, password)
     cnxn = pyodbc.connect(connection_string)
+    print cnxn
     return cnxn
 
+connect = getConnection()
 
 def getClient_ID():
     config = ConfigParser.RawConfigParser()
     config.read('config.ini')
 
-    CLIENT_ID = config.get('Imgur','CLIENT_ID')
+    CLIENT_ID = config.get('Imgur', 'CLIENT_ID')
     return CLIENT_ID
 
 
 def getVimeo():
     config = ConfigParser.RawConfigParser()
     config.read('config.ini')
-    token = config.get('Vimeo','token')
-    secret= config.get('Vimeo','secret')
-    Client_Identifier= config.get('Vimeo','Client_Identifier')
-    return VimeoClient(token=token,key=Client_Identifier,secret=secret)
+    token = config.get('Vimeo', 'token')
+    secret = config.get('Vimeo', 'secret')
+    Client_Identifier = config.get('Vimeo', 'Client_Identifier')
+    return VimeoClient(token=token, key=Client_Identifier, secret=secret)
 
 
 def sendPassword(msg, phone):
@@ -48,8 +50,8 @@ def sendPassword(msg, phone):
     sid = config.get('Sms', 'sid')
     mt = config.get('Sms', 'mt')
     try:
-        r = requests.post(url=url, data={'usr': usr,'pass':passwd,'msisdn':phone,
-            'msg':msg,'sid':sid,'mt':mt})
+        r = requests.post(url=url, data={'usr': usr, 'pass': passwd, 'msisdn': phone,
+                                         'msg': msg, 'sid': sid, 'mt': mt})
         return True
     except:
         return False
@@ -65,7 +67,7 @@ def gettablelist():
 
 
 def getPassword():
-    return "%0.6d" % randint(0,999999)
+    return "%0.6d" % randint(0, 999999)
 
 
 def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
@@ -74,7 +76,8 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     conn_reg = getConnection()
     cursor = conn_reg.cursor()
     # try:
-    vals = (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender, resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date)
+    vals = (name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards, empid, qual, gender,
+            resi_addr, email, desig, subj, block, dist, state, country, str(cr_by), cr_date)
     cursor.execute(
         'INSERT INTO dbo.Registration VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', vals)
     conn_reg.commit()
@@ -83,15 +86,15 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     password = getPassword()
     # Send SMS to teacher, Username and Password.
     # Username is Empid
-    msg = 'Username:'+ empid + '\n' + 'Password:' + password
-    if sendPassword(msg,ph):
+    msg = 'Username:' + empid + '\n' + 'Password:' + password
+    if sendPassword(msg, ph):
         print 'Sms Sent'
     else:
         print 'Sms failed'
     cursor.execute(
         'SELECT LoginID FROM dbo.Registration WHERE EmployeeID = ?', empid)
     loginid = cursor.fetchall()
-    print loginid,empid,password,1,"teacher",str(cr_by), cr_date
+    print loginid, empid, password, 1, "teacher", str(cr_by), cr_date
     # cursor.execute('INSERT INTO dbo.Login VALUES (?, ?, ?, ?, ?, ?, ?)', (loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date))
     # conn_reg.commit()
     if createLogin(loginid[0][0], empid, password, 1, "Teacher", cr_by, cr_date):
@@ -103,7 +106,7 @@ def insertvalues(name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
     return True
 
 
-def insertIdeaCatSubCat(idea_id, category_id, subcategory_id,cr_by, cr_date):
+def insertIdeaCatSubCat(idea_id, category_id, subcategory_id, cr_by, cr_date):
     conn = getConnection()
     cursor = conn.cursor()
     vals = []
@@ -231,8 +234,7 @@ def insertSubCat(CategoryID, SubCategoryID, SubValue, CreatedBy):
     return True
 
 
-def gettablevalues(tablename):
-    conn = getConnection()
+def gettablevalues(conn, tablename):
     cursor = conn.cursor()
     if tablename != 'Registration' and tablename != 'IdeaCatSubCat':
         cursor.execute(
@@ -244,7 +246,7 @@ def gettablevalues(tablename):
         cursor.execute(
             'SELECT * FROM dbo.IdeaCatSubCat ORDER BY IdeaID')
     returnval = cursor.fetchall()
-    conn.close()
+    # conn.close()
     return returnval
 
 
@@ -253,7 +255,7 @@ def insertMenu(menuvalues):
     cursor = conn.cursor()
     # try:
     cursor.execute(
-            'INSERT INTO dbo.Menu VALUES (?, ?, ?, ?, ?, ?, ?, ?)', menuvalues)
+        'INSERT INTO dbo.Menu VALUES (?, ?, ?, ?, ?, ?, ?, ?)', menuvalues)
     # except:
     #     return False
     conn.commit()
@@ -266,7 +268,7 @@ def insertCountry(CountryID, CountryName, CreatedBy):
     CreateDate = datetime.now()
     LangIDs = getLangIDs()
     try:
-        for LanguageID in LangIDs:    
+        for LanguageID in LangIDs:
             cursor.execute(
                 'INSERT INTO dbo.Country VALUES (?, ?, ?, ?, ?)', (LanguageID, CountryID, CountryName, CreatedBy, CreateDate))
             conn.commit()
@@ -374,7 +376,7 @@ def insertMedia(MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date):
     cursor = conn.cursor()
     # try:
     cursor.execute(
-            'INSERT INTO dbo.Media VALUES (?, ?, ?, ?, ?, ?)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
+        'INSERT INTO dbo.Media VALUES (?, ?, ?, ?, ?, ?)', (MediaID, IdeaID, Mtype, Mvalue, cr_by, cr_date))
     # except:
     #     return False
     conn.commit()
@@ -398,11 +400,12 @@ def update_register(LoginID, name, dob, sch_name, sch_addr, ph, alt_ph, doj, awa
     cursor = conn.cursor()
     try:
         cursor.execute('UPDATE dbo.Registration set Name=?, DateOfBirth=?, SchoolName=?, SchoolAddress=?, PhoneNumber=?, AlternateNumber=?, DateOfJoining=?,Awards=?,EmployeeID=?,Qualification=?,Gender=?,ResidentialAddress=?,EmailID=?,Designation=?,Subjects=?,BlockID=?,DistrictID=?,StateID=?,CountryID=? WHERE LoginID = ?', name, dob, sch_name, sch_addr, ph, alt_ph, doj, awards,
-                                                                                                                                                                                                                                                                                                                                                         empid, qual, gender, resi_addr, email, desig, subj, block,
-                                                                                                                                                                                                                                                                                                                                                         dist, state, country, int(LoginID))
+                       empid, qual, gender, resi_addr, email, desig, subj, block,
+                       dist, state, country, int(LoginID))
         conn.commit()
         try:
-            cursor.execute('UPDATE dbo.Login set Username=? WHERE LoginID=?', empid, LoginID)
+            cursor.execute(
+                'UPDATE dbo.Login set Username=? WHERE LoginID=?', empid, LoginID)
             conn.commit()
         except:
             return False
@@ -529,7 +532,7 @@ def updateSubMenu(LanguageID, MenuID, SubMenuID, MenuValue):
     cursor = conn.cursor()
     # try:
     cursor.execute('UPDATE dbo.SubMenu set FormName = ? WHERE MenuID = ? and SubMenuID = ? and LanguageID = ?',
-                       (MenuValue, MenuID, SubMenuID, LanguageID))
+                   (MenuValue, MenuID, SubMenuID, LanguageID))
     # except:
     #     return False
     conn.commit()
@@ -1198,8 +1201,8 @@ def updateMenuForm(LangID, MenuID, PageName, FormName, FormLink, RoleID):
     try:
         cursor.execute(
             'UPDATE dbo.Menu set PageName=?,FormName = ?,FormLink=?,RoleID=? WHERE MenuID = ? and LanguageID = ?', (PageName, FormName,
-                                                         FormLink, RoleID, 
-                                                         MenuID, LangID))
+                                                                                                                    FormLink, RoleID,
+                                                                                                                    MenuID, LangID))
     except:
         return False
     conn.commit()
@@ -1221,7 +1224,7 @@ def deleteMenu(LangID, MenuID):
     try:
         cursor.execute(
             'DELETE FROM dbo.Menu WHERE MenuID=? and LanguageID=?', (MenuID,
-                                                                       LangID))
+                                                                     LangID))
     except:
         return False
     conn.commit()
@@ -1344,7 +1347,7 @@ def updateICS(prev_IdeaID, prev_CatID, prev_SubCatID, new_IdeaID, new_CatID, new
     cursor = conn.cursor()
     try:
         cursor.execute('UPDATE dbo.IdeaCatSubCat set IdeaID=?,CategoryID=?,SubCategoryID=? WHERE IdeaID=? and CategoryID=? and SubCategoryID=?', (new_IdeaID, new_CatID, new_SubCatID, prev_IdeaID,
-                      prev_CatID, prev_SubCatID))
+                                                                                                                                                  prev_CatID, prev_SubCatID))
     except:
         return False
     conn.commit()
@@ -1428,7 +1431,7 @@ def updateLabelSA(LabelID, LanguageID, RoleID, PageName, LabelType, LabelValue):
     # try:
     print LabelID
     cursor.execute('UPDATE dbo.Label set RoleID=?,PageName=?,LabelType=?,LabelValue=? WHERE LabelID=? and LanguageID=?', (RoleID,
-                                              PageName, LabelType, LabelValue,int(LabelID), int(LanguageID)))
+                                                                                                                          PageName, LabelType, LabelValue, int(LabelID), int(LanguageID)))
     # except:
     #     return False
     conn.commit()
@@ -1472,11 +1475,12 @@ def getLangIDs():
     return LangIDs
 
 
-def change_password(old_password,new_password,confirm_password,LoginID):
+def change_password(old_password, new_password, confirm_password, LoginID):
     conn = getConnection()
     cursor = conn.cursor()
     print cursor
-    cursor.execute("SELECT Password FROM dbo.Login WHERE LoginID = ?",(LoginID))
+    cursor.execute(
+        "SELECT Password FROM dbo.Login WHERE LoginID = ?", (LoginID))
     password = cursor.fetchall()[0][0]
     print password
     if new_password != confirm_password:
@@ -1484,7 +1488,8 @@ def change_password(old_password,new_password,confirm_password,LoginID):
     elif old_password != password:
         return 0
     else:
-        cursor.execute("UPDATE dbo.Login SET Password = ? WHERE LoginID = ?",(new_password, LoginID))
+        cursor.execute(
+            "UPDATE dbo.Login SET Password = ? WHERE LoginID = ?", (new_password, LoginID))
         conn.commit()
     return True
 
@@ -1506,7 +1511,7 @@ def insertEnquiry(Name, EmailID, Phone, Message):
     ContactID = getContactID()
     try:
         cursor.execute(
-                'INSERT INTO dbo.Contact VALUES (?, ?, ?, ?, ?)', (ContactID, Name, EmailID, Phone, Message))
+            'INSERT INTO dbo.Contact VALUES (?, ?, ?, ?, ?)', (ContactID, Name, EmailID, Phone, Message))
         conn.commit()
     except:
         return False
@@ -1531,7 +1536,7 @@ def getSubSubMenuID(MenuID, SubMenuID):
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT max(SubSubMenuID) FROM dbo.SubSubMenu WHERE MenuID = ? and SubMenuID = ?", (MenuID,SubMenuID))
+        "SELECT max(SubSubMenuID) FROM dbo.SubSubMenu WHERE MenuID = ? and SubMenuID = ?", (MenuID, SubMenuID))
     top = cursor.fetchall()
     if not top[0][0]:
         return 0
@@ -1547,7 +1552,7 @@ def insertOther(TableName, TableID, Value):
     Value : Other Category Value
     """
     Id = getOtherID() + 1
-    print (Id, TableName, TableID, Value)
+    print(Id, TableName, TableID, Value)
     conn = getConnection()
     cursor = conn.cursor()
     cursor.execute(
@@ -1570,9 +1575,11 @@ def getPassword_Number(EmployeeID):
     # Returns Password and Phone Number for this teacher.
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT PhoneNumber FROM dbo.Registration WHERE EmployeeID=?",EmployeeID)
+    cursor.execute(
+        "SELECT PhoneNumber FROM dbo.Registration WHERE EmployeeID=?", EmployeeID)
     phone = cursor.fetchall()
-    cursor.execute("SELECT Password FROM dbo.Login WHERE Username=?",EmployeeID)
+    cursor.execute(
+        "SELECT Password FROM dbo.Login WHERE Username=?", EmployeeID)
     passwd = cursor.fetchall()
     return (phone[0][0], passwd[0][0])
 
@@ -1580,14 +1587,15 @@ def getPassword_Number(EmployeeID):
 def ForgotSms(username):
     # Send Sms if this User forgots his password.
     phone, passwd = getPassword_Number(username)
-    msg = 'Username:'+ username + '\n' + 'Password:' + passwd
+    msg = 'Username:' + username + '\n' + 'Password:' + passwd
     return sendPassword(msg, phone)
 
 
 def getOtherVal(TableName, TableID):
     conn = getConnection()
     cursor = conn.cursor()
-    cursor.execute("SELECT Value FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
+    cursor.execute(
+        "SELECT Value FROM dbo.Other WHERE TableName=? and TableID=?", (TableName, TableID))
     value = cursor.fetchall()
     if not value:
         return 0
@@ -1602,10 +1610,11 @@ def updateOther(TableName, TableID, Value):
         # Update
         conn = getConnection()
         cursor = conn.cursor()
-        cursor.execute("UPDATE dbo.Other SET Value = ? WHERE TableName=? and TableID=?",(Value, TableName, TableID))
+        cursor.execute(
+            "UPDATE dbo.Other SET Value = ? WHERE TableName=? and TableID=?", (Value, TableName, TableID))
         conn.commit()
     else:
-       insert = insertOther(TableName, TableID, Value)
+        insert = insertOther(TableName, TableID, Value)
     return True
 
 
@@ -1613,6 +1622,7 @@ def deleteOther(TableName, TableID):
     conn = getConnection()
     cursor = conn.cursor()
     if getOtherVal(TableName, TableID):
-        cursor.execute("DELETE FROM dbo.Other WHERE TableName=? and TableID=?",(TableName, TableID))
+        cursor.execute(
+            "DELETE FROM dbo.Other WHERE TableName=? and TableID=?", (TableName, TableID))
         conn.commit()
     return True

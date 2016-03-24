@@ -651,10 +651,10 @@ def submit():
         for label in labels:
             if label[1] == session['LanguageID'] and label[3] == '/submit':
                 label_dict[label[0]] = label[5]
-        benefits = values.gettablevalues('Benefit')
-        stages = values.gettablevalues('Stage')
-        category = values.gettablevalues('Category')
-        subcat = values.gettablevalues('SubCategory')
+        benefits = values.gettablevalues(connect, 'Benefit')
+        stages = values.gettablevalues(connect, 'Stage')
+        category = values.gettablevalues(connect, 'Category')
+        subcat = values.gettablevalues(connect, 'SubCategory')
         bene_dict = {}
         for ben in benefits:
             if ben[0] == session['LanguageID']:
@@ -686,9 +686,10 @@ def submit():
         stage_id = request.form['33']
         benefit_id = request.form['34']
         category_id = request.form['36']
-        if int(category_id) == 7:
-            other_cat = request.form['other']
-            subcategory_id = 0
+        if category_id != '..':
+            if int(category_id) == 7:
+                other_cat = request.form['other']
+                subcategory_id = 0
         else:
             subcategory_id = request.form.getlist('37'+str(category_id))
         description = request.form['38']
@@ -726,7 +727,9 @@ def submit():
             PATH = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(PATH)
             # link -> video_link[8:]
-            video_link = VideoUpload(PATH)[8:]
+            video_link = VideoUpload(PATH)
+            print video_link
+            video_link = video_link[8:]
             os.remove(PATH)
     IdeaID = values.getLatestIdea() + 1
     if session['RoleID'] == 1:
@@ -760,9 +763,10 @@ def submit():
         print (MediaID, IdeaID, video_link, 'video', session['userid'], datetime.now())
     ideacatsubcat = values.insertIdeaCatSubCat(
         IdeaID, category_id, subcategory_id,session['userid'],datetime.now())
-    if int(category_id) == 7:
-        # Enter into dbo.Other
-        insert_other = values.insertOther('Category', IdeaID, other_cat)
+    if category_id != '..':
+        if int(category_id) == 7:
+            # Enter into dbo.Other
+            insert_other = values.insertOther('Category', IdeaID, other_cat)
     if insert == True and example_text == True and example_img == True and ideacatsubcat == True:
         flash('The idea has been submitted successfully!', 'success')
         return redirect(url_for('home'))
@@ -778,7 +782,7 @@ def view():
     if session['RoleID'] != 3:
         flash('Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
-    data = values.gettablevalues('Idea')
+    data = values.gettablevalues(connect, 'Idea')
     header = values.getColumns('Idea')
     login_district = values.LoginDistrict()
     uniq_dist = []
@@ -817,7 +821,7 @@ def edit():
         for label in labels:
             if label[1] == session['LanguageID'] and label[2] == session['RoleID']:
                 label_dict[label[0]] = label[5]
-        data = values.gettablevalues(table)
+        data = values.gettablevalues(connect, table)
         cols = values.getColumns(table)
         if session['RoleID'] == 5:
             table = table.lower()
@@ -889,7 +893,7 @@ def table(tablename):
                 label_dict[label[0]] = label[5]
         if session['RoleID'] == 4:
             filename = tablename + '.html'
-            data = values.gettablevalues(tablename)
+            data = values.gettablevalues(connect, tablename)
             cols = values.getColumns(tablename)
             return render_template(filename, table=data, header=cols,label=label_dict)
         flash(
@@ -917,7 +921,7 @@ def table(tablename):
                 value = request.form[str(LabelID)+'translate']
             # Update the values (store result in update for later!)
             update = values.updateLabel(LabelID, value, langid)
-            labels = values.gettablevalues('Label')
+            labels = values.gettablevalues(connect, 'Label')
 
         if tablename == "Category":
             CatID = request.form['id']
@@ -929,7 +933,7 @@ def table(tablename):
 
             update = values.updateCat(langid, CatID, value)
             global categories
-            categories = values.gettablevalues('Category')
+            categories = values.gettablevalues(connect, 'Category')
 
         if tablename == "SubCategory":
             CatID = request.form['CatID']
@@ -942,7 +946,7 @@ def table(tablename):
 
             update = values.updateSubCat(langid, CatID, SubCatID, value)
             global subcategories
-            subcategories = values.gettablevalues('SubCategory')
+            subcategories = values.gettablevalues(connect, 'SubCategory')
 
         if tablename == "Menu":
             MenuID = request.form['id']
@@ -954,7 +958,7 @@ def table(tablename):
 
             update = values.updateMenu(langid, MenuID, value)
             global menus
-            menus = values.gettablevalues('Menu')
+            menus = values.gettablevalues(connect, 'Menu')
 
         if tablename == "SubMenu":
             MenuID = request.form['MenuID']
@@ -967,7 +971,7 @@ def table(tablename):
 
             update = values.updateSubMenu(langid, MenuID, SubMenuID, value)
             global submenus
-            submenus = values.gettablevalues('SubMenu')
+            submenus = values.gettablevalues(connect, 'SubMenu')
 
         if tablename == "Country":
             CountryID = request.form['id']
@@ -979,7 +983,7 @@ def table(tablename):
 
             update = values.updateCountry(langid, CountryID, value)
             global country
-            country = values.gettablevalues('Country')
+            country = values.gettablevalues(connect, 'Country')
 
         if tablename == "State":
             CountryID = request.form['CountryID']
@@ -992,7 +996,7 @@ def table(tablename):
 
             update = values.updateState(langid, CountryID, StateID, value)
             global state
-            state = values.gettablevalues('State')
+            state = values.gettablevalues(connect, 'State')
 
         if tablename == "District":
             CountryID = request.form['CountryID']
@@ -1007,7 +1011,7 @@ def table(tablename):
             update = values.updateDistrict(
                 langid, CountryID, StateID, DistrictID, value)
             global district
-            district = values.gettablevalues('District')
+            district = values.gettablevalues(connect, 'District')
 
         if tablename == "Block":
             CountryID = request.form['CountryID']
@@ -1023,7 +1027,7 @@ def table(tablename):
             update = values.updateBlock(
                 langid, CountryID, StateID, DistrictID, BlockID, value)
             global block
-            block = values.gettablevalues('Block')
+            block = values.gettablevalues(connect, 'Block')
 
         if tablename == "Benefit":
             BenefitID = request.form['id']
@@ -1035,7 +1039,7 @@ def table(tablename):
 
             update = values.updateBenefit(langid, BenefitID, value)
             global benefits
-            benefits = values.gettablevalues('Benefit')
+            benefits = values.gettablevalues(connect, 'Benefit')
 
         if tablename == "Stage":
             StageID = request.form['id']
@@ -1047,7 +1051,7 @@ def table(tablename):
 
             update = values.updateStage(langid, StageID, value)
             global stages
-            stages = values.gettablevalues('Stage')
+            stages = values.gettablevalues(connect, 'Stage')
         # Check if the update was a success, and display message appropriately
         if update:
             flash('The ' + tablename + ' was successfully edited!', 'success')
@@ -1240,7 +1244,7 @@ def super(tablename):
             'Sorry, you are not authorised to access this function', 'danger')
         return redirect(url_for('home'))
     if request.method == 'GET':
-        data = values.gettablevalues(tablename)
+        data = values.gettablevalues(connect, tablename)
         cols = values.getColumns(tablename)
         label_dict = {}
         for label in labels:
@@ -2098,26 +2102,27 @@ def language(langid):
 
 if __name__ == '__main__':
     print "Fetching data..."
+    connect = values.getConnection()
     # print os.path.dirname(os.path.abspath(__file__))
-    languages = values.gettablevalues('Language')
+    languages = values.gettablevalues(connect, 'Language')
     for lang in languages:
         if lang[2] == 1:
             masterlang = lang[0]
             break
-    labels = values.gettablevalues('Label')
-    menus = values.gettablevalues('Menu')
-    submenus = values.gettablevalues('SubMenu')
-    subsubmenus = values.gettablevalues('SubSubMenu')
-    categories = values.gettablevalues('Category')
-    subcategories = values.gettablevalues('SubCategory')
-    country = values.gettablevalues('Country')
-    state = values.gettablevalues('State')
-    district = values.gettablevalues('District')
-    block = values.gettablevalues('Block')
-    benefits = values.gettablevalues('Benefit')
-    stages = values.gettablevalues('Stage')
-    category = values.gettablevalues('Category')
-    subcat = values.gettablevalues('SubCategory')
+    labels = values.gettablevalues(connect, 'Label')
+    menus = values.gettablevalues(connect, 'Menu')
+    submenus = values.gettablevalues(connect, 'SubMenu')
+    subsubmenus = values.gettablevalues(connect, 'SubSubMenu')
+    categories = values.gettablevalues(connect, 'Category')
+    subcategories = values.gettablevalues(connect, 'SubCategory')
+    country = values.gettablevalues(connect, 'Country')
+    state = values.gettablevalues(connect, 'State')
+    district = values.gettablevalues(connect, 'District')
+    block = values.gettablevalues(connect, 'Block')
+    benefits = values.gettablevalues(connect, 'Benefit')
+    stages = values.gettablevalues(connect, 'Stage')
+    category = values.gettablevalues(connect, 'Category')
+    subcat = values.gettablevalues(connect, 'SubCategory')
     tables = values.gettablelist()
     print "Data fetched successfully!"
     app.run(debug=True, host='0.0.0.0', port=3000)
