@@ -1,7 +1,5 @@
 # Z-baby
-NOTE:
-
-*This Works on Windows as well as Linux.*
+NOTE: *This Works on Windows as well as Linux.*
 
 For Setup On **Linux**:
 
@@ -10,7 +8,7 @@ For Setup On **Linux**:
 3. Activate your virtualenv `source yourEnv/bin/activate`
 4. Clone the repo: `git clone https://github.com/nickedes/z-baby`
 5. Now install the database connector, follow [these](http://lbolla.info/blog/2013/08/28/python-and-odbc).
-6. 
+6. Finally,
 ```
 cd z-baby
 pip install -r requirements.txt
